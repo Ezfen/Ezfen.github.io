@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="Chris Cheung’s blog | iOS | Design | Mood">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="阿澤">
+    
+
+    <!-- Title -->
+    
+    <title>Autoresizing Mask | OAOA</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Highlight Code-->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/atom-one-light.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Custom Fonts -->
+    <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+    <!-- Content -->
+    <section class="article-container">
+<!-- Back Home -->
+<a class="nav-back" href="/">
+    <i class="fa fa-home"></i>
+</a>
+
+<!-- Page Header -->
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>Autoresizing Mask</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Main Content -->
+            <div class="post-content col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <p>不知道大家在开发的时候会不会使用到UIView的autoresizingMask属性。我自己的话自从开始出现autoLayout就没再用过了。前几天翻看一些较老的书籍，发现了它静静躺在角落。不知不觉还真的有些忘记了，于是温故知新，再学习了一下。</p>
+<a id="more"></a>
+<h1 id="autoresizingMask"><a href="#autoresizingMask" class="headerlink" title="autoresizingMask"></a>autoresizingMask</h1><p>它对应着一个枚举，属性是自动调整SubView和SuperView之间的位置和宽高。</p>
+<pre><code>enum {
+   UIViewAutoresizingNone                 = 0,
+   UIViewAutoresizingFlexibleLeftMargin   = 1 &lt;&lt; 0,
+   UIViewAutoresizingFlexibleWidth        = 1 &lt;&lt; 1,
+   UIViewAutoresizingFlexibleRightMargin  = 1 &lt;&lt; 2,
+   UIViewAutoresizingFlexibleTopMargin    = 1 &lt;&lt; 3,
+   UIViewAutoresizingFlexibleHeight       = 1 &lt;&lt; 4,
+   UIViewAutoresizingFlexibleBottomMargin = 1 &lt;&lt; 5
+};
+</code></pre><h2 id="简单介绍"><a href="#简单介绍" class="headerlink" title="简单介绍"></a>简单介绍</h2><h3 id="UIViewAutoresizingNone"><a href="#UIViewAutoresizingNone" class="headerlink" title="UIViewAutoresizingNone"></a>UIViewAutoresizingNone</h3><p>不设置自动调整，默认值</p>
+<h3 id="UIViewAutoresizingFlexibleRightMargin"><a href="#UIViewAutoresizingFlexibleRightMargin" class="headerlink" title="UIViewAutoresizingFlexibleRightMargin"></a>UIViewAutoresizingFlexibleRightMargin</h3><p>这里就只讲UIViewAutoresizingFlexibleRightMargin,因为上下左右四个方位是一致的原理<br><img src="http://7xs4ed.com1.z0.glb.clouddn.com/autoresizingMask_FlexibleRightMargin.jpg" alt="UIViewAutoresizingFlexibleRightMargin"></p>
+<h3 id="UIViewAutoresizingFlexibleWidth"><a href="#UIViewAutoresizingFlexibleWidth" class="headerlink" title="UIViewAutoresizingFlexibleWidth"></a>UIViewAutoresizingFlexibleWidth</h3><p>UIViewAutoresizingFlexibleWidth和UIViewAutoresizingFlexibleHeight也是同样的原理<br><img src="http://7xs4ed.com1.z0.glb.clouddn.com/autoresizingMask_FlexibleWidthCompare.jpg" alt="UIViewAutoresizingFlexibleWidth"></p>
+<h3 id="组合起来"><a href="#组合起来" class="headerlink" title="组合起来"></a>组合起来</h3><p>枚举中的值是允许使用|组合起来的，同时拥有多个值的功能，like this：</p>
+<pre><code class="objc">UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRIGHTMargin
+</code></pre>
+<p>表示左右间隔都可以修改，效果就像上面那张图一样~</p>
+<h2 id="有点代码对比会好些"><a href="#有点代码对比会好些" class="headerlink" title="有点代码对比会好些"></a>有点代码对比会好些</h2><pre><code class="objc">#define kTopSpace 64
+#define kMargin 20
+#define kTopViewHeight 44
+#define kTopViewWidth 280
+#define kTextLabelWidth 200
+#define kTextLabelHeight 30
+//以Iphone4（320， 480）为基础，设置各控件的位置
+//注意：必须所有控件都按照Iphone4（320， 480）为基础初始化一次，不然按比例缩放时会发生错误！
+UIView *topView = [[UIView alloc] initWithFrame:CGRectMake(kMargin, kTopSpace, kTopViewWidth, kTopViewHeight)];
+CGFloat textLabelTop = (topView.frame.size.width - kTextLabelWidth) / 2;
+CGFloat textLabelWidth = (topView.frame.size.height - kTextLabelHeight) / 2;
+UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(textLabelTop, textLabelWidth, kTextLabelWidth, kTextLabelHeight)];
+//设置文字及居中
+[textLabel setText:@&quot;Ezfen&quot;];
+[textLabel setTextAlignment:NSTextAlignmentCenter];
+//分别设置样式
+[topView setBackgroundColor:[UIColor redColor]];
+[textLabel setTextColor:[UIColor whiteColor]];
+//设置文字控件的宽度按照上一级视图（topView）的比例进行缩放
+[textLabel setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
+//添加视图
+[topView addSubview:textLabel];
+[self.view addSubview:topView];
+//注意：重新设置topView位置的代码，必须要写在添加视图的后面，不然autoresizing的位置计算会出错！
+CGFloat topViewWidth = kUIScreen.size.width - kMargin * 2;
+[topView setFrame:CGRectMake(kMargin, kTopSpace, topViewWidth, kTopViewHeight)];
+</code></pre>
+<p>上面的代码中尺寸宽度被限定为iPhone4s的320。没有设置子View（蓝色的View）的autoresizingMask属性的话运行结果如下：<br><img src="http://7xs4ed.com1.z0.glb.clouddn.com/autoresizingMask_4s.jpg" alt=""></p>
+<p>设置了子View（蓝色的View）autoresizingMask后，再修改父View的宽度，可以看到随着赋值的不同，有不同的效果：<br>设置了UIViewAutoresizingFlexibleLeftMargin<br><img src="http://7xs4ed.com1.z0.glb.clouddn.com/autoresizingMask_FlexibleLeftMargin.jpg" alt="UIViewAutoresizingFlexibleLeftMargin"></p>
+<p>还有的其他值对应的效果图在上文已经摆出来了，请参阅哈~~</p>
+
+ 
+                <!-- Meta -->
+                <div class="post-meta">
+                    <hr>
+                    <br>
+                    <div class="post-tags">
+                        
+                            
+
+<a href="/tags/UIView/">#UIView</a>
+
+
+                        
+                    </div>
+                    <div class="post-date">
+                        2016 年 03 月 19 日
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comments -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <!-- Disqus Comments -->
+
+
+            </div>
+        </div>
+    </div>
+</article>
+</section>
+<!-- Back to top -->
+<a id="returnTop">
+  <i class="fa fa-rocket"></i>
+</a>
+
+
+
+    <!-- Scripts -->
+    <!-- jQuery -->
+<script src="//cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script>
+<!-- Bootstrap -->
+<script src="//cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+<script type="text/javascript">hljs.initHighlightingOnLoad();</script>
+
+<script type="text/javascript">
+	console.log('Chris Cheung © 2015-' + (new Date()).getFullYear());
+</script>
+
+<script src="/js/backtop.js"></script>
+    <!-- Google Analytics -->
+    
+
+</body>
+
+</html>

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="Chris Cheung’s blog | iOS | Design | Mood">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="阿澤">
+    
+
+    <!-- Title -->
+    
+    <title>项目Beauty算是完结了？！ | OAOA</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Highlight Code-->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/atom-one-light.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Custom Fonts -->
+    <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+    <!-- Content -->
+    <section class="article-container">
+<!-- Back Home -->
+<a class="nav-back" href="/">
+    <i class="fa fa-home"></i>
+</a>
+
+<!-- Page Header -->
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>项目Beauty算是完结了？！</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Main Content -->
+            <div class="post-content col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <p>三月底开始了自己的第一个外包项目“Beauty”，App的名字是“CHARMER”，将会在香港App Store上线，是一个促进美容技师和客户之间达成服务协议的App，搭建供求双方沟通和交易的桥梁和平台。在做完第一版之后，几乎每晚都需要修改功能修复Bug，现在突然间一段时间没有了消息，应该算是完结了。    </p>
+<a id="more"></a>
+<p>​         </p>
+<h2 id="所做的事情"><a href="#所做的事情" class="headerlink" title="所做的事情"></a>所做的事情</h2><p>总的来说，有这么几个功能：</p>
+<ul>
+<li><p>用户端：</p>
+<ol>
+<li><p>通过Google地图查看当前附近且在线的技师</p>
+</li>
+<li><p>添加信用卡等信息，使用Paypal支付</p>
+</li>
+<li><p>查看、修改个人信息</p>
+</li>
+<li><p>发布公共订单给每个美容技师，技师可以通过竞标得到订单</p>
+</li>
+<li><p>查看技师信息，收藏喜爱的技师</p>
+</li>
+<li><p>发布私有订单给特定技师</p>
+</li>
+<li><p>订单结束评价，打分等</p>
+</li>
+<li><p>提供其他用户和技师的电话联系方式</p>
+<p>​</p>
+</li>
+</ol>
+</li>
+<li><p>技师端：</p>
+<ol>
+<li><p>竞标用户的公共订单    </p>
+</li>
+<li><p>接受或拒绝用户的私有订单</p>
+</li>
+<li><p>添加银行卡，得到订单报酬</p>
+</li>
+<li><p>查看、修改个人信息，查看收入数据，</p>
+</li>
+<li><p>提交封面图片，作品图片</p>
+</li>
+<li><p>增删改查服务信息、价格</p>
+<p>​</p>
+</li>
+</ol>
+</li>
+</ul>
+<h2 id="一些具体实现"><a href="#一些具体实现" class="headerlink" title="一些具体实现"></a>一些具体实现</h2><p>　　基本实现下来都不是特别难，所以挑一些值得记录的写下来：</p>
+<h3 id="项目文件结构"><a href="#项目文件结构" class="headerlink" title="项目文件结构"></a>项目文件结构</h3><p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/Beauty_%E9%A1%B9%E7%9B%AE%E5%A4%A7%E8%87%B4%E7%BB%93%E6%9E%84.png" alt=""></p>
+<p>　　因为App是用户与技师统一客户端，所以，对于每个Module，都分成Charmer和User分别对应技师和用户，再在其下分为Model、View、Controller，很常见的MVC架构。    </p>
+<p>　　这样做的好处是，文件结构清晰，分类清楚，一下子就能找到需要的文件（虽然搜索才是最快的&gt;w&lt;）。但是有个问题就出现了，前面有提到说：用户与技师统一客户端，那就不免有界面相同的情况出现，这次开发使用的解决方案是复用所有相同的文件，这个错误的决定让后期维护的我一直想狠扇自己嘴巴。毕竟面向不同的使用团体，很多功能需要定制，所以后期加新需求的时候只能一直if-else，if-else，if-else。惨绝人寰～      </p>
+<p>　　觉得，以后再有这样的情况出现，视类的复杂程度和文件的大小而定， 可能会重写一个同样实现的类文件，感觉这条线很难界定，只能靠以后的开发经验去慢慢学。     </p>
+<h3 id="地图"><a href="#地图" class="headerlink" title="地图"></a>地图</h3><p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/Beauty_Google%E5%9C%B0%E5%9B%BE_%E5%B0%8F.jpg" alt=""></p>
+<p>　　因为App即将在香港上线，自然地使用Google地图。第一次用Google地图做开发，感觉跟百度、高德没有太大的区别， 有一点就是：文档基本只有官方文档，遇到问题要Google，基本都是讲百度或高德。关于Google地图，后面再重新写篇文章介绍，包括使用，自定义Marker（地图上紫色的标志），PopView（点击Marker弹出的View）     </p>
+<h3 id="左侧滑动菜单"><a href="#左侧滑动菜单" class="headerlink" title="左侧滑动菜单"></a>左侧滑动菜单</h3><p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/Beauty_%E5%B7%A6%E8%BE%B9%E6%A0%8F.jpg" alt=""></p>
+<p>　　图片好像压缩得有点过分了….</p>
+<p>　　一开始左侧滑动菜单是主界面Controller的一个View，所以滑动的时候会被上方的Navigation Controller（Navigation Bar）遮挡住，可以想象是多么吃藕。后来在滑动的时候动态隐藏和显示Navigation Bar，就出现了诡异的上面一整条高度为64px的空白区域，发现更吃藕了…</p>
+<p>　　所以在AlertController的启发下，决定用UIWindow来解决这个问题，正如巧神<a href="https://book.douban.com/subject/26287173/" target="_blank" rel="external">《iOS开发进阶》</a>一书的第十二章提及，使用UIWindow在所有View（当然包括当前Window的Navigation Bar）前展示自己想要的内容，所以有了下面的代码：</p>
+<pre><code class="objective-c">- (void)viewDidLoad {
+    _window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    _window.windowLevel = UIWindowLevelNormal;
+    _window.backgroundColor = [UIColor clearColor];
+    _window.hidden = YES;
+    BECDrawerView *view = [BECDrawerView new];
+    //省略对view的一些初始化代码
+    _leftView.frame = CGRectMake(0, 0, MYScreenWidth * 0.8, MYScreenHeight);
+    _leftView.center = CGPointMake(- MYScreenWidth * 0.4, _leftView.center.y);
+    _leftView = view;
+    //一开始先把leftView隐藏
+    _leftHidden = YES;
+    _leftView.hidden = _leftHidden;
+    [_window addSubview:_leftView];
+
+    UIScreenEdgePanGestureRecognizer *edgeGesture = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(handleRightPanGesture:)];
+    edgeGesture.delegate = self;
+    edgeGesture.edges = UIRectEdgeLeft;
+    [self.view addGestureRecognizer:edgeGesture];
+}
+
+// 手势事件
+- (void)handleRightPanGesture:(UIPanGestureRecognizer *)panGesture
+{
+    CGPoint translation = [panGesture translationInView:_window];
+    if (translation.x &gt; 0 &amp;&amp; panGesture.state == UIGestureRecognizerStateEnded) {
+        [self popLeft];
+    }
+}
+
+// 此函数用于弹出左侧滑动菜单
+- (void)popLeft
+{
+    [self addLeftGestures];    //添加滑动手势，这里代码就不贴出了
+    [_window makeKeyWindow];
+    _window.hidden = NO;
+    [_window bringSubviewToFront:_leftView];
+
+    _leftHidden = !_leftHidden;
+
+    if (_leftHidden == YES) {
+        [self removeLeftGestures];
+        [_popview removeFromSuperview];
+        NSLog(@&quot;removed&quot;);
+        self.navigationController.navigationBar.hidden = NO;
+    }
+
+    else {
+        if (!_popview) {
+            self.popview = [UIView new];
+            _popview.backgroundColor = [UIColor clearColor];
+            _popview.frame = _window.frame;
+            [_window addSubview:_popview];
+            [_window insertSubview:_popview belowSubview:_leftView];
+        }
+        _popview.hidden = NO;
+        [_window addSubview:_popview];
+        [_window insertSubview:_popview belowSubview:_leftView];
+    }
+
+    CATransition *animation = [CATransition animation];
+    if (_leftHidden == NO) {
+        _leftView.frame = CGRectMake(0, 0, MYScreenWidth * 0.8, MYScreenHeight);
+        animation.type = kCATransitionMoveIn; // 动画过渡类型
+        animation.subtype = kCATransitionFromLeft; // 动画过渡方向
+        _leftView.hidden = NO;
+    }else{
+        _leftView.center = CGPointMake(- MYScreenWidth * 0.4, _leftView.center.y);
+        animation.type = kCATransitionPush;
+        animation.subtype = kCATransitionFromRight; //动画过渡方向
+        _leftView.hidden = YES;
+        NSLog(@&quot;%@&quot;,self.navigationController.navigationBar);
+    }
+    animation.duration = 0.3; // 动画持续0.3s
+    // 代理，动画执行完毕后会调用delegate的animationDidStop:finished:
+    animation.delegate = self;
+    [_leftView.layer addAnimation:animation forKey:nil];
+
+}
+</code></pre>
+<h3 id="CHARMER-PROFILE"><a href="#CHARMER-PROFILE" class="headerlink" title="CHARMER PROFILE"></a>CHARMER PROFILE</h3><p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/Beauty_CollectionView.jpg" alt=""></p>
+<p>　　技师Profile页面，为什么会拿出来写？！是因为Conllection Viewz在日常开发中非常非常非常常见。基本每个App都会用到（TableView是特殊的Conllection View）。这个Collection View分为三部分：</p>
+<ol>
+<li>最上方的HeaderView是一个跑马灯，使用了之前写过的一个小组件<a href="https://github.com/objchris/EZRecycleImageView" target="_blank" rel="external">EZRecycleImageView</a>，在开发中边使用边改进是最好不过的事情了。</li>
+<li>第二个Header是技师信息和三个按钮</li>
+<li>最后是最下面的View，三个按钮分别对应不同的内容，第一二个使用的是CollectionView，即在CollectionView中再嵌入CollectionView；最后一个是TableView，即在CollectionView中再嵌入CollectionView。</li>
+</ol>
+<p>　　View里面嵌入View的复杂结构也是很值得掌握的手法~</p>
+<p>　　还有很多开发过程中的代码和解决方案，因为是别人的项目，非开源，就不一一列出啦~但是我还是信仰Open Sourcede der~~     </p>
+<p>　　最后附上使用的第三方库：</p>
+<pre><code>platform :ios, &quot;8.0&quot;
+target :Beauty do
+pod &#39;SVProgressHUD&#39;, &#39;~&gt; 2.0.3&#39;
+pod &#39;Masonry&#39;, &#39;~&gt; 1.0.2&#39;
+pod &#39;AFNetworking&#39;, &#39;~&gt; 3.0&#39;
+pod &#39;SDWebImage&#39;, &#39;~&gt;3.8&#39;
+pod &#39;YYModel&#39;
+pod &#39;IQKeyboardManager&#39;
+pod &#39;GoogleMaps&#39;
+pod &#39;MJRefresh&#39;
+pod &quot;MWPhotoBrowser&quot;
+pod &#39;JPush&#39;
+pod &#39;PayPal-iOS-SDK&#39;
+
+end
+</code></pre><h2 id="总结与反思"><a href="#总结与反思" class="headerlink" title="总结与反思"></a>总结与反思</h2><ul>
+<li><p>好的方面：</p>
+<ol>
+<li><p>一位好Partner，一位一起奋斗的好朋友</p>
+</li>
+<li><p>很多UI控件和底层实现都接触到了，加深了印象</p>
+</li>
+<li><p>真正接触并使用到优秀的第三方框架，以后在开发过程中如果遇到适用的情况就不会因为无知而重复造轮子（可能还造不好….）</p>
+</li>
+<li><p>积累了经验，这个App算是自己一个比较完整开发的App。整个开发流程虽然没有公司项目那么正规，但是一些相关的文档、说明还是不缺的</p>
+<p>​</p>
+</li>
+</ol>
+</li>
+<li><p>不好的方面：</p>
+<ol>
+<li><p>首先在架构上没有考虑好，这个其实也不是可控的。一开始拿到的项目结构已经定好，没办法更改，且时间也紧，无法推翻之前写过的代码重新思考和重建。</p>
+</li>
+<li><p>其次，在和Partner之间的沟通自我觉得不足，我的被动是我这次开发体验一般的重大引子。感觉自己做得不好，有点对不起自己的Partner。</p>
+</li>
+<li><p>客户的有些需求异常反人类，所以很多时候我的意见不能得到很好的反馈和解决。需求经常改动，且我的Partner才是和客户沟通的中间者，不能直面客户我很苦恼。</p>
+</li>
+</ol>
+</li>
+</ul>
+
+ 
+                <!-- Meta -->
+                <div class="post-meta">
+                    <hr>
+                    <br>
+                    <div class="post-tags">
+                        
+                            
+
+<a href="/tags/Summary/">#Summary</a>
+
+
+                        
+                    </div>
+                    <div class="post-date">
+                        2017 年 07 月 17 日
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comments -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <!-- Disqus Comments -->
+
+
+            </div>
+        </div>
+    </div>
+</article>
+</section>
+<!-- Back to top -->
+<a id="returnTop">
+  <i class="fa fa-rocket"></i>
+</a>
+
+
+
+    <!-- Scripts -->
+    <!-- jQuery -->
+<script src="//cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script>
+<!-- Bootstrap -->
+<script src="//cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+<script type="text/javascript">hljs.initHighlightingOnLoad();</script>
+
+<script type="text/javascript">
+	console.log('Chris Cheung © 2015-' + (new Date()).getFullYear());
+</script>
+
+<script src="/js/backtop.js"></script>
+    <!-- Google Analytics -->
+    
+
+</body>
+
+</html>

@@ -1,0 +1,41 @@
+#returnTop {
+  position: fixed;
+  right: 15px;
+  bottom: -200px;
+  display: block;
+  width: 21px;
+  height: 18px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  color: #ccc;
+  text-decoration: none;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 20px;
+  transition: all 300ms linear;
+  z-index: 9;
+  cursor: pointer;
+}
+#returnTop i {
+  color: #ccc;
+  transition: all 300ms linear;
+  position: absolute;
+  top: 14px;
+  left: 12px;
+  transform: rotate(-45deg);
+}
+#returnTop i .fa .fa-rocket {
+  font-size: 1.1em;
+}
+#returnTop:hover {
+  border: 1px solid #cc543a;
+}
+#returnTop:hover i {
+  color: #cc543a;
+}
+@media screen and (max-width: 960px) {
+  #returnTop {
+    position: fixed;
+    right: 9px;
+  }
+}

@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="Chris Cheung’s blog | iOS | Design | Mood">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="阿澤">
+    
+
+    <!-- Title -->
+    
+    <title>简简单单说说PKI On iOS | OAOA</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Highlight Code-->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/atom-one-light.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Custom Fonts -->
+    <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+    <!-- Content -->
+    <section class="article-container">
+<!-- Back Home -->
+<a class="nav-back" href="/">
+    <i class="fa fa-home"></i>
+</a>
+
+<!-- Page Header -->
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>简简单单说说PKI On iOS</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Main Content -->
+            <div class="post-content col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <p>Hacker,问你惊未Σ( ° △ °|||)︴</p>
+<a id="more"></a>
+<p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/Crypto_Sherlock.jpg" alt="神探夏洛克"> </p>
+<p>看了很多侦探片之后，逐渐发现加解密的神奇所在。能够在别人无法察觉的情况下传递信息（我很喜欢看这些片子，哈哈哈）。无论是Morse Code还是对着某本书根据页码行数字数来确定表达信息，都能让我看到前人的智慧。说真的，我特别钟意神探夏洛克，就算英文渣渣也会在更新的时候到Youtube上看看，等翻译完再翻看一次。记得中国剧场那一集最后根据伦敦地图破解了藏在苏州码子里的暗号，So Sexy~··<br>​<br>今天来聊聊阿澤君的故事，顺便谈谈</p>
+<ol>
+<li>CommonCryto中关于DES、AES的部分内容</li>
+<li>iOS的Security框架里关于RSA加密的部分内容….</li>
+</ol>
+<p>阿澤君是个大四🐶，最近在烦毕业论文的事情。辛辛苦苦撸了二十个年(xiao)头(shi)的论文，肯定要第一时间交到老师手里，让他看看，好舒缓阿澤君难产的心情。阿澤君知道有个Hacker君一直在觊觎阿澤君的论文，想拿过来一抄了之。而且Hacker君是一流的网络黑客，盗线偷取别人的信息是最在行的了。因此怎么发给千里之外的老师可难为阿澤君了。。。    </p>
+<p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/common/focusOnCom.jpg" alt="沉思...">    </p>
+<p>很快，阿澤君想到用加密的方法，利用对称加密的方法给论文加密后发送给老师。</p>
+<p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/common/bucuowo.jpg" alt="开心"></p>
+<h1 id="对称加密"><a href="#对称加密" class="headerlink" title="对称加密"></a>对称加密</h1><p>采用单钥密码系统的加密方法，同一个密钥可以同时用作信息的加密和解密。加密算法中数DES、3DES、AES(块算法)和RC4(流算法)最为常用了。</p>
+<h2 id="DES"><a href="#DES" class="headerlink" title="DES"></a>DES</h2><p>DES 使用一个 56 位的密钥以及附加的 8 位奇偶校验位，产生最大 64 位的分组大小。这是一个迭代的分组密码，使用称为 Feistel 的技术，其中将加密的文本块分成两半。使用子密钥对其中一半应用循环功能，然后将输出与另一半进行“异或”运算；接着交换这两半，这一过程会继续下去，但最后一个循环不交换。DES 使用 16 个循环，使用异或，置换，代换，移位操作四种基本运算。    </p>
+<p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/Crypto_DES.jpg" alt="DES">    </p>
+<p>图片是度娘找的，将就看看哈~</p>
+<h3 id="3DES"><a href="#3DES" class="headerlink" title="3DES"></a>3DES</h3><p>3DES是在DES的基础上做了两次加密和一次解密。具体实现如下：设Ek()和Dk()代表DES算法的加密和解密过程，K代表DES算法使用的密钥，P代表明文，C代表密文，这样：<br>3DES加密过程为：C=Ek3(Dk2(Ek1(P)))<br>3DES解密过程为：P=Dk1(EK2(Dk3(C)))<br>若<strong>Ek1 == Ek2 == Ek3</strong>，就是简单的DES了。</p>
+<h2 id="AES"><a href="#AES" class="headerlink" title="AES"></a>AES</h2><p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/Crypto_AES.png" alt="AES"><br>图片来自网络，若有侵犯到权利之处，请告知，谢谢~    </p>
+<p>AES加密过程涉及到4种操作：字节替代（SubBytes）、行移位（ShiftRows）、列混淆（MixColumns）和轮密钥加（AddRoundKey）。解密过程分别为对应的逆操作。由于每一步操作都是可逆的，按照相反的顺序进行解密即可恢复明文。加解密中每轮的密钥分别由初始密钥扩展得到。算法中16字节的明文、密文和轮密钥都以一个4x4的矩阵表示。<br>算法详细已经有其他人写了，我就不再造轮子了。<a href="http://www.blogfshare.com/aes-rijndael.html" target="_blank" rel="external">密码算法详解——AES</a><br>还有算法及解密算法的<a href="http://blog.csdn.net/searchsun/article/details/2516191" target="_blank" rel="external">模式介绍</a>，可以了解了解~    </p>
+<h2 id="RC4"><a href="#RC4" class="headerlink" title="RC4"></a>RC4</h2><p>不同于块算法的是，RC4等流算法不是对明文进行分组处理，而是字节流的方式依次加密明文中的每一个字节，解密的时候也是依次对密文中的每一个字节进行解密。</p>
+<h2 id="CommonCrypto"><a href="#CommonCrypto" class="headerlink" title="CommonCrypto"></a>CommonCrypto</h2><p>对于身为iOS攻城狮的阿澤君来说，感觉还是这一部分比较重要。    </p>
+<h3 id="CommonCrypto的一些主要的结构体"><a href="#CommonCrypto的一些主要的结构体" class="headerlink" title="CommonCrypto的一些主要的结构体"></a>CommonCrypto的一些主要的结构体</h3><ol>
+<li>CCOperation：定义操作：加密或解密</li>
+</ol>
+<pre><code>enum {
+    kCCEncrypt = 0, 
+    kCCDecrypt,     
+};
+typedef uint32_t CCOperation;
+</code></pre><ol>
+<li>CCAlgorithm：加解密算法，很明显就不详细说明了。</li>
+</ol>
+<pre><code class="objc">enum {
+    kCCAlgorithmAES128 = 0,
+    kCCAlgorithmAES = 0,
+    kCCAlgorithmDES,
+    kCCAlgorithm3DES,       
+    kCCAlgorithmCAST,       
+    kCCAlgorithmRC4,
+    kCCAlgorithmRC2,   
+    kCCAlgorithmBlowfish    
+};
+typedef uint32_t CCAlgorithm;
+</code></pre>
+<ol>
+<li>CCOptions：选项：按照P7补足块算法的块长度或者选择ECB模式，关于模式请看上面AES中介绍的文章。对于RC4等流算法不适用。或者说不需要使用到</li>
+</ol>
+<pre><code class="objc">enum {
+    kCCOptionPKCS7Padding   = 0x0001,
+    kCCOptionECBMode        = 0x0002
+};
+</code></pre>
+<ol>
+<li>KeySize和BlockSize：规定加解密密钥的长度和明文密文块的长度</li>
+</ol>
+<pre><code class="objc">enum {
+    kCCKeySizeAES128          = 16,
+    kCCKeySizeAES192          = 24,
+    kCCKeySizeAES256          = 32,
+    kCCKeySizeDES             = 8,
+    kCCKeySize3DES            = 24,
+    kCCKeySizeMinCAST         = 5,
+    kCCKeySizeMaxCAST         = 16,
+    kCCKeySizeMinRC4          = 1,
+    kCCKeySizeMaxRC4          = 512,
+    kCCKeySizeMinRC2          = 1,
+    kCCKeySizeMaxRC2          = 128,
+    kCCKeySizeMinBlowfish     = 8,
+    kCCKeySizeMaxBlowfish     = 56,
+};
+enum {
+    /* AES */
+    kCCBlockSizeAES128        = 16,
+    /* DES */
+    kCCBlockSizeDES           = 8,
+    /* 3DES */
+    kCCBlockSize3DES          = 8,
+    /* CAST */
+    kCCBlockSizeCAST          = 8,
+    kCCBlockSizeRC2           = 8,
+    kCCBlockSizeBlowfish      = 8,
+};
+</code></pre>
+<h3 id="通过代码实现"><a href="#通过代码实现" class="headerlink" title="通过代码实现"></a>通过代码实现</h3><h4 id="导入CommonCrypto的头文件。"><a href="#导入CommonCrypto的头文件。" class="headerlink" title="导入CommonCrypto的头文件。"></a>导入CommonCrypto的头文件。</h4><pre><code class="objc">#import &lt;CommonCrypto/CommonCrypto.h&gt;
+</code></pre>
+<h4 id="symCrypt"><a href="#symCrypt" class="headerlink" title="symCrypt"></a>symCrypt</h4><pre><code class="objc">/*!
+    @function   symCrypt
+    @abstract   对称解密
+    @param      operation       加密或解密
+    @param      data            需要加解密的数据
+    @param      algorithm       加解密所采用的算法
+    @param      key             加解密时提供的密钥
+    @param      iv              Initialization Vector(CBC模式下需要)
+    @param      options         加密数据字节数不是block的整数倍时需要制定padding
+                                详情参见CommonCryptor头文件
+    @param      status          加解密成功与否所返回的状态
+    @result     解密后得到的结果
+ */
+- (NSData *)symCrypt:(CCOperation)operation
+         processData:(NSData *)data
+      UsingAlgorithm:(CCAlgorithm)algorithm
+                 key:(NSData *)key
+ initalizationVector:(NSData *)iv
+             options:(CCOptions)options
+              status:(CCCryptorStatus *)status
+{
+    NSData *result = nil;
+    NSMutableData *cKey = [key mutableCopy], *cIV = [iv mutableCopy];
+    [self fixKeyLengthsByAlgorithm:algorithm keyData:cKey ivData:cIV];//1
+    size_t bufferSize = [data length] + [self blockSizeByAlgorithm:algorithm]; // 2
+    void *buffer = malloc(bufferSize); //3
+    size_t encryptedSize = 0;
+    *status = CCCrypt(operation, algorithm, options, [cKey bytes], [cKey length], [cIV bytes], [data bytes], [data length], buffer, bufferSize, &amp;encryptedSize); //4
+    if (*status == kCCSuccess) {
+        result = [NSData dataWithBytes:buffer length:encryptedSize];  //5
+    } else {
+        NSLog(@&quot;[ERROR] failed to encrypt|CCCryptoStatus: %d&quot;, *status);
+    }
+    free(buffer);  //6
+    return result;  //7
+}
+</code></pre>
+<ol>
+<li>根据加解密算法检查Key和iv的长度是否符合要求，详细请看下面列出的函数fixKeyLength</li>
+<li>加密后的数据总小于等于数据长度加上block的大小</li>
+<li>申请bufferSize的空间以保存加密或解密后的数据</li>
+<li>调用CCCrypt函数实现加解密。<pre><code class="objc">CCCryptorStatus CCCrypt(
+ CCOperation op,         /* 加密或解密：kCCEncrypt, etc. */
+ CCAlgorithm alg,        /* 加解密采用的算法：kCCAlgorithmAES128, etc. */
+ CCOptions options,      /* kCCOptionPKCS7Padding, etc. */
+ const void *key,        /* 密钥 */
+ size_t keyLength,       /* 密钥长度 */
+ const void *iv,         /* iv，使用与CBC模式下，明文后32位和iv异或后做为下一阶段的前32位 */
+ const void *dataIn,     /* 要加密或解密的数据 */
+ size_t dataInLength,    /* 数据长度 */
+ void *dataOut,          /* 注意传入的是指针，加解密后的数据将从此处返回 */
+ size_t dataOutAvailable,/* 为dataOut申请的可写长度 */
+ size_t *dataOutMoved    /* 结果所占的长度 */
+ )    
+ __OSX_AVAILABLE_STARTING(__MAC_10_4, __IPHONE_2_0);
+</code></pre>
+</li>
+<li>若成功，则将(void *)类型的数据封装到NSData中。</li>
+<li>释放申请的buffer内存</li>
+<li>返回。</li>
+</ol>
+<h4 id="fixKeyLength"><a href="#fixKeyLength" class="headerlink" title="fixKeyLength"></a>fixKeyLength</h4><pre><code class="objc">/*!
+    @function   fixKeyLength
+    @abstract   修改密钥长度至与算法匹配
+    @param      algorithm       加解密所采用的算法
+    @param      keyData         密钥
+    @param      ivData          Initialization Vector
+    @result     将密钥长度和iv修改至与算法匹配的长度
+ */
+- (void)fixKeyLengthsByAlgorithm:(CCAlgorithm)algorithm
+                         keyData:(NSMutableData *)keyData
+                          ivData:(NSMutableData *)ivData
+{
+    NSUInteger keyLength = [keyData length];
+    switch (algorithm) {
+        case kCCAlgorithmAES:
+        {
+            if (keyLength &lt; kCCKeySizeAES128) {
+                keyData.length = kCCKeySizeAES128;
+            } else if (keyLength &lt; kCCKeySizeAES192) {
+                keyData.length = kCCKeySizeAES192;
+            } else {
+                keyData.length = kCCKeySizeAES256;
+            }
+            break;
+        }
+        case kCCAlgorithmDES:
+        {
+            keyData.length = kCCKeySizeDES;
+            break;
+        }
+        case kCCAlgorithm3DES:
+        {
+            keyData.length = kCCKeySize3DES;
+            break;
+        }
+        case kCCAlgorithmRC4:
+        {
+            keyData.length = kCCKeySizeMaxRC4;
+            break;
+        }
+        default:
+            break;
+    }
+    ivData.length = keyData.length;
+}
+</code></pre>
+<h4 id="blockSizeByAlgorithm"><a href="#blockSizeByAlgorithm" class="headerlink" title="blockSizeByAlgorithm"></a>blockSizeByAlgorithm</h4><pre><code class="objc">/*!
+    @function   blockSizeByAlgorithm
+    @abstract   根据算法获取每个block的大小
+    @param      algorithm       加密所采用的算法
+    @result     该算法对应的block大小
+ */
+- (size_t)blockSizeByAlgorithm:(CCAlgorithm)algorithm {
+    switch (algorithm) {
+        case kCCAlgorithmAES:
+            return kCCBlockSizeAES128;
+        case kCCAlgorithmDES:
+        case kCCAlgorithm3DES:
+        case kCCAlgorithmRC4:
+            return kCCBlockSizeDES;
+        default:
+            return 0;
+    }
+}
+</code></pre>
+<p>上述两个函数主要是为了规范密钥的长度和获取明文密文块的长度，很好理解就不详细介绍了。这样还是不能傻瓜式地调用，因此阿澤君创建了DESCipherActor继承于SymCipherActor，进一步进行封装：<br>　　DESCipherActor.h<br>　　``` objc</p>
+<pre><code>- (NSString *)encryptInCBC:(NSString *)plainText key:(NSString *)key iv:(NSData *)iv;
+- (NSString *)decryptInCBC:(NSString *)cipherText key:(NSString *)key iv:(NSData *)iv;
+- (NSString *)encryptInEBC:(NSString *)plainText key:(NSString *)key;
+- (NSString *)decryptInEBC:(NSString *)cipherText key:(NSString *)key;
+</code></pre><p>　　```<br>　　还有AES、RC4的实现大致相同，具体可参考Demo，已经上传<a href="https://github.com/objchris/PKIDemo" target="_blank" rel="external">Github</a></p>
+<p>　　果然，采用加密算法加密后的论文顺利发到老师那里，问题是解密用密钥还在阿澤君手上，老师还是无法看到论文内容，密钥不能通过网络传输给老师，因为Hacker君还在监听着阿澤君和老师的通讯。难道要阿澤君不惧千里（其实不是很远，哈哈哈。我就夸张那么一点点~）去到老师那边，那为何不直接将论文交给老师呢？！！！<br>　　What the <em>**</em>！！！💔💔阿澤君此时心里千万只草泥马在奔腾。        </p>
+<p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/common/desk.jpg" alt="掀桌子">    </p>
+<p>　　但是阿澤君不会这样轻易地狗带，因为还可以通过非对称加密来解决…</p>
+<h1 id="非对称加密"><a href="#非对称加密" class="headerlink" title="非对称加密"></a>非对称加密</h1><p>对称加密算法在加密和解密时使用的是同一个秘钥；而非对称加密算法需要两个密钥来进行加密和解密，这两个秘钥是公开密钥（public key，简称公钥）和私有密钥（private key，简称私钥）。<br>如甲乙双方需要加密通信：</p>
+<ol>
+<li>乙方生成一对密钥（公钥和私钥）并将公钥向其它方公开。</li>
+<li>得到该公钥的甲方使用该密钥对机密信息进行加密后再发送给乙方。</li>
+<li>乙方再用自己保存的另一把专用密钥（私钥）对加密后的信息进行解密。乙方只能用其专用密钥（私钥）解密由对应的公钥加密后的信息。</li>
+</ol>
+<p>　　在传输过程中，即使攻击者截获了传输的密文，并得到了乙的公钥，也无法破解密文，因为只有乙的私钥才能解密密文。<br>　　同样，如果乙要回复加密信息给甲，那么需要甲先公布甲的公钥给乙用于加密，甲自己保存甲的私钥用于解密。<br>　　说到非对称加密，不得不说RSA（其实是阿澤君只接触过这个。。。）</p>
+<p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/common/yaoMing.png" alt=""></p>
+<h2 id="RSA"><a href="#RSA" class="headerlink" title="RSA"></a>RSA</h2><h3 id="算法原理"><a href="#算法原理" class="headerlink" title="算法原理"></a>算法原理</h3><ol>
+<li>选取两个质数p和q, 计算<code>n = p * q</code> 。p和q要尽量大</li>
+<li>根据质数<code>φ(p)=p-1</code>和欧拉方程满足乘法结合率的规律求出φ(n),即<code>φ(n)=(p-1)(q-1)</code></li>
+<li>选取质数e作为公钥指数, e的范围<code>1&lt;e&lt;φ(n)</code>,且 e 与 φ(n) 互质</li>
+<li>出e对φ(n)的模反元素d，求解公式：<code>ed ≡ 1 (mod φ(n))</code>即可得出<br>这样计算后(n,e)是公钥，(n,d)是私钥。<blockquote>
+<p>公钥加密公式<br>m^e ≡ c (mod n) 即 c = m^e mod n<br>私钥解密公式<br>c^d ≡ m (mod n) 即 m = c^d mod n    </p>
+</blockquote>
+</li>
+</ol>
+<p>RSA加密常用的填充方式有下面3种：    </p>
+<ol>
+<li>RSA_PKCS1_PADDING 填充模式，最常用的模式<br>输入：必须 比RSA钥模长(modulus)短至少11个字节，也就是RSA_size(rsa) – 11。如果输入的明文过长，必须切割，然后填充<br>输出：和modulus一样长<br>根据这个要求，对于1024bit的密钥，block length = 1024/8 – 11 = 117 字节     </li>
+<li>RSA_PKCS1_OAEP_PADDING<br>输入：RSA_size(rsa) – 41<br>输出：和modulus一样长    </li>
+<li>for RSA_NO_PADDING 不填充<br>输入：可以和RSA钥模长一样长，如果输入的明文过长，必须切割，然后填充<br>输出：和modulus一样长    </li>
+</ol>
+<p>特别推荐的是阮一峰的日志两篇日志，写得非常好，我也是参考这个写的：<br><a href="http://www.ruanyifeng.com/blog/2013/06/rsa_algorithm_part_one.html" target="_blank" rel="external">RSA算法原理（一）</a><br><a href="http://www.ruanyifeng.com/blog/2013/07/rsa_algorithm_part_two.html" target="_blank" rel="external">RSA算法原理（二）</a></p>
+<h3 id="iOS-Security-framework"><a href="#iOS-Security-framework" class="headerlink" title="iOS Security.framework"></a>iOS Security.framework</h3><h4 id="encryptWithPublicKey"><a href="#encryptWithPublicKey" class="headerlink" title="encryptWithPublicKey"></a>encryptWithPublicKey</h4><pre><code class="objc">- (NSString *)encrypt:(NSString *)stringToEncrypt withPublicKey:(SecKeyRef)publicKey{
+    OSStatus status = noErr;
+    size_t cipherBufferSize;
+    uint8_t *cipherBuffer;
+    uint8_t *dataToEncrypt = (uint8_t *)[stringToEncrypt cStringUsingEncoding:NSUTF8StringEncoding];
+    size_t dataLength = stringToEncrypt.length;
+    NSLog(@&quot;dataLength: %zu&quot;, dataLength);
+    cipherBufferSize = SecKeyGetBlockSize(publicKey);       // 1
+    cipherBuffer = malloc(cipherBufferSize);
+    size_t totalBufferSize = 0;
+    NSMutableData *data = [[NSMutableData alloc] init];    // 2
+    //使用kSecPaddingPKCS1作为加密的padding
+    if ((cipherBufferSize - 11) &lt; dataLength) {            // 3
+        //若需要加密的数据长度过长，需要分块加密
+        size_t toEncryptDataLength = dataLength;
+        while ((cipherBufferSize - 11) &lt; toEncryptDataLength) { // 4
+            status = SecKeyEncrypt(publicKey,
+                                   kSecPaddingPKCS1,
+                                   dataToEncrypt + (dataLength - toEncryptDataLength),
+                                   cipherBufferSize - 11,
+                                   cipherBuffer,
+                                   &amp;cipherBufferSize);          // 5
+            toEncryptDataLength = toEncryptDataLength - (cipherBufferSize - 11);        //6
+            //CipherBuffer是通过malloc创建，没有对内存空间进行初始化，有很多其他数据
+            //转储成NSData，确保对正确长度的cipherBuffer的获取
+            [data appendData:[NSData dataWithBytes:cipherBuffer length:cipherBufferSize]];    //7
+            totalBufferSize += cipherBufferSize;    //8
+        }
+        //对剩余的数据进行加密
+        status = SecKeyEncrypt(publicKey,
+                               kSecPaddingPKCS1,
+                               dataToEncrypt + (dataLength - toEncryptDataLength),
+                               toEncryptDataLength,
+                               cipherBuffer,
+                               &amp;cipherBufferSize);
+        [data appendData:[NSData dataWithBytes:cipherBuffer length:cipherBufferSize]];               
+        totalBufferSize += cipherBufferSize;
+    } else {
+        //需要加密的数据长度小于SecKeyGetBlockSize(publicKey)－11，直接加密
+        status = SecKeyEncrypt(publicKey, kSecPaddingPKCS1, dataToEncrypt, dataLength, cipherBuffer, &amp;cipherBufferSize);
+        [data appendData:[NSData dataWithBytes:cipherBuffer length:cipherBufferSize]];
+    }
+    if (publicKey) {
+        CFRelease(publicKey);
+    }
+    NSString *encryptedString = [GTMBase64 stringByEncodingData:[data copy]];            //9
+    free(cipherBuffer);            //10
+    return encryptedString;
+}
+</code></pre>
+<ol>
+<li>根据Key判断加解密块大小（若使用kSecPaddingPKCS1，需要手动调整块大小小于这个返回值 - 11）</li>
+<li>创建MutableData用以下面操作添加Data</li>
+<li>判断数据总大小是否大于SecKeyGetBlockSize(publicKey) - 11，是则拆分成多个块加解密，否则直接加解密。</li>
+<li>while循环多次操作</li>
+<li>使用SecKeyEncrypt进行加解密<pre><code class="objc">OSStatus SecKeyEncrypt(
+ SecKeyRef           key,                //加解密使用的密钥
+ SecPadding          padding,            //padding，一般为kSecPaddingPKCS1，需要注意数据块的大小问题
+ const uint8_t       *plainText,          //明文
+ size_t              plainTextLen,        //明文长度
+ uint8_t             *cipherText,        //返回的密文
+ size_t              *cipherTextLen)     //返回的密文长度
+ __OSX_AVAILABLE_STARTING(__MAC_10_7, __IPHONE_2_0);
+</code></pre>
+</li>
+<li>将已经加解密过的数据剔除</li>
+<li>往MutableData中添加数据</li>
+<li>计算总的BufferSize，这里只是做个统计</li>
+<li>将得到的数据进行Base64转码</li>
+<li>记得释放cipherBuffer</li>
+</ol>
+<h4 id="decryptWithPrivateKey"><a href="#decryptWithPrivateKey" class="headerlink" title="decryptWithPrivateKey"></a>decryptWithPrivateKey</h4><pre><code class="objc">- (NSString *)decrypt: (NSString *)stringToDecrypt withPrivateKey:(SecKeyRef)privateKey {
+    NSData *dataToDecrypt = [GTMBase64 decodeString:stringToDecrypt];
+    OSStatus status = noErr;
+    size_t cipherBufferSize = [dataToDecrypt length];
+    uint8_t *cipherBuffer = (uint8_t *)[dataToDecrypt bytes];
+    size_t plainBufferSize;
+    uint8_t *plainBuffer;
+    plainBufferSize = SecKeyGetBlockSize(privateKey);
+    plainBuffer = malloc(plainBufferSize);
+    NSMutableData *data = [[NSMutableData alloc] init];
+    size_t decryptLengthPer = SecKeyGetBlockSize(privateKey);
+    if (decryptLengthPer &lt; cipherBufferSize) {
+        size_t toDecryptDataLength = cipherBufferSize;
+        size_t totalBufferSize = 0;
+        while (decryptLengthPer &lt; toDecryptDataLength) {
+            status = SecKeyDecrypt(privateKey,
+                                   kSecPaddingPKCS1,
+                                   cipherBuffer + (cipherBufferSize - toDecryptDataLength),
+                                   decryptLengthPer,
+                                   plainBuffer,
+                                   &amp;plainBufferSize);
+            toDecryptDataLength = toDecryptDataLength - decryptLengthPer;
+            if (status == noErr) {
+                [data appendData:[NSData dataWithBytes:plainBuffer length:plainBufferSize]];
+            }
+            totalBufferSize += plainBufferSize;
+        }
+        status = SecKeyDecrypt(privateKey,
+                               kSecPaddingPKCS1,
+                               cipherBuffer + (cipherBufferSize - toDecryptDataLength),
+                               decryptLengthPer,
+                               plainBuffer,
+                               &amp;plainBufferSize);
+        if (status == noErr) {
+            [data appendData:[NSData dataWithBytes:plainBuffer length:plainBufferSize]];
+        }
+        totalBufferSize += plainBufferSize;
+    } else {
+        status = SecKeyDecrypt(privateKey, kSecPaddingPKCS1, cipherBuffer, cipherBufferSize, plainBuffer, &amp;plainBufferSize);
+        if (status == noErr) {
+            [data appendData:[NSData dataWithBytes:plainBuffer length:plainBufferSize]];
+        }
+    }
+    if (privateKey) {
+        CFRelease(privateKey);
+    }
+    NSString *decryptedString = [[NSString alloc] initWithData:[data copy] encoding:NSUTF8StringEncoding];
+    free(plainBuffer);
+    return decryptedString;
+}
+</code></pre>
+<p>解密和加密的方式基本一样，此处不多加赘述。<br><a href="https://github.com/objchris/PKIDemo" target="_blank" rel="external">Demo</a></p>
+<p><strong>Hacker君，问你惊未，哈哈哈哈哈。</strong><br>非对称加密对阿澤君来说完全解决了问题(づ￣ 3￣)づ，使用老师的公钥加密论文后发送回给他。Hacker君就算截取到也无济于事，因为Hacker君没有老师的私钥，无法获取到其中的内容。老师获取到阿澤君发送的论文后自然可以解密查看。    </p>
+<p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/common/hahahahaha.jpg" alt="哈哈哈哈"><br>从中阿澤君也学到了很多，所以分享给大家❤️。故事有(fei)点(chang)弱智，希望大家不要在意，关注加解密算法就好了~
+　　</p>
+<p>题外话：PKI基础最近才接触，学得不深，有些东西写错请大家见谅。<br>更多的算法，eg：数字摘要、数字签名、口令认证等等都在<a href="https://github.com/objchris/PKIDemo" target="_blank" rel="external">Github</a>上了，有兴趣请移步。<br>关于加解密，貌似OpenSSL会经常用，具体阿澤君也不清楚，还需要更加深入的学习，共勉吧！！！！</p>
+
+ 
+                <!-- Meta -->
+                <div class="post-meta">
+                    <hr>
+                    <br>
+                    <div class="post-tags">
+                        
+                            
+
+<a href="/tags/Security/">#Security</a>
+
+
+                        
+                    </div>
+                    <div class="post-date">
+                        2016 年 04 月 09 日
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comments -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <!-- Disqus Comments -->
+
+
+            </div>
+        </div>
+    </div>
+</article>
+</section>
+<!-- Back to top -->
+<a id="returnTop">
+  <i class="fa fa-rocket"></i>
+</a>
+
+
+
+    <!-- Scripts -->
+    <!-- jQuery -->
+<script src="//cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script>
+<!-- Bootstrap -->
+<script src="//cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+<script type="text/javascript">hljs.initHighlightingOnLoad();</script>
+
+<script type="text/javascript">
+	console.log('Chris Cheung © 2015-' + (new Date()).getFullYear());
+</script>
+
+<script src="/js/backtop.js"></script>
+    <!-- Google Analytics -->
+    
+
+</body>
+
+</html>

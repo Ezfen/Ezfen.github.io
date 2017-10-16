@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="Chris Cheung’s blog | iOS | Design | Mood">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="阿澤">
+    
+
+    <!-- Title -->
+    
+    <title>使用makefile创建静态库 | OAOA</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Highlight Code-->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/atom-one-light.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Custom Fonts -->
+    <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+    <!-- Content -->
+    <section class="article-container">
+<!-- Back Home -->
+<a class="nav-back" href="/">
+    <i class="fa fa-home"></i>
+</a>
+
+<!-- Page Header -->
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>使用makefile创建静态库</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Main Content -->
+            <div class="post-content col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <p>说来惭愧，自己的C/C++水平还没有到达很高的水平，但是最近工作上需要将Win上的一个C库移植到iOS上以支持业务的开展，修改代码后需要编译成静态库供iOS使用。     </p>
+<p>一种很简单的方式就是创建Cocoa Touch Static Library项目，然后直接将所需要的代码文件无脑添加到项目里面，编译，合成，结束~    </p>
+<p>但是为了使用Windows或Linux的同事在修改完代码后也能编译出静态库而无需再搬到Mac上操作，所以学习了一下makefile，完成了这项工作。    </p>
+<a id="more"></a>
+<p>本文只是皮毛，写点在此次工作中的一些历程。     </p>
+<h2 id="静态库特点"><a href="#静态库特点" class="headerlink" title="静态库特点"></a>静态库特点</h2><blockquote>
+<ul>
+<li>静态库对函数库的链接是放在编译时期完成的。</li>
+<li>程序在运行时与函数库再无关系，移植方便。</li>
+<li>浪费空间和资源，因为所有相关的目标文件与牵涉到的函数库被链接合成一个可执行文件。</li>
+<li>更新困难。当程序所依赖的静态库有任何更新，整个程序就要重新链接。</li>
+</ul>
+</blockquote>
+<p>留下疑问：是否可以理解为：只需要其他库的头文件？</p>
+<h2 id="makefile"><a href="#makefile" class="headerlink" title="makefile"></a>makefile</h2><p>makefile本身只是一个文件，用来辅助make命令执行时，告诉make命令怎么去编译和链接程序。    </p>
+<p>那编译和链接的规则是：</p>
+<blockquote>
+<ul>
+<li>如果这个工程没有编译过，那么我们的所有C文件都要编译并被链接。</li>
+<li>如果这个工程的某几个C文件被修改，那么我们只编译被修改的C文件，并链接目标程序。</li>
+<li>如果这个工程的头文件被改变了，那么我们需要编译引用了这几个头文件的C文件，并链接目标程序。</li>
+</ul>
+</blockquote>
+<p>Google可以搜素到很多makefile的好文章，这里简略介绍一下：</p>
+<h3 id="基本语句"><a href="#基本语句" class="headerlink" title="基本语句"></a>基本语句</h3><pre><code>target : prerequisites
+    command
+</code></pre><ul>
+<li>target : 编译或链接最终得到的目标文件，例如.o结尾的中间文件、由.o文件链接而成的Win下的可执行文件，.o文件打包而成的静态库文件</li>
+<li>prerequisites : 依赖，也就是编译成.o的.c、.cpp、.m和.h，链接成动态库、静态库、可执行文件的.o</li>
+<li>command : 命令，即如何将上述的依赖编译或链接成我们要的target，需要注意的是，command前必须要有一个制表符(tab)，不能是一连串的空格，也不能缺失。</li>
+</ul>
+<h4 id="Phony-Target"><a href="#Phony-Target" class="headerlink" title="Phony Target"></a>Phony Target</h4><p>PHONY 目标并非实际的文件名：只是在显式请求时执行命令的名字。    </p>
+<p>像平常我们需要自己编译第三方库的时候，在执行完链接后需要清楚产生的中间文件或其他配置等，需要执行<code>make clean</code>，这里的clean就是makefile中被定义的Phony Target。下面例子会说到。    </p>
+<p>一个makefile只能有一个总的Target(编译链接得到我们最终需要的文件)，如果需要多个Target，可以使用Phony Target来实现。当然，上述说到的除编译链接之外的操作用Phony Target也是很好的选择。</p>
+<h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><p>像写程序一样直接定义变量，变量在左侧，值在右侧，等号分开，然后通过<code>${变量}</code>使用，例如：</p>
+<pre><code>DEVICE=OS
+DEV_PATH=/Applications/Xcode.app/Contents/Developer/Platforms/iPhone${DEVICE}.platform/Developer
+</code></pre><h3 id="文件名及使用"><a href="#文件名及使用" class="headerlink" title="文件名及使用"></a>文件名及使用</h3><p>当然，既然叫makefile，文件名最好就叫makefile啦，Makefile也是可以的，但是是在makefile不存在的时候，make命令才会去使用。</p>
+<p>如果再不喜欢，文件名写成<code>chris</code>也可以，只是make的时候加上-f和文件名就好了~</p>
+<p><code>make -f chris</code></p>
+<h2 id="栗子🌰"><a href="#栗子🌰" class="headerlink" title="栗子🌰"></a>栗子🌰</h2><p>好啦，说起来简单，但是实际操作却需要些许耐心~</p>
+<p>以下是我写的一个简单的makefile，用于编译资源文件和打包成静态库，还有一个脚本，结合makefile，打包armv7,armv7s,arm64,i386,x86_64这五个平台的静态库，并使用lipo合成为”Fat Library”。</p>
+<h3 id="makefile-1"><a href="#makefile-1" class="headerlink" title="makefile"></a>makefile</h3><pre><code class="cmake">OUT_D=out
+ARCH_D=${OUT_D}/${ARCH}
+OBJ_D=tmp
+# DEVICE 和 ARCH 是外部传入的值，用于区分是OS还是SIMULATOR，平台是哪种
+# 由于C代码中使用到了CoreFoundation和跨平台编译使用到__APPLE__、TARGET_OS_IPHONE等宏，所以需要引入iOS的SDK
+DEV_PATH=/Applications/Xcode.app/Contents/Developer/Platforms/iPhone${DEVICE}.platform/Developer
+SDK_PATH=${DEV_PATH}/SDKs/iPhone${DEVICE}10.3.sdk
+
+CPP=clang
+CC=clang
+
+INC_PATH_FLAG=-I. 
+# iOS平台的编译选项
+IOS_FLAG=-arch ${ARCH} -isysroot ${SDK_PATH} -miphoneos-version-min=8.0
+CFLAG=-Wall -O2  ${INC_PATH_FLAG} ${IOS_FLAG}
+CPPFLAG=-Wall -O2  ${INC_PATH_FLAG} ${IOS_FLAG}
+
+IOS_LINK_FLAG=-framework CoreFoundation 
+
+RM=rm
+MKDIR=mkdir
+
+# OBJECTS变量，后文会通过${OBJECTS}来使用
+OBJECTS=${OBJ_D}/string.o \
+    ${OBJ_D}/lock.o \
+    ${OBJ_D}/time.o \
+    ${OBJ_D}/NETCA_Alloc.o \
+    ${OBJ_D}/NETCA_ArrayList.o \
+    ${OBJ_D}/NETCA_BigInteger.o \
+    ${OBJ_D}/NETCA_BitSet.o \
+    ${OBJ_D}/NETCA_Error.o \
+    ${OBJ_D}/NETCA_Stream.o \
+    ${OBJ_D}/NETCA_Stream_Base64.o \
+    ${OBJ_D}/NETCA_Stream_File.o \
+    ${OBJ_D}/NETCA_Stream_Hex.o \
+    ${OBJ_D}/NETCA_Stream_HMAC.o \
+    ${OBJ_D}/NETCA_Stream_MD.o \
+    ${OBJ_D}/NETCA_Stream_Mem.o \
+    ${OBJ_D}/NETCA_Stream_Null.o \
+    ${OBJ_D}/NETCA_Time.o \
+    ${OBJ_D}/NETCA_UString.o \
+    ${OBJ_D}/NETCA_Util.o \
+    ${OBJ_D}/NETCA_JSON.o
+
+# 最终target，make解析makefile的时候会将第一个遇到的target作为最终target来执行本次操作
+all:${ARCH_D}/libnetca_util.2.5.1.a
+
+#下面是对资源文件的编译，生成.o中间文件        
+${OBJ_D}/string.o:unix/string.c
+    ${CC} ${CFLAG} -c unix/string.c -o ${OBJ_D}/string.o
+
+${OBJ_D}/time.o:unix/time.c
+    ${CC} ${CFLAG} -c unix/time.c -o ${OBJ_D}/time.o
+
+${OBJ_D}/lock.o:unix/lock.c
+    ${CC} -D_GNU_SOURCE ${CFLAG} -c unix/lock.c -o ${OBJ_D}/lock.o
+
+${OBJ_D}/NETCA_Alloc.o:NETCA_Alloc.c
+    ${CC} ${CFLAG} -c NETCA_Alloc.c -o ${OBJ_D}/NETCA_Alloc.o
+
+${OBJ_D}/NETCA_ArrayList.o:NETCA_ArrayList.c
+    ${CC} ${CFLAG} -c NETCA_ArrayList.c -o ${OBJ_D}/NETCA_ArrayList.o
+
+${OBJ_D}/NETCA_BigInteger.o:NETCA_BigInteger_Openssl.c
+    ${CC} ${CFLAG} -Wno-deprecated-declarations -c NETCA_BigInteger_Openssl.c -o ${OBJ_D}/NETCA_BigInteger.o
+
+${OBJ_D}/NETCA_BitSet.o:NETCA_BitSet.c
+    ${CC} ${CFLAG} -c NETCA_BitSet.c -o ${OBJ_D}/NETCA_BitSet.o
+
+${OBJ_D}/NETCA_Error.o:NETCA_Error.c
+    ${CC} ${CFLAG} -c NETCA_Error.c -o ${OBJ_D}/NETCA_Error.o
+
+${OBJ_D}/NETCA_Stream.o:NETCA_Stream.c
+    ${CC} ${CFLAG} -c NETCA_Stream.c -o ${OBJ_D}/NETCA_Stream.o
+
+${OBJ_D}/NETCA_Stream_Base64.o:NETCA_Stream_Base64.c
+    ${CC} ${CFLAG} -c NETCA_Stream_Base64.c -o ${OBJ_D}/NETCA_Stream_Base64.o
+
+${OBJ_D}/NETCA_Stream_File.o:NETCA_Stream_File.c
+    ${CC} ${CFLAG} -c NETCA_Stream_File.c -o ${OBJ_D}/NETCA_Stream_File.o
+
+${OBJ_D}/NETCA_Stream_Hex.o:NETCA_Stream_Hex.c
+    ${CC} ${CFLAG} -c NETCA_Stream_Hex.c -o ${OBJ_D}/NETCA_Stream_Hex.o
+
+${OBJ_D}/NETCA_Stream_HMAC.o:NETCA_Stream_HMAC.c
+    ${CC} ${CFLAG} -c NETCA_Stream_HMAC.c -o ${OBJ_D}/NETCA_Stream_HMAC.o
+
+${OBJ_D}/NETCA_Stream_MD.o:NETCA_Stream_MD.c
+    ${CC} ${CFLAG} -c NETCA_Stream_MD.c -o ${OBJ_D}/NETCA_Stream_MD.o
+
+${OBJ_D}/NETCA_Stream_Mem.o:NETCA_Stream_Mem.c
+    ${CC} ${CFLAG} -c NETCA_Stream_Mem.c -o ${OBJ_D}/NETCA_Stream_Mem.o
+
+${OBJ_D}/NETCA_Stream_Null.o:NETCA_Stream_Null.c
+    ${CC} ${CFLAG} -c NETCA_Stream_Null.c -o ${OBJ_D}/NETCA_Stream_Null.o
+
+${OBJ_D}/NETCA_Time.o:NETCA_Time.c
+    ${CC} ${CFLAG} -std=c99 -c NETCA_Time.c -o ${OBJ_D}/NETCA_Time.o
+
+${OBJ_D}/NETCA_UString.o:NETCA_UString.c NETCA_UString_Unicode_Data.c
+    ${CC} ${CFLAG} -c NETCA_UString.c -o ${OBJ_D}/NETCA_UString.o
+
+
+${OBJ_D}/NETCA_Util.o:NETCA_Util.c
+    ${CC} ${CFLAG} -c NETCA_Util.c -o ${OBJ_D}/NETCA_Util.o
+
+${OBJ_D}/NETCA_JSON.o:NETCA_JSON.c
+    ${CC} ${CFLAG} -c NETCA_JSON.c -o ${OBJ_D}/NETCA_JSON.o
+
+
+$(OBJ_D):
+    ${MKDIR} ${OBJ_D}
+
+$(OUT_D):
+    ${MKDIR} ${OUT_D}
+
+$(ARCH_D):
+    ${MKDIR} ${ARCH_D}
+
+# 对应于上面的all，依赖项是${OUT_D} ${ARCH_D} ${OBJ_D}对应的文件夹的创建和${OBJECTS} 对应的资源文件的编译
+${ARCH_D}/libnetca_util.2.5.1.a: ${OUT_D} ${ARCH_D} ${OBJ_D} ${OBJECTS} 
+    libtool -static ${IOS_LINK_FLAG} -o ${ARCH_D}/libnetca_util.2.5.1.a ${OBJECTS} #此处其实也可以使用Linux的 ar 命令
+
+# Phony Target: realclean 依赖于clean的执行，调用make realclean会先调用make clean清除编译过程中的中间文件，再清除目标文件(为了多平台)
+realclean: clean
+    ${RM} -rf ${OUT_D}
+
+clean:
+    ${RM} -rf ${OBJ_D}
+</code></pre>
+<h3 id="Shell"><a href="#Shell" class="headerlink" title="Shell"></a>Shell</h3><pre><code class="shell">LIB_NAME=libnetca_util.2.5.1.a
+LIB_OS_NAME=libnetca_util.2.5.1_os.a
+LIB_SIMULATOR_NAME=libnetca_util.2.5.1_simulator.a
+
+OUT_D=out
+HEADER_D=${OUT_D}/include
+
+ARCH_OS_LIST=(&quot;armv7&quot; &quot;armv7s&quot; &quot;arm64&quot;)
+# 得到ARCH_OS_LIST的数量
+ARCH_OS_COUNT=${#ARCH_OS_LIST[@]}
+# 组合ARCH_OS_LIST中每一个元素和LIB_OS_NAME，得到数组(&quot;armv7/libnetca_util.2.5.1_os.a&quot;,...)
+LIB_OS_PATHS=(${ARCH_OS_LIST[@]/%//${LIB_NAME}})
+
+ARCH_SIM_LIST=(&quot;i386&quot; &quot;x86_64&quot;)
+ARCH_SIM_COUNT=${#ARCH_SIM_LIST[@]}
+LIB_SIM_PATHS=(${ARCH_SIM_LIST[@]/%//${LIB_NAME}})
+
+#Compile 使用-f指定makefile，Phony Target realclean清除所有中间文件和目标文件
+make -f makefile.ios realclean
+
+#定义函数
+arch_make() {
+    make -f makefile.ios clean
+    make -f makefile.ios ARCH=$1 DEVICE=$2
+}
+
+#遍历上面定义的数组，为OS的每个架构创建.a文件
+for ((i=0; i &lt; ${ARCH_OS_COUNT}; i++))
+do
+    arch_make ${ARCH_OS_LIST[i]} &quot;OS&quot;
+done
+#遍历上面定义的数组，为SIMULATOR的每个架构创建.a文件
+for ((i=0; i &lt; ${ARCH_SIM_COUNT}; i++))
+do
+    arch_make ${ARCH_SIM_LIST[i]} &quot;Simulator&quot;
+done
+
+#HEADER FILE 头文件提取出来
+mkdir ${HEADER_D}
+cp NETCA_*.h ${HEADER_D}/
+
+#LIPO 合成为&quot;Fat Library&quot;
+cd ${OUT_D}
+lipo -create ${LIB_OS_PATHS[@]} -output ${LIB_OS_NAME}
+lipo -create ${LIB_SIM_PATHS[@]} -output ${LIB_SIMULATOR_NAME}
+</code></pre>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>感觉makefile还是有必要学会，因为编译和链接可以由自己掌握。</li>
+<li>此次编写makefile的工作不是很难，因为这只是要移植部分里面最简单最小的一个库。</li>
+<li>makefile在iOS上的使用方面，最主要的困难还是如何指定SDK，毕竟移植到iOS的时候，Win上或Linux上的代码并不是都可用，像这次就需要用到iOS的SDK里CoreFoundation的内容去替换一些已有的实现。</li>
+</ol>
+
+ 
+                <!-- Meta -->
+                <div class="post-meta">
+                    <hr>
+                    <br>
+                    <div class="post-tags">
+                        
+                            
+
+<a href="/tags/Library/">#Library</a>
+
+
+                        
+                    </div>
+                    <div class="post-date">
+                        2017 年 08 月 08 日
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comments -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <!-- Disqus Comments -->
+
+
+            </div>
+        </div>
+    </div>
+</article>
+</section>
+<!-- Back to top -->
+<a id="returnTop">
+  <i class="fa fa-rocket"></i>
+</a>
+
+
+
+    <!-- Scripts -->
+    <!-- jQuery -->
+<script src="//cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script>
+<!-- Bootstrap -->
+<script src="//cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+<script type="text/javascript">hljs.initHighlightingOnLoad();</script>
+
+<script type="text/javascript">
+	console.log('Chris Cheung © 2015-' + (new Date()).getFullYear());
+</script>
+
+<script src="/js/backtop.js"></script>
+    <!-- Google Analytics -->
+    
+
+</body>
+
+</html>

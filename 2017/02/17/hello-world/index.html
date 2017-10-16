@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="Chris Cheung’s blog | iOS | Design | Mood">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="阿澤">
+    
+
+    <!-- Title -->
+    
+    <title>Hello World Again | OAOA</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Highlight Code-->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/atom-one-light.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Custom Fonts -->
+    <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+    <!-- Content -->
+    <section class="article-container">
+<!-- Back Home -->
+<a class="nav-back" href="/">
+    <i class="fa fa-home"></i>
+</a>
+
+<!-- Page Header -->
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>Hello World Again</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Main Content -->
+            <div class="post-content col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <p>决定给博客的名字起为OAOA。</p>
+<p>趁着最近没有动力看书，又不想脑袋生锈，又看腻了之前Hexo的yilia主题。所以换个博客主题，Hello World Again。</p>
+<a id="more"></a>
+<p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/helloworld_background.png" alt=""></p>
+<h2 id="开始捣鼓"><a href="#开始捣鼓" class="headerlink" title="开始捣鼓"></a>开始捣鼓</h2><p>不是前端er要自己写个主题出来还真不是简单的事情。所以借鉴了hollow主题，并在其上进行修改。</p>
+<h3 id="主页"><a href="#主页" class="headerlink" title="主页"></a>主页</h3><p>主页大致上没有做太多的修改，因为一开始就是看上这种简简单单的，没有太多复杂成分的排版。厌倦了yilia，第一是：不想要左右版式的页面，显得左侧的菜单栏有点喧宾夺主。第二是：总把人脸留在左边显眼的位置，不太好意思～</p>
+<p>hollow主题只是包含了主页，也就是现实文章序列和文章详情。其他的都没有。</p>
+<h3 id="Categories"><a href="#Categories" class="headerlink" title="Categories"></a>Categories</h3><p>进入分类页面在主页右上角的钻石按钮，分类页面是显示所有博文的分类。</p>
+<p>因为暂时不支持站内搜索，如果要找某一篇文章需要一页页地翻，感觉会很繁琐。所以建立了个分类页面。</p>
+<p>我是通过修改page.ejs来达到目的。</p>
+<pre><code class="html">&lt;section class=&quot;article-container&quot;&gt;
+&lt;!-- Back Home --&gt;
+&lt;%- partial(&#39;_partial/backhome&#39;) %&gt;
+
+&lt;!-- Page Header --&gt;
+&lt;header class=&quot;intro-header&quot;&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row&quot;&gt;
+            &lt;div class=&quot;col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1&quot;&gt;
+                &lt;div class=&quot;post-heading&quot;&gt;
+                    &lt;h1&gt;Categories&lt;/h1&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/header&gt;
+
+&lt;!-- Post Content --&gt;
+&lt;article&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row&quot;&gt;
+            &lt;!-- Post Main Content --&gt;
+            &lt;div class=&quot;post-content col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1&quot;&gt;
+                &lt;% site.categories.each(function(category){ %&gt;
+                    &lt;a class=&quot;category&quot; href=&quot;&lt;%-category.name%&gt;&quot;&gt;&lt;%-category.name%&gt;&lt;/a&gt;
+                &lt;% }); %&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/article&gt;
+&lt;/section&gt;
+&lt;!-- Back to top --&gt;
+&lt;%- partial(&#39;_partial/backtop&#39;) %&gt;
+</code></pre>
+<p>修改完page.ejs后，执行<code>hexo new page &quot;categories&quot;</code>就可以创建categories页了。然后调整格式就可以了。</p>
+<h3 id="About和Demo"><a href="#About和Demo" class="headerlink" title="About和Demo"></a>About和Demo</h3><p>这两个页面是自己添加的。</p>
+<p>这两个页面是最复杂的。首先Hexo只支持index,page,post,layout,archive这几种自定义页面，所以修改了page后作为category页面之后就不能通过修改项目页面模板来添加新的自定义页面了。</p>
+<p>但是好在Hexo还是比较人性化的。</p>
+<p>除了修改Hexo的模板，有两种方法可以实现自定义页面</p>
+<ol>
+<li>先执行<code>hexo new page &quot;xxx&quot;</code>，在source中出现xxx文件夹，其中有xxx.md，然后在xxx.md前加上layout：false，可以绕过Hexo解析，直接将md中的内容显示出来，这样就可以在md里面写html代码了。详见<a href="https://hexo.io/zh-cn/docs/writing.html" target="_blank" rel="external">Hexo文档</a></li>
+<li>执行<code>hexo new page &quot;xxx&quot;</code>，同样得到xxx文件夹，你可以将这个文件夹当作一个项目的根目录，然后在其中尽情创建html，css，js，whatever you want。然后记得在博客的主_config.yml中的skip_render项添加xxx/**，就可以了。</li>
+</ol>
+<h3 id="评论"><a href="#评论" class="headerlink" title="评论"></a>评论</h3><p>评论就不加啦，毕竟清清爽爽还是最爱啊。</p>
+<p>有问题在微博等社交平台联系吧。</p>
+<h2 id="写在后面"><a href="#写在后面" class="headerlink" title="写在后面"></a>写在后面</h2><p>博客是在hollow主题的<a href="https://github.com/zchen9/hexo-theme-hollow" target="_blank" rel="external">创作家</a>的基础上进行修改的，表示真挚的感谢。</p>
+<p>如果要自己写主题，<a href="https://hexo.io/zh-cn/docs/writing.html" target="_blank" rel="external">Hexo文档</a>记得多看看。</p>
+<h3 id="对于这次实践的总结："><a href="#对于这次实践的总结：" class="headerlink" title="对于这次实践的总结："></a>对于这次实践的总结：</h3><p>不是很难，像我没学过Node.js的都可以弄出来。</p>
+<p>html,css,js这些基础一定要会。</p>
+<p>需要学习下ejs,stylus，都不是很难的东西。</p>
+<p>多看看别人的代码，受受别人的启发。</p>
+
+ 
+                <!-- Meta -->
+                <div class="post-meta">
+                    <hr>
+                    <br>
+                    <div class="post-tags">
+                        
+                            
+
+<a href="/tags/Mood/">#Mood</a>
+
+
+                        
+                    </div>
+                    <div class="post-date">
+                        2017 年 02 月 17 日
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comments -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <!-- Disqus Comments -->
+
+
+            </div>
+        </div>
+    </div>
+</article>
+</section>
+<!-- Back to top -->
+<a id="returnTop">
+  <i class="fa fa-rocket"></i>
+</a>
+
+
+
+    <!-- Scripts -->
+    <!-- jQuery -->
+<script src="//cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script>
+<!-- Bootstrap -->
+<script src="//cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+<script type="text/javascript">hljs.initHighlightingOnLoad();</script>
+
+<script type="text/javascript">
+	console.log('Chris Cheung © 2015-' + (new Date()).getFullYear());
+</script>
+
+<script src="/js/backtop.js"></script>
+    <!-- Google Analytics -->
+    
+
+</body>
+
+</html>

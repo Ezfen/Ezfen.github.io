@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="Chris Cheung’s blog | iOS | Design | Mood">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="阿澤">
+    
+
+    <!-- Title -->
+    
+    <title>Code Signing In Xcode | OAOA</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Highlight Code-->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/atom-one-light.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Custom Fonts -->
+    <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+    <!-- Content -->
+    <section class="article-container">
+<!-- Back Home -->
+<a class="nav-back" href="/">
+    <i class="fa fa-home"></i>
+</a>
+
+<!-- Page Header -->
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>Code Signing In Xcode</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Main Content -->
+            <div class="post-content col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <p>Xcode 9 虽然目前只有Beta版。但是已经很多开发者在使用了。Xcode 9 在应用签名方面做出了新的尝试，推出了新特性。还对Xcode Server进行了集成。对整个签名的Workflow进行了极大的简化，基本上只需要一次点击就可以完成Xcode9以前几步的繁杂操作。</p>
+<a id="more"></a>
+<p>Xcode Server对Automatic Signing和Customized Signing都做了改进，使之更简便快速稳定。这两者在Xcode 8中被推出，所以在对Xcode Server进行介绍前，我们来回顾下Xcode 8 对应用签名都做了什么。</p>
+<h2 id="Xcode-8"><a href="#Xcode-8" class="headerlink" title="Xcode 8"></a>Xcode 8</h2><p>在应用签名方面，Xcode 8 旨在解决Xcode 7 在签名错误时候对开发者的不友好性。大家可能都有印象，以前用Xcode 7的时候，在应用签名出现错误的时候都会弹出下面这个框：</p>
+<p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/CodeSigning_fixissue.png" alt=""></p>
+<p>通常都只是点击Fix issue来让Xcode解决问题，当然大多数情况都能解决，但是仿佛在黑匣子中操作，因为我们并不知道：</p>
+<ul>
+<li>问题是什么，为什么会签名失败</li>
+<li>点击Fix issue之后，Xcode做了什么</li>
+<li>为什么Fix issue能帮我们解决问题</li>
+</ul>
+<p>Xcode 8中，添加了Report Navigator。在每次修改签名配置和签名的时候都会有日志可以查看，可以很方便地知道Xcode在帮我们做什么操作。</p>
+<p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/CodeSigning_report.png" alt=""></p>
+<h3 id="Automatic-Signing"><a href="#Automatic-Signing" class="headerlink" title="Automatic Signing"></a>Automatic Signing</h3><p>开启Automatic Signing：在使用Xcode 8很容易就会发现项目配置里面<code>General</code>选项页有了很大的变化。如下图所示，勾选<code>automatically manage signing</code>即可，新创建的项目也会自动勾选，选择好开发团队（下方的Team就可以选择使用对应的证书签名）。</p>
+<p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/CodeSigning_autosigning.png" alt=""></p>
+<h4 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h4><ol>
+<li>修改App需要使用的系统功能只需要在TARGETS -&gt; Capabilities中配置，Automatic Signing会自动更新App ID和Previsioning Profile。这里展示的是个人证书，所以Capabilities比较少。<img src="http://7xs4ed.com1.z0.glb.clouddn.com/CodeSigning_capabilities.png" alt=""></li>
+<li>Automatic Signing只针对development signing，这样做的好处是与发布证书隔离开。</li>
+<li>只对Xcode创建的Provisioning Profile可用，如果是自己从开发者网站下载下来的Provisioning Profile，那就使用Customized Signing去做自定义签名。</li>
+</ol>
+<h3 id="Customized-Signing"><a href="#Customized-Signing" class="headerlink" title="Customized Signing"></a>Customized Signing</h3><p>切换到自定义签名，只需要将上述<code>Automatically manage signing</code>选项取消勾选就好了，这样配置会出现两个Signing的选项</p>
+<p><img src="" alt=""></p>
+<h4 id="特点-1"><a href="#特点-1" class="headerlink" title="特点"></a>特点</h4><p>使用Customized Signing的目的是可以应对不同的情况来选择不同的Profile从而决定使用不同的证书签名。    </p>
+<p>有新的开发人员、添加了新的授权设备或者修改App需要使用的系统功能都会更改App 的 UUID，这样我们需要更新项目配置（下载最新的Provisioning profile，并在Xcode上选择使用它）</p>
+<h3 id="Multiple-Development-Certificate"><a href="#Multiple-Development-Certificate" class="headerlink" title="Multiple Development Certificate"></a>Multiple Development Certificate</h3><p>一个值得提出的点是：Multiple development certificate conflict的问题。基本每个人都只有一个开发者账号，如果在一个设备上使用那自然没有问题，但是如果我们有另外一台设备上也需要使用这个开发者账号的话，可以将Keychain通过iCloud同步到另一台设备上使用，如果没有这样做，Xcode 7 会有如下的提示：</p>
+<p><img src="" alt=""></p>
+<p>reset会使在之前那台设备上的证书无效，无法继续在之前那台设备上对应用签名，无法用于真机调试。    </p>
+<p>Xcode 8 解决了这个问题，它会帮我们重新创建先前兼容的证书，使得之前设备的证书可以继续使用，而当前用于开发的设备也能使用相同的证书签名。</p>
+<h2 id="Xcode-9"><a href="#Xcode-9" class="headerlink" title="Xcode 9"></a>Xcode 9</h2><h2 id="说多一点点"><a href="#说多一点点" class="headerlink" title="说多一点点"></a>说多一点点</h2><p>Xcode Server不仅可以使用来代码签名和打包，还可以完成编译、测试</p>
+
+ 
+                <!-- Meta -->
+                <div class="post-meta">
+                    <hr>
+                    <br>
+                    <div class="post-tags">
+                        
+                            
+
+<a href="/tags/WWDC2017/">#WWDC2017</a> <a href="/tags/Xcode/">#Xcode</a>
+
+
+                        
+                    </div>
+                    <div class="post-date">
+                        2017 年 08 月 20 日
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comments -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <!-- Disqus Comments -->
+
+
+            </div>
+        </div>
+    </div>
+</article>
+</section>
+<!-- Back to top -->
+<a id="returnTop">
+  <i class="fa fa-rocket"></i>
+</a>
+
+
+
+    <!-- Scripts -->
+    <!-- jQuery -->
+<script src="//cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script>
+<!-- Bootstrap -->
+<script src="//cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+<script type="text/javascript">hljs.initHighlightingOnLoad();</script>
+
+<script type="text/javascript">
+	console.log('Chris Cheung © 2015-' + (new Date()).getFullYear());
+</script>
+
+<script src="/js/backtop.js"></script>
+    <!-- Google Analytics -->
+    
+
+</body>
+
+</html>
