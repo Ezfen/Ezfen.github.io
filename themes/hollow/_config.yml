@@ -1,0 +1,14 @@
+# Default post title
+default_post_title: Halo
+
+#Date Format
+date_format: YYYY 年 MM 月 DD 日
+
+# Comment. 
+comments:
+  # Disqus comment
+  disqus_shortname: 
+
+# Google Analytics Tracking ID
+google_analytics: 
+ 

@@ -1,0 +1,219 @@
+avatar-width = 120px
+icon-width = 50px
+
+a
+  &:link,&:visited
+    text-decoration none
+  &:hover,&:active
+    text-decoration none
+
+
+.main
+  position absolute
+  top 0
+  left 0
+  right 0
+  bottom 0
+  width 100%
+  height 100%
+  overflow hidden
+  background-color #FFF
+  background url(/images/background.jpg)
+  background-size 100% 100%
+
+.switch 
+  opacity 0
+
+.curtain
+  position absolute
+  width 100%
+  height 60%
+  background-color rgba(255, 255, 255, 0.7)
+  .view 
+    position absolute
+    border 1px dashed rgb(152, 152, 152)
+    top 0
+    bottom 0
+    left 0
+    right 0
+    overflow auto
+    margin auto
+    width 300px
+    height 160px 
+  .date 
+    font-size x-large
+    font-family cursive
+    color #CC543A
+    margin 25px 40px 20px 30px
+  .mood 
+    font-size large
+    font-family cursive
+    color #000000
+    margin 25px 0 20px 30px
+    width 80%
+
+.info-container
+  top 55%
+  position relative
+  width 100%
+  height 45%
+  background-color #000
+  z-index 1
+
+.info-sign
+  position absolute
+  top 15%
+  left 50%
+  transform translate(-50%, -50%)
+  text-align center
+  font-size 16px
+  font-weight 100
+  color #FFF
+  width 500px
+  .info-ename
+    font-family 'Playball', cursive
+
+.info-content
+  position absolute
+  left 50%
+  top 50%
+  transform translate(-50%, -50%)
+  width 900px
+  height 150px
+  z-index 1
+
+.info-intro
+  position relative
+  // left 50%
+  top 20%
+  // transform translate(-50%, -50%)
+  // width 300px
+  // height 100px
+  height 80%
+  color #CC543A
+  font-size 2em
+  text-align center
+
+.info-avatar
+  position absolute
+  left 50%
+  top 20%
+  transform translate(-50%, -50%)
+  width avatar-width
+  height avatar-width
+  border-radius avatar-width
+  transition all 200ms ease-in-out
+  box-shadow 0 0 0 3px #000
+              0 0 0 5px #fff
+  z-index 9
+
+.info-cn
+  position absolute
+  top 60%
+  left 50%
+  transform translate(-50%, -50%)
+
+.info-link
+  position absolute
+  left 50%
+  top 90%
+  transform translate(-50%, -50%)
+  width 280px
+
+
+.info-icon 
+  display block
+  float left
+  width icon-width
+  height icon-width
+  overflow hidden
+  margin 10px
+
+  i
+    display block
+    width icon-width
+    height icon-width
+    text-align center
+    line-height icon-width
+    border-radius icon-width
+    color #FFF
+    background-color rgba(255, 255, 255, .3)
+    transition all .5s ease-in-out
+    cursor pointer
+
+    &:hover
+      border-radius 6px
+      color rgba(255, 255, 255, .9)
+      background-color #CC543A
+
+.info-widelink
+  position absolute
+  left 50%
+  top 30%
+  transform translate(-50%, -50%)
+  width 280px
+
+  .info-icon
+    width 120px
+
+    i
+      font-style normal
+      font-weight 100
+      width 120px
+
+
+@media screen and (max-height: 500px) {
+  &.info-container {
+    height: 37%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  &.info-content {
+    width: 100%;
+  }
+  &.info-avatar {
+    left: 20%;
+  }
+  &.info-link {
+    top: 68%;
+    left: 60%;
+  }
+  &.info-intro {
+    left: 50%;
+    top: 18%;
+  }
+  &.info-en {
+    &.extra {
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+}
+
+@media screen and (max-width: 414px) {
+  &.info-icon {
+    &.extra {
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+  &.info-avatar {
+    left: 30%;
+  }
+  &.info-intro {
+    opacity: 0;
+    visibility: hidden;
+  }
+  &.info-link {
+    top: 74%;
+    left: 85%;
+    width: 300px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  &.info-link {
+    left: 95%;
+  }
+}

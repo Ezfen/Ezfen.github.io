@@ -1,0 +1,34 @@
+<section class="article-container">
+<!-- Back Home -->
+<%- partial('_partial/backhome') %>
+
+<!-- Page Header -->
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>T.A.G.S</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Main Content -->
+            <div class="post-content col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <% site.tags.each(function(tag){ %>
+                    <a class="category" href="<%-tag.name%>"><%-tag.name%></a>
+                <% }); %>
+            </div>
+        </div>
+    </div>
+</article>
+</section>
+<!-- Back to top -->
+<%- partial('_partial/backtop') %>
+
