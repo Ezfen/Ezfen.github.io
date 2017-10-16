@@ -105,8 +105,8 @@ CC=clang
 INC_PATH_FLAG=-I. 
 # iOS平台的编译选项
 IOS_FLAG=-arch ${ARCH} -isysroot ${SDK_PATH} -miphoneos-version-min=8.0
-CFLAG= -DOSX -Wall -O2  ${INC_PATH_FLAG} ${IOS_FLAG}
-CPPFLAG= -DOSX -Wall -O2  ${INC_PATH_FLAG} ${IOS_FLAG}
+CFLAG=-Wall -O2  ${INC_PATH_FLAG} ${IOS_FLAG}
+CPPFLAG=-Wall -O2  ${INC_PATH_FLAG} ${IOS_FLAG}
 
 IOS_LINK_FLAG=-framework CoreFoundation 
 
