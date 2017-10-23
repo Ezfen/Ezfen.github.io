@@ -98,7 +98,7 @@
 <li>将上述代码的self改成weakSelf，再来看看Instruments：<br><img src="http://7xs4ed.com1.z0.glb.clouddn.com/block_weakSelf.jpg" alt="weakSelf"><br>QRCodeScanner被销毁后：<br><img src="http://7xs4ed.com1.z0.glb.clouddn.com/block_weakSelf2.jpg" alt="weakSelf">     </li>
 </ol>
 <p>　　结果很明显，若是使用self，EZScanNetGrid这个View一直存在于内存中没有被释放，因为UIView Animation对其的强引用使其一直存在于内存中，直至Block里面的代码执行完毕。但是这段代码里可以看到，completion中又继续调用了<code>[self startAnimation];</code>因此，系统会继续保留对EZScanNetGrid的引用，从而即使EZScanNetGrid的SuperView被销毁了，EZScanNetGrid还是没有被销毁，无限地循环调用着动画，占据内存的同时也耗费着CPU。:(</p>
-<p>​    此文有点晦涩，附上<a href="https://github.com/objchris/ChrisDerDemos/tree/master/ClassBlockDemo" target="_blank" rel="external">DEMO地址</a></p>
+<p>　　此文有点晦涩，附上<a href="https://github.com/objchris/ChrisDerDemos/tree/master/ClassBlockDemo" target="_blank" rel="external">DEMO地址</a></p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
 <li>关于Block的内存泄漏不只是循环引用会引起。</li>
 <li>不仅仅是UIView，其他将Block作为参数的类方法，如果在一个Block中递归调用到本Block，记得将引用的对象加上__weak。你说，在Block被调用的时候self被释放了怎么办？！去看看__strong的资料吧。</li>
