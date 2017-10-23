@@ -73,6 +73,7 @@ a
   .info-ename
     font-family 'Playball', cursive
 
+
 .info-content
   position absolute
   left 50%
@@ -110,6 +111,7 @@ a
 .info-cn
   position absolute
   top 60%
+  width 80%
   left 50%
   transform translate(-50%, -50%)
 
@@ -187,26 +189,9 @@ a
       width 120px
 
 
-@media screen and (max-height: 500px) {
-  &.info-container {
-    height: 37%;
-  }
-}
-
 @media screen and (max-width: 768px) {
   &.info-content {
     width: 100%;
-  }
-  &.info-avatar {
-    left: 20%;
-  }
-  &.info-link {
-    top: 68%;
-    left: 60%;
-  }
-  &.info-intro {
-    left: 50%;
-    top: 18%;
   }
   &.info-en {
     &.extra {
@@ -216,29 +201,40 @@ a
   }
 }
 
-@media screen and (max-width: 414px) {
-  &.info-icon {
-    &.extra {
-      opacity: 0;
-      visibility: hidden;
-    }
-  }
-  &.info-avatar {
-    left: 30%;
-  }
-  &.info-intro {
-    opacity: 0;
-    visibility: hidden;
-  }
-  &.info-link {
-    top: 74%;
-    left: 85%;
-    width: 300px;
+@media screen and (max-width: 520px) {
+  &.info-sign {
+    width: 90%;
   }
 }
 
 @media screen and (max-width: 320px) {
-  &.info-link {
-    left: 95%;
+  &.info-avatar {
+    top: 10%;
+    width: 100px;
+    height: 100px;
+    border-radius: 100px;
+  }
+  &.info-cn {
+    font-size: smaller;
+    top: 50%;
+  }
+  &.info-container {
+    top: 45%;
+    height: 55%;
+  }
+  &.info-sign {
+    font-size: 12px;
+  }
+  &.info-widelink {
+    width: 200px;
+  }
+  &.info-widelink &.info-icon {
+      width: 80px;
+      height: 30px;
+  }
+  &.info-widelink &.info-icon i {
+      width: 80px;
+      height: 30px;
+      line-height: 30px;
   }
 }
