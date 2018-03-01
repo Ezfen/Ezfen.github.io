@@ -12,7 +12,8 @@
 .serif {
   font-family: 'Lora', 'Times New Roman', serif;
 }
-.sans-serif {
+.sans-serif,
+article .container .row blockquote {
   font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 .animation,
@@ -123,7 +124,6 @@ article .container .row .video-container embed {
   margin-top: 0;
 }
 article .container .row blockquote {
-  font-family: font-serif;
   font-size: 1em;
   padding: 3px 30px 15px;
   color: #808080;

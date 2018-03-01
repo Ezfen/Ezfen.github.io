@@ -29,6 +29,7 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/search.css">
 
     <!-- Custom Fonts -->
     <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -51,11 +52,19 @@
     <a class="nav-back" href="/about">
     <i class="fa fa-user-circle"></i>
 </a>
-<!-- <a class="allcategory search" href="/demo">
-  <i class="fa fa-code" ></i>
-</a> -->
+<div class="search-wrapper">
+	<div class="input-holder">
+		<input type="text" class="search-input" id="local-search-input" placeholder="Searchhhhh..." />
+	</div>
+	<button class="search-icon" onclick="searchToggle(this, event);">
+			<i class="fa fa-search" id="search-icon"></i>
+	</button>
+	<span class="close" onclick="searchToggle(this, event);"></span>
+</div>
+
+
 <a class="allcategory" href="/tags">
-  <i class="fa fa-diamond" ></i>
+  <i class="fa fa-hashtag" ></i>
 </a>
 
 <!-- Main Content -->
@@ -69,18 +78,17 @@
         <h2 class="post-title">
             使用makefile创建静态库
         </h2>
-        <p>说来惭愧，自己的C/C++水平还没有到达很高的水平，但是最近工作上需要将Win上的一个C库移植到iOS上以支持业务的开展，修改代码后需要编译成静态库供iOS使用。     </p>
-<p>一种很简单的方式就是创建Cocoa Touch Static Library项目，然后直接将所需要的代码文件无脑添加到项目里面，编译，合成，结束~    </p>
-<p>但是为了使用Windows或Linux的同事在修改完代码后也能编译出静态库而无需再搬到Mac上操作，所以学习了一下makefile，完成了这项工作。    </p>
+        <p>最近工作上需要将Win上的一个C库移植到iOS上以支持业务的开展，修改代码后需要编译成静态库供iOS使用，为了使用Windows或Linux的同事在修改完代码后也能编译出静态库而无需再搬到Mac上操作，学习了一下makefile。    </p>
     </a>
 </div>
                 
                     <div class="post-preview">
     <a href="/2017/07/17/项目Beauty总结/">
         <h2 class="post-title">
-            项目Beauty算是完结了？！
+            外包项目《Beauty》札记
         </h2>
-        <p>三月底开始了自己的第一个外包项目“Beauty”，App的名字是“CHARMER”，将会在香港App Store上线，是一个促进美容技师和客户之间达成服务协议的App，搭建供求双方沟通和交易的桥梁和平台。在做完第一版之后，几乎每晚都需要修改功能修复Bug，现在突然间一段时间没有了消息，应该算是完结了。    </p>
+        <p>三月底开始了自己的第一个外包项目“Beauty”，App的名字是“CHARMER”，是一个促进美容技师和客户之间达成服务协议的App，搭建供求双方沟通和交易的桥梁和平台。在做完第一版之后，几乎每晚都需要修改功能修复Bug，现在突然间一段时间没有了消息，应该算是完结了。    </p>
+<p>2017-10-12 更: 项目运营烂尾，终于停止上线…</p>
     </a>
 </div>
                 
@@ -143,6 +151,7 @@
 </script>
 
 <script src="/js/backtop.js"></script>
+<script src="/js/search.js"></script>
     <!-- Google Analytics -->
     
 

@@ -29,6 +29,7 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/search.css">
 
     <!-- Custom Fonts -->
     <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -51,11 +52,19 @@
     <a class="nav-back" href="/about">
     <i class="fa fa-user-circle"></i>
 </a>
-<!-- <a class="allcategory search" href="/demo">
-  <i class="fa fa-code" ></i>
-</a> -->
+<div class="search-wrapper">
+	<div class="input-holder">
+		<input type="text" class="search-input" id="local-search-input" placeholder="Searchhhhh..." />
+	</div>
+	<button class="search-icon" onclick="searchToggle(this, event);">
+			<i class="fa fa-search" id="search-icon"></i>
+	</button>
+	<span class="close" onclick="searchToggle(this, event);"></span>
+</div>
+
+
 <a class="allcategory" href="/tags">
-  <i class="fa fa-diamond" ></i>
+  <i class="fa fa-hashtag" ></i>
 </a>
 
 <!-- Main Content -->
@@ -104,6 +113,7 @@
 </script>
 
 <script src="/js/backtop.js"></script>
+<script src="/js/search.js"></script>
     <!-- Google Analytics -->
     
 

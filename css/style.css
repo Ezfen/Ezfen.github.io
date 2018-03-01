@@ -10,7 +10,10 @@
   background-size: cover;
   -o-background-size: cover;
 }
-.serif,
+.serif {
+  font-family: 'Lora', 'Times New Roman', serif;
+}
+.sans-serif,
 body,
 html,
 h1,
@@ -22,13 +25,11 @@ h6,
 nav,
 .intro-header .site-heading .subheading,
 .intro-header .page-heading .subheading,
-.pagiantion li > a,
-.pagiantion li > span {
-  font-family: 'Lora', 'Times New Roman', serif;
-}
-.sans-serif,
 .intro-header .post-heading .subheading,
-.btn {
+.btn,
+.pagiantion li > a,
+.pagiantion li > span,
+article .container .row blockquote {
   font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 .animation,
@@ -112,11 +113,12 @@ body,
 html {
   width: 100%;
   font-size: 18px;
+  font-weight: 300;
   color: #404040;
 }
 p {
   letter-spacing: 0.1px;
-  line-height: 1.5;
+  line-height: 1.8;
   margin: 20px 0;
 }
 p a {
@@ -129,6 +131,40 @@ h4,
 h5,
 h6 {
   font-weight: 800;
+  margin: 20px 0;
+}
+h2 {
+  transform: translate(-32px, 0);
+}
+h2:before {
+  content: ' H2 ';
+  color: #ccc;
+  font-size: 13px;
+  margin-right: 10px;
+}
+h3 {
+  transform: translate(-32px, 0);
+}
+h3:before {
+  content: ' H3 ';
+  color: #ccc;
+  font-size: 12px;
+  margin-right: 10px;
+}
+h4 {
+  transform: translate(-32px, 0);
+}
+h4:before {
+  content: ' H4 ';
+  color: #ccc;
+  font-size: 11px;
+  margin-right: 10px;
+}
+ul {
+  margin-left: -25px;
+}
+li {
+  margin: 10px 0;
 }
 a {
   color: #cc543a;
@@ -296,6 +332,11 @@ nav {
   width: 30%;
   height: 100%;
   font-size: 2em;
+  transform: translate(0, 0);
+}
+.post-preview > a > .post-title:before {
+  margin-right: 0;
+  font-size: 0;
 }
 .post-preview > a > .post-title.archive {
   font-size: 22px;
@@ -324,6 +365,12 @@ nav {
 }
 .post-meta {
   padding-top: 50px;
+}
+.post-meta .mddl {
+  display: inline;
+  border: 1px dashed #cc543a;
+  border-radius: 5px;
+  padding: 10px;
 }
 .post-tags,
 .post-categories,
@@ -497,7 +544,8 @@ body {
 .serif {
   font-family: 'Lora', 'Times New Roman', serif;
 }
-.sans-serif {
+.sans-serif,
+article .container .row blockquote {
   font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 .animation,
@@ -608,7 +656,6 @@ article .container .row .video-container embed {
   margin-top: 0;
 }
 article .container .row blockquote {
-  font-family: "Georgia", serif;
   font-size: 1em;
   padding: 3px 30px 15px;
   color: #808080;
@@ -786,7 +833,7 @@ pre .deletion {
   transition: all 300ms linear;
   position: absolute;
   top: 12px;
-  left: 10px;
+  left: 11.5px;
 }
 .allcategory i .fa .fa-rocket {
   font-size: 1.1em;
@@ -801,7 +848,18 @@ pre .deletion {
   right: 65px;
 }
 .search i {
-  left: 11px;
+  left: 12px;
+  top: 11px;
+}
+.expand-left {
+  padding-right: 300px;
+  cursor: default;
+}
+.expand-left:hover {
+  border: 1px solid #ccc;
+}
+.expand-left:hover i {
+  color: #ccc;
 }
 @media screen and (max-width: 960px) {
   #returnTop {

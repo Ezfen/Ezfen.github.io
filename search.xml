@@ -1,0 +1,1350 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search> 
+  
+    
+    <entry>
+      <title><![CDATA[使用makefile创建静态库]]></title>
+      <url>/2017/08/08/%E4%BD%BF%E7%94%A8MakeFile%E5%88%9B%E5%BB%BA%E9%9D%99%E6%80%81%E5%BA%93/</url>
+      <content type="html"><![CDATA[<p>最近工作上需要将Win上的一个C库移植到iOS上以支持业务的开展，修改代码后需要编译成静态库供iOS使用，为了使用Windows或Linux的同事在修改完代码后也能编译出静态库而无需再搬到Mac上操作，学习了一下makefile。    </p>
+<a id="more"></a>
+<p>说来惭愧，自己的C/C++水平还没有到达很高的水平，最开始想到的最简单的方式就是创建<code>Cocoa Touch Static Library</code>项目，然后直接将所需要的代码文件无脑添加到项目里面，编译，合成。    </p>
+<p>但是为了让其他同事更快捷地完成工作，学习了如何使用makefile来编译静态库。</p>
+<p>本文只是皮毛，主要是在此次工作中的一些历程。     </p>
+<h2 id="静态库特点"><a href="#静态库特点" class="headerlink" title="静态库特点"></a>静态库特点</h2><blockquote>
+<ul>
+<li>静态库对函数库的链接是放在编译时期完成的。</li>
+<li>程序在运行时与函数库再无关系，移植方便。</li>
+<li>浪费空间和资源，因为所有相关的目标文件与牵涉到的函数库被链接合成一个可执行文件。</li>
+<li>更新困难。当程序所依赖的静态库有任何更新，整个程序就要重新链接。</li>
+</ul>
+</blockquote>
+<p>留下疑问：是否可以理解为：只需要其他库的头文件？</p>
+<h2 id="makefile"><a href="#makefile" class="headerlink" title="makefile"></a>makefile</h2><p>makefile本身只是一个文件，用来辅助make命令执行时，告诉make命令怎么去编译和链接程序。    </p>
+<p>那编译和链接的规则是：</p>
+<blockquote>
+<ul>
+<li>如果这个工程没有编译过，那么我们的所有C文件都要编译并被链接。</li>
+<li>如果这个工程的某几个C文件被修改，那么我们只编译被修改的C文件，并链接目标程序。</li>
+<li>如果这个工程的头文件被改变了，那么我们需要编译引用了这几个头文件的C文件，并链接目标程序。</li>
+</ul>
+</blockquote>
+<p>Google可以搜索到很多makefile的好文章，这里简略介绍一下：</p>
+<h3 id="基本语句"><a href="#基本语句" class="headerlink" title="基本语句"></a>基本语句</h3><pre><code>target : prerequisites
+    command
+</code></pre><ul>
+<li>target : 编译或链接最终得到的目标文件，例如.o结尾的中间文件、由.o文件链接而成的Win下的可执行文件，.o文件打包而成的静态库文件</li>
+<li>prerequisites : 依赖，也就是编译成.o的.c、.cpp、.m和.h，链接成动态库、静态库、可执行文件的.o</li>
+<li>command : 命令，即如何将上述的依赖编译或链接成我们要的target，需要注意的是，command前必须要有一个制表符(tab)，不能是一连串的空格，也不能缺失。</li>
+</ul>
+<h4 id="Phony-Target"><a href="#Phony-Target" class="headerlink" title="Phony Target"></a>Phony Target</h4><p>PHONY 目标并非实际的文件名：只是在显式请求时执行命令的名字。    </p>
+<p>像平常我们需要自己编译第三方库的时候，在执行完链接后需要清楚产生的中间文件或其他配置等，需要执行<code>make clean</code>，这里的clean就是makefile中被定义的Phony Target。下面例子会说到。    </p>
+<p>一个makefile只能有一个总的Target(编译链接得到我们最终需要的文件)，如果需要多个Target，可以使用Phony Target来实现。当然，上述说到的除编译链接之外的操作用Phony Target也是很好的选择。</p>
+<h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><p>像写程序一样直接定义变量，变量在左侧，值在右侧，等号分开，然后通过<code>${变量}</code>使用，例如：</p>
+<pre><code>DEVICE=OS
+DEV_PATH=/Applications/Xcode.app/Contents/Developer/Platforms/iPhone${DEVICE}.platform/Developer
+</code></pre><h3 id="文件名及使用"><a href="#文件名及使用" class="headerlink" title="文件名及使用"></a>文件名及使用</h3><p>当然，既然叫makefile，文件名最好就叫makefile啦，Makefile也是可以的，但是是在makefile不存在的时候，make命令才会去使用。</p>
+<p>如果再不喜欢，文件名写成<code>chris</code>也可以，只是make的时候加上-f和文件名就好了~</p>
+<p><code>make -f chris</code></p>
+<h2 id="栗子🌰"><a href="#栗子🌰" class="headerlink" title="栗子🌰"></a>栗子🌰</h2><p>好啦，说起来简单，但是实际操作却需要些许耐心~</p>
+<p>以下是我写的一个简单的makefile，用于编译资源文件和打包成静态库，还有一个脚本，结合makefile，打包armv7,armv7s,arm64,i386,x86_64这五个平台的静态库，并使用lipo合成为”Fat Library”。</p>
+<h3 id="makefile-1"><a href="#makefile-1" class="headerlink" title="makefile"></a>makefile</h3><pre><code class="cmake">OUT_D=out
+ARCH_D=${OUT_D}/${ARCH}
+OBJ_D=tmp
+# DEVICE 和 ARCH 是外部传入的值，用于区分是OS还是SIMULATOR，平台是哪种
+# 由于C代码中使用到了CoreFoundation和跨平台编译使用到__APPLE__、TARGET_OS_IPHONE等宏，所以需要引入iOS的SDK
+DEV_PATH=/Applications/Xcode.app/Contents/Developer/Platforms/iPhone${DEVICE}.platform/Developer
+SDK_PATH=${DEV_PATH}/SDKs/iPhone${DEVICE}10.3.sdk
+
+CPP=clang
+CC=clang
+
+INC_PATH_FLAG=-I. 
+# iOS平台的编译选项
+IOS_FLAG=-arch ${ARCH} -isysroot ${SDK_PATH} -miphoneos-version-min=8.0
+CFLAG=-Wall -O2  ${INC_PATH_FLAG} ${IOS_FLAG}
+CPPFLAG=-Wall -O2  ${INC_PATH_FLAG} ${IOS_FLAG}
+
+IOS_LINK_FLAG=-framework CoreFoundation 
+
+RM=rm
+MKDIR=mkdir
+
+# OBJECTS变量，后文会通过${OBJECTS}来使用
+OBJECTS=${OBJ_D}/string.o \
+    ${OBJ_D}/lock.o \
+    ${OBJ_D}/time.o \
+    ${OBJ_D}/NETCA_Alloc.o \
+    ${OBJ_D}/NETCA_ArrayList.o \
+    ${OBJ_D}/NETCA_BigInteger.o \
+    ${OBJ_D}/NETCA_BitSet.o \
+    ${OBJ_D}/NETCA_Error.o \
+    ${OBJ_D}/NETCA_Stream.o \
+    ${OBJ_D}/NETCA_Stream_Base64.o \
+    ${OBJ_D}/NETCA_Stream_File.o \
+    ${OBJ_D}/NETCA_Stream_Hex.o \
+    ${OBJ_D}/NETCA_Stream_HMAC.o \
+    ${OBJ_D}/NETCA_Stream_MD.o \
+    ${OBJ_D}/NETCA_Stream_Mem.o \
+    ${OBJ_D}/NETCA_Stream_Null.o \
+    ${OBJ_D}/NETCA_Time.o \
+    ${OBJ_D}/NETCA_UString.o \
+    ${OBJ_D}/NETCA_Util.o \
+    ${OBJ_D}/NETCA_JSON.o
+
+# 最终target，make解析makefile的时候会将第一个遇到的target作为最终target来执行本次操作
+all:${ARCH_D}/libnetca_util.2.5.1.a
+
+#下面是对资源文件的编译，生成.o中间文件        
+${OBJ_D}/string.o:unix/string.c
+    ${CC} ${CFLAG} -c unix/string.c -o ${OBJ_D}/string.o
+
+${OBJ_D}/time.o:unix/time.c
+    ${CC} ${CFLAG} -c unix/time.c -o ${OBJ_D}/time.o
+
+${OBJ_D}/lock.o:unix/lock.c
+    ${CC} -D_GNU_SOURCE ${CFLAG} -c unix/lock.c -o ${OBJ_D}/lock.o
+
+${OBJ_D}/NETCA_Alloc.o:NETCA_Alloc.c
+    ${CC} ${CFLAG} -c NETCA_Alloc.c -o ${OBJ_D}/NETCA_Alloc.o
+
+${OBJ_D}/NETCA_ArrayList.o:NETCA_ArrayList.c
+    ${CC} ${CFLAG} -c NETCA_ArrayList.c -o ${OBJ_D}/NETCA_ArrayList.o
+
+${OBJ_D}/NETCA_BigInteger.o:NETCA_BigInteger_Openssl.c
+    ${CC} ${CFLAG} -Wno-deprecated-declarations -c NETCA_BigInteger_Openssl.c -o ${OBJ_D}/NETCA_BigInteger.o
+
+${OBJ_D}/NETCA_BitSet.o:NETCA_BitSet.c
+    ${CC} ${CFLAG} -c NETCA_BitSet.c -o ${OBJ_D}/NETCA_BitSet.o
+
+${OBJ_D}/NETCA_Error.o:NETCA_Error.c
+    ${CC} ${CFLAG} -c NETCA_Error.c -o ${OBJ_D}/NETCA_Error.o
+
+${OBJ_D}/NETCA_Stream.o:NETCA_Stream.c
+    ${CC} ${CFLAG} -c NETCA_Stream.c -o ${OBJ_D}/NETCA_Stream.o
+
+${OBJ_D}/NETCA_Stream_Base64.o:NETCA_Stream_Base64.c
+    ${CC} ${CFLAG} -c NETCA_Stream_Base64.c -o ${OBJ_D}/NETCA_Stream_Base64.o
+
+${OBJ_D}/NETCA_Stream_File.o:NETCA_Stream_File.c
+    ${CC} ${CFLAG} -c NETCA_Stream_File.c -o ${OBJ_D}/NETCA_Stream_File.o
+
+${OBJ_D}/NETCA_Stream_Hex.o:NETCA_Stream_Hex.c
+    ${CC} ${CFLAG} -c NETCA_Stream_Hex.c -o ${OBJ_D}/NETCA_Stream_Hex.o
+
+${OBJ_D}/NETCA_Stream_HMAC.o:NETCA_Stream_HMAC.c
+    ${CC} ${CFLAG} -c NETCA_Stream_HMAC.c -o ${OBJ_D}/NETCA_Stream_HMAC.o
+
+${OBJ_D}/NETCA_Stream_MD.o:NETCA_Stream_MD.c
+    ${CC} ${CFLAG} -c NETCA_Stream_MD.c -o ${OBJ_D}/NETCA_Stream_MD.o
+
+${OBJ_D}/NETCA_Stream_Mem.o:NETCA_Stream_Mem.c
+    ${CC} ${CFLAG} -c NETCA_Stream_Mem.c -o ${OBJ_D}/NETCA_Stream_Mem.o
+
+${OBJ_D}/NETCA_Stream_Null.o:NETCA_Stream_Null.c
+    ${CC} ${CFLAG} -c NETCA_Stream_Null.c -o ${OBJ_D}/NETCA_Stream_Null.o
+
+${OBJ_D}/NETCA_Time.o:NETCA_Time.c
+    ${CC} ${CFLAG} -std=c99 -c NETCA_Time.c -o ${OBJ_D}/NETCA_Time.o
+
+${OBJ_D}/NETCA_UString.o:NETCA_UString.c NETCA_UString_Unicode_Data.c
+    ${CC} ${CFLAG} -c NETCA_UString.c -o ${OBJ_D}/NETCA_UString.o
+
+
+${OBJ_D}/NETCA_Util.o:NETCA_Util.c
+    ${CC} ${CFLAG} -c NETCA_Util.c -o ${OBJ_D}/NETCA_Util.o
+
+${OBJ_D}/NETCA_JSON.o:NETCA_JSON.c
+    ${CC} ${CFLAG} -c NETCA_JSON.c -o ${OBJ_D}/NETCA_JSON.o
+
+
+$(OBJ_D):
+    ${MKDIR} ${OBJ_D}
+
+$(OUT_D):
+    ${MKDIR} ${OUT_D}
+
+$(ARCH_D):
+    ${MKDIR} ${ARCH_D}
+
+# 对应于上面的all，依赖项是${OUT_D} ${ARCH_D} ${OBJ_D}对应的文件夹的创建和${OBJECTS} 对应的资源文件的编译
+${ARCH_D}/libnetca_util.2.5.1.a: ${OUT_D} ${ARCH_D} ${OBJ_D} ${OBJECTS} 
+    libtool -static ${IOS_LINK_FLAG} -o ${ARCH_D}/libnetca_util.2.5.1.a ${OBJECTS} #此处其实也可以使用Linux的 ar 命令
+
+# Phony Target: realclean 依赖于clean的执行，调用make realclean会先调用make clean清除编译过程中的中间文件，再清除目标文件(为了多平台)
+realclean: clean
+    ${RM} -rf ${OUT_D}
+
+clean:
+    ${RM} -rf ${OBJ_D}
+</code></pre>
+<h3 id="Shell"><a href="#Shell" class="headerlink" title="Shell"></a>Shell</h3><pre><code class="shell">LIB_NAME=libnetca_util.2.5.1.a
+LIB_OS_NAME=libnetca_util.2.5.1_os.a
+LIB_SIMULATOR_NAME=libnetca_util.2.5.1_simulator.a
+
+OUT_D=out
+HEADER_D=${OUT_D}/include
+
+ARCH_OS_LIST=(&quot;armv7&quot; &quot;armv7s&quot; &quot;arm64&quot;)
+# 得到ARCH_OS_LIST的数量
+ARCH_OS_COUNT=${#ARCH_OS_LIST[@]}
+# 组合ARCH_OS_LIST中每一个元素和LIB_OS_NAME，得到数组(&quot;armv7/libnetca_util.2.5.1_os.a&quot;,...)
+LIB_OS_PATHS=(${ARCH_OS_LIST[@]/%//${LIB_NAME}})
+
+ARCH_SIM_LIST=(&quot;i386&quot; &quot;x86_64&quot;)
+ARCH_SIM_COUNT=${#ARCH_SIM_LIST[@]}
+LIB_SIM_PATHS=(${ARCH_SIM_LIST[@]/%//${LIB_NAME}})
+
+#Compile 使用-f指定makefile，Phony Target realclean清除所有中间文件和目标文件
+make -f makefile.ios realclean
+
+#定义函数
+arch_make() {
+    make -f makefile.ios clean
+    make -f makefile.ios ARCH=$1 DEVICE=$2
+}
+
+#遍历上面定义的数组，为OS的每个架构创建.a文件
+for ((i=0; i &lt; ${ARCH_OS_COUNT}; i++))
+do
+    arch_make ${ARCH_OS_LIST[i]} &quot;OS&quot;
+done
+#遍历上面定义的数组，为SIMULATOR的每个架构创建.a文件
+for ((i=0; i &lt; ${ARCH_SIM_COUNT}; i++))
+do
+    arch_make ${ARCH_SIM_LIST[i]} &quot;Simulator&quot;
+done
+
+#HEADER FILE 头文件提取出来
+mkdir ${HEADER_D}
+cp NETCA_*.h ${HEADER_D}/
+
+#LIPO 合成为&quot;Fat Library&quot;
+cd ${OUT_D}
+lipo -create ${LIB_OS_PATHS[@]} -output ${LIB_OS_NAME}
+lipo -create ${LIB_SIM_PATHS[@]} -output ${LIB_SIMULATOR_NAME}
+</code></pre>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>感觉makefile还是有必要学会，因为编译和链接可以由自己掌握。</li>
+<li>此次编写makefile的工作不是很难，因为这只是要移植部分里面最简单最小的一个库。</li>
+<li>makefile在iOS上的使用方面，最主要的困难还是如何指定SDK，毕竟移植到iOS的时候，Win上或Linux上的代码并不是都可用，像这次就需要用到iOS的SDK里CoreFoundation的内容去替换一些已有的实现。</li>
+</ol>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> Library </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[外包项目《Beauty》札记]]></title>
+      <url>/2017/07/17/%E9%A1%B9%E7%9B%AEBeauty%E6%80%BB%E7%BB%93/</url>
+      <content type="html"><![CDATA[<p>三月底开始了自己的第一个外包项目“Beauty”，App的名字是“CHARMER”，是一个促进美容技师和客户之间达成服务协议的App，搭建供求双方沟通和交易的桥梁和平台。在做完第一版之后，几乎每晚都需要修改功能修复Bug，现在突然间一段时间没有了消息，应该算是完结了。    </p>
+<p>2017-10-12 更: 项目运营烂尾，终于停止上线…</p>
+<a id="more"></a>
+<p>​         </p>
+<h2 id="所做的事情"><a href="#所做的事情" class="headerlink" title="所做的事情"></a>所做的事情</h2><p>总的来说，有这么几个功能：</p>
+<ul>
+<li><p>用户端：</p>
+<ol>
+<li><p>通过Google地图查看当前附近且在线的技师</p>
+</li>
+<li><p>添加信用卡等信息，使用Paypal支付</p>
+</li>
+<li><p>查看、修改个人信息</p>
+</li>
+<li><p>发布公共订单给每个美容技师，技师可以通过竞标得到订单</p>
+</li>
+<li><p>查看技师信息，收藏喜爱的技师</p>
+</li>
+<li><p>发布私有订单给特定技师</p>
+</li>
+<li><p>订单结束评价，打分等</p>
+</li>
+<li><p>提供其他用户和技师的电话联系方式</p>
+<p>​</p>
+</li>
+</ol>
+</li>
+<li><p>技师端：</p>
+<ol>
+<li><p>竞标用户的公共订单    </p>
+</li>
+<li><p>接受或拒绝用户的私有订单</p>
+</li>
+<li><p>添加银行卡，得到订单报酬</p>
+</li>
+<li><p>查看、修改个人信息，查看收入数据，</p>
+</li>
+<li><p>提交封面图片，作品图片</p>
+</li>
+<li><p>增删改查服务信息、价格</p>
+<p>​</p>
+</li>
+</ol>
+</li>
+</ul>
+<h2 id="一些具体实现"><a href="#一些具体实现" class="headerlink" title="一些具体实现"></a>一些具体实现</h2><p>　　基本实现下来都不是特别难，所以挑一些值得记录的写下来：</p>
+<h3 id="项目文件结构"><a href="#项目文件结构" class="headerlink" title="项目文件结构"></a>项目文件结构</h3><p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/Beauty_%E9%A1%B9%E7%9B%AE%E5%A4%A7%E8%87%B4%E7%BB%93%E6%9E%84.png" alt=""></p>
+<p>　　因为App是用户与技师统一客户端，所以，对于每个Module，都分成Charmer和User分别对应技师和用户，再在其下分为Model、View、Controller，很常见的MVC架构。    </p>
+<p>　　这样做的好处是，文件结构清晰，分类清楚，一下子就能找到需要的文件（虽然搜索才是最快的&gt;w&lt;）。但是有个问题就出现了，前面有提到说：用户与技师统一客户端，那就不免有界面相同的情况出现，这次开发使用的解决方案是复用所有相同的文件，这个错误的决定让后期维护的我一直想狠扇自己嘴巴。毕竟面向不同的使用团体，很多功能需要定制，所以后期加新需求的时候只能一直if-else，if-else，if-else。惨绝人寰～      </p>
+<p>　　觉得，以后再有这样的情况出现，视类的复杂程度和文件的大小而定， 可能会重写一个同样实现的类文件，感觉这条线很难界定，只能靠以后的开发经验去慢慢学。     </p>
+<h3 id="地图"><a href="#地图" class="headerlink" title="地图"></a>地图</h3><p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/Beauty_Google%E5%9C%B0%E5%9B%BE_%E5%B0%8F.jpg" alt=""></p>
+<p>　　因为App即将在香港上线，自然地使用Google地图。第一次用Google地图做开发，感觉跟百度、高德没有太大的区别， 有一点就是：文档基本只有官方文档，遇到问题要Google，基本都是讲百度或高德。关于Google地图，后面再重新写篇文章介绍，包括使用，自定义Marker（地图上紫色的标志），PopView（点击Marker弹出的View）     </p>
+<h3 id="左侧滑动菜单"><a href="#左侧滑动菜单" class="headerlink" title="左侧滑动菜单"></a>左侧滑动菜单</h3><p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/Beauty_%E5%B7%A6%E8%BE%B9%E6%A0%8F.jpg" alt=""></p>
+<p>　　图片好像压缩得有点过分了….</p>
+<p>　　一开始左侧滑动菜单是主界面Controller的一个View，所以滑动的时候会被上方的Navigation Controller（Navigation Bar）遮挡住，可以想象是多么吃藕。后来在滑动的时候动态隐藏和显示Navigation Bar，就出现了诡异的上面一整条高度为64px的空白区域，发现更吃藕了…</p>
+<p>　　所以在AlertController的启发下，决定用UIWindow来解决这个问题，正如巧神<a href="https://book.douban.com/subject/26287173/" target="_blank" rel="external">《iOS开发进阶》</a>一书的第十二章提及，使用UIWindow在所有View（当然包括当前Window的Navigation Bar）前展示自己想要的内容，所以有了下面的代码：</p>
+<pre><code class="objective-c">- (void)viewDidLoad {
+    _window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    _window.windowLevel = UIWindowLevelNormal;
+    _window.backgroundColor = [UIColor clearColor];
+    _window.hidden = YES;
+    BECDrawerView *view = [BECDrawerView new];
+    //省略对view的一些初始化代码
+    _leftView.frame = CGRectMake(0, 0, MYScreenWidth * 0.8, MYScreenHeight);
+    _leftView.center = CGPointMake(- MYScreenWidth * 0.4, _leftView.center.y);
+    _leftView = view;
+    //一开始先把leftView隐藏
+    _leftHidden = YES;
+    _leftView.hidden = _leftHidden;
+    [_window addSubview:_leftView];
+
+    UIScreenEdgePanGestureRecognizer *edgeGesture = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(handleRightPanGesture:)];
+    edgeGesture.delegate = self;
+    edgeGesture.edges = UIRectEdgeLeft;
+    [self.view addGestureRecognizer:edgeGesture];
+}
+
+// 手势事件
+- (void)handleRightPanGesture:(UIPanGestureRecognizer *)panGesture
+{
+    CGPoint translation = [panGesture translationInView:_window];
+    if (translation.x &gt; 0 &amp;&amp; panGesture.state == UIGestureRecognizerStateEnded) {
+        [self popLeft];
+    }
+}
+
+// 此函数用于弹出左侧滑动菜单
+- (void)popLeft
+{
+    [self addLeftGestures];    //添加滑动手势，这里代码就不贴出了
+    [_window makeKeyWindow];
+    _window.hidden = NO;
+    [_window bringSubviewToFront:_leftView];
+
+    _leftHidden = !_leftHidden;
+
+    if (_leftHidden == YES) {
+        [self removeLeftGestures];
+        [_popview removeFromSuperview];
+        NSLog(@&quot;removed&quot;);
+        self.navigationController.navigationBar.hidden = NO;
+    }
+
+    else {
+        if (!_popview) {
+            self.popview = [UIView new];
+            _popview.backgroundColor = [UIColor clearColor];
+            _popview.frame = _window.frame;
+            [_window addSubview:_popview];
+            [_window insertSubview:_popview belowSubview:_leftView];
+        }
+        _popview.hidden = NO;
+        [_window addSubview:_popview];
+        [_window insertSubview:_popview belowSubview:_leftView];
+    }
+
+    CATransition *animation = [CATransition animation];
+    if (_leftHidden == NO) {
+        _leftView.frame = CGRectMake(0, 0, MYScreenWidth * 0.8, MYScreenHeight);
+        animation.type = kCATransitionMoveIn; // 动画过渡类型
+        animation.subtype = kCATransitionFromLeft; // 动画过渡方向
+        _leftView.hidden = NO;
+    }else{
+        _leftView.center = CGPointMake(- MYScreenWidth * 0.4, _leftView.center.y);
+        animation.type = kCATransitionPush;
+        animation.subtype = kCATransitionFromRight; //动画过渡方向
+        _leftView.hidden = YES;
+        NSLog(@&quot;%@&quot;,self.navigationController.navigationBar);
+    }
+    animation.duration = 0.3; // 动画持续0.3s
+    // 代理，动画执行完毕后会调用delegate的animationDidStop:finished:
+    animation.delegate = self;
+    [_leftView.layer addAnimation:animation forKey:nil];
+
+}
+</code></pre>
+<h3 id="CHARMER-PROFILE"><a href="#CHARMER-PROFILE" class="headerlink" title="CHARMER PROFILE"></a>CHARMER PROFILE</h3><p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/Beauty_CollectionView.jpg" alt=""></p>
+<p>　　技师Profile页面，为什么会拿出来写？！是因为Conllection Viewz在日常开发中非常非常非常常见。基本每个App都会用到（TableView是特殊的Conllection View）。这个Collection View分为三部分：</p>
+<ol>
+<li>最上方的HeaderView是一个跑马灯，使用了之前写过的一个小组件<a href="https://github.com/objchris/EZRecycleImageView" target="_blank" rel="external">EZRecycleImageView</a>，在开发中边使用边改进是最好不过的事情了。</li>
+<li>第二个Header是技师信息和三个按钮</li>
+<li>最后是最下面的View，三个按钮分别对应不同的内容，第一二个使用的是CollectionView，即在CollectionView中再嵌入CollectionView；最后一个是TableView，即在CollectionView中再嵌入CollectionView。</li>
+</ol>
+<p>　　View里面嵌入View的复杂结构也是很值得掌握的手法~</p>
+<p>　　还有很多开发过程中的代码和解决方案，因为是别人的项目，非开源，就不一一列出啦~但是我还是信仰Open Sourcede der~~     </p>
+<p>　　最后附上使用的第三方库：</p>
+<pre><code>platform :ios, &quot;8.0&quot;
+target :Beauty do
+pod &#39;SVProgressHUD&#39;, &#39;~&gt; 2.0.3&#39;
+pod &#39;Masonry&#39;, &#39;~&gt; 1.0.2&#39;
+pod &#39;AFNetworking&#39;, &#39;~&gt; 3.0&#39;
+pod &#39;SDWebImage&#39;, &#39;~&gt;3.8&#39;
+pod &#39;YYModel&#39;
+pod &#39;IQKeyboardManager&#39;
+pod &#39;GoogleMaps&#39;
+pod &#39;MJRefresh&#39;
+pod &quot;MWPhotoBrowser&quot;
+pod &#39;JPush&#39;
+pod &#39;PayPal-iOS-SDK&#39;
+
+end
+</code></pre><h2 id="总结与反思"><a href="#总结与反思" class="headerlink" title="总结与反思"></a>总结与反思</h2><ul>
+<li><p>好的方面：</p>
+<ol>
+<li><p>一位好Partner，一位一起奋斗的好朋友</p>
+</li>
+<li><p>很多UI控件和底层实现都接触到了，加深了印象</p>
+</li>
+<li><p>真正接触并使用到优秀的第三方框架，以后在开发过程中如果遇到适用的情况就不会因为无知而重复造轮子（可能还造不好….）</p>
+</li>
+<li><p>积累了经验，这个App算是自己一个比较完整开发的App。整个开发流程虽然没有公司项目那么正规，但是一些相关的文档、说明还是不缺的</p>
+<p>​</p>
+</li>
+</ol>
+</li>
+<li><p>不好的方面：</p>
+<ol>
+<li><p>首先在架构上没有考虑好，这个其实也不是可控的。一开始拿到的项目结构已经定好，没办法更改，且时间也紧，无法推翻之前写过的代码重新思考和重建。</p>
+</li>
+<li><p>其次，在和Partner之间的沟通自我觉得不足，我的被动是我这次开发体验一般的重大引子。感觉自己做得不好，有点对不起自己的Partner。</p>
+</li>
+<li><p>客户的有些需求异常反人类，所以很多时候我的意见不能得到很好的反馈和解决。需求经常改动，且我的Partner才是和客户沟通的中间者，不能直面客户我很苦恼。</p>
+</li>
+</ol>
+</li>
+</ul>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> Summary </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[iOS Touch Event传递和响应链]]></title>
+      <url>/2017/02/27/iOS-Event%E4%BC%A0%E9%80%92%E5%92%8C%E5%93%8D%E5%BA%94%E9%93%BE/</url>
+      <content type="html"><![CDATA[<p>本来不想重复造轮子，因为网上已经很多关于iOS触碰事件传递响应链的文章，而且苹果官方文档也已经解释得很清楚。但是上周和朋友吃饭的时候聊到却不能很好地将想法表达出来，所以感觉还是写一写，加深印象吧～</p>
+<a id="more"></a>
+<p>毋庸置疑地，在论及事件传递的时候我们都会很顺口地使用用上下方向来表达事件传递(Event Delivery)，从UIApplication到响应事件的UIView是「从下往上」，反过来自然就是「从上往下」了。</p>
+<h2 id="从下往上——寻找HitTest-View"><a href="#从下往上——寻找HitTest-View" class="headerlink" title="从下往上——寻找HitTest View"></a>从下往上——寻找HitTest View</h2><p>当一个用户产生的事件发生并被系统捕获到后，UIKit会创建一个事件对象(Event Object)，携带着一些处理信息，eg:点击位置、事件类型等，然后将这个对象存放在UIApplication的事件队列中，等待处理。</p>
+<p>我们开发中使用的最多的是触碰事件(Touch Event)，也只有触碰事件才需要iOS为我们寻找<strong>HitTest View</strong>，即<strong>寻找响应该事件的View</strong>，这一过程，官方文档里称为<strong><em>Hit-Testing</em></strong>。</p>
+<p>了解这一过程，先了解UIView的两个可重载的方法：</p>
+<ol>
+<li><p><code>- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event</code></p>
+<p>传入的参数类型是<code>CGPoint point</code>和<code>UIEvent *event</code> ，分别表示拥护触碰事件的<strong>触碰点</strong>和对应的<strong>事件</strong>，event可为nil，返回的是<code>Boolean</code>表示point是否在当前View的Bounds中。</p>
+</li>
+<li><p><code>- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event</code></p>
+<p>同样，传入的参数类型是<code>CGPoint point</code>和<code>UIEvent *event</code> ，event可为nil(我们本次讨论的是触碰事件的Hit-Testing，自然此参数不会为空)，此方法返回的是point所在的View。</p>
+</li>
+</ol>
+<p><code>hitTest:withEvent:</code>内部会先调用<code>pointInside:withEvent:</code>，来检测触碰点是否在当前View中</p>
+<ul>
+<li><p>若返回<code>NO</code>,则直接返回nil，且所有的SubView都不会响应当前事件。所以，敲重点啦，对于<code>clipsToBounds</code>设置为<code>NO</code>，允许SubView向外延伸的View，需要重载<code>pointInside:withEvent:</code>，例如：</p>
+<p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/TouchEvent_WechatIMG3.jpeg" alt=""></p>
+<pre><code class="objective-c">- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event{
+      //以下是伪代码  
+      if (point inside blueArea) return true;
+      else return false;
+}
+</code></pre>
+<p>如果没有重载<code>pointInside:withEvent:</code>，那么用户点击上图触碰点，SubView将不响应事件。</p>
+</li>
+</ul>
+<ul>
+<li><p>若返回<code>YES</code>，则调用所有SubView的<code>hitTest:withEvent:</code>，继续寻找HitTest View。在视图层级树(这样翻译?! view hierarchy)中<strong>最后添加的叶结点</strong>且<strong>包含触碰点</strong>的View就会光荣地成为<strong>HitTest View</strong>(如下图最后一个UIView)，首先接受事件，并做下一步操作——寻找响应对象。</p>
+<p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/TouchEvent_WechatIMG1.jpeg" alt=""></p>
+</li>
+</ul>
+<p>我们也可以在中途截断系统的Hit-Testing，如果你想让某个View的所有SubView都不响应事件，最简单的就是重载该View的<code>hitTest:withEvent:</code>，返回View（自己响应点击事件）或者nil（都不响应）。</p>
+<pre><code class="objective-c">-(UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
+    //return nil; 本View和SubView都不成为HitTest View，都不响应事件
+      return self;    // 自己成为HitTest View
+}
+</code></pre>
+<h2 id="从上往下——寻找响应对象"><a href="#从上往下——寻找响应对象" class="headerlink" title="从上往下——寻找响应对象"></a>从上往下——寻找响应对象</h2><p><img src="https://upload-images.jianshu.io/upload_images/1387344-cd500e5bd93d9606.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700" alt="这张图已经看了不止一千遍了"></p>
+<p>这张图相信在其他地方已经看了一千遍了，但是有图还是容易理解，从上往下的意思是：</p>
+<p>当上一步找到的HitTest View没能响应事件时(eg:userInteractionEnabled为NO或者没有定义响应事件的方法)，那么事件就会被传递到SuperView或着Controller。直至Applicaion都不能处理该事件则忽略。</p>
+<p>需要注意的是：这里的传递只会给SuperView或着Controller，并不会传递给与自己相同级别的View，除非你自己控制。</p>
+<p>iOS10的UIResponder中定义了两个新的Property：</p>
+<ol>
+<li><code>nextResponder(Swift是next)</code>：这个比较蛋疼，因为UIResponder中它默认返回的是nil，所以如果我们想让特定的Responder响应事件，我们需要在我们的类中重载Get方法，返回自己想要的下一个Responder。</li>
+<li><code>isFirstResponder</code>：判断当前View或Controller是否为即将响应事件的Responder。不能明白？！那么想想这两个方法：<code>becomeFirstResponder</code>和<code>resignFirstResponder</code>：）</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>废话了这么多，三点：</p>
+<ol>
+<li>iOS的Touch Event先「从下往上」寻找HitTest View(FirstResponder)，再「从上往下」寻找真正响应该事件的Responder。</li>
+<li>可以通过重载<code>hitTest:withEvent:</code>，决定HitTest View，即最开始<strong>接收（敲重点，只是接收）</strong>事件的Responder。</li>
+<li>Responder不一定会响应事件，看有没有响应事件的方法。</li>
+</ol>
+<p>所以，以后如果有人问你：两个View重叠在一起，在上面的View将下面的View完全覆盖，且上面的View不能响应事件，下面的View会响应吗？</p>
+<p>你不如先反问一句，两个View是否为SuperView和SubView的关系？！</p>
+<p>再分门别类地回答～</p>
+<p>以上</p>
+<p>最后奉上教条：<a href="https://developer.apple.com/library/content/documentation/EventHandling/Conceptual/EventHandlingiPhoneOS/event_delivery_responder_chain/event_delivery_responder_chain.html#//apple_ref/doc/uid/TP40009541-CH4-SW1" target="_blank" rel="external">Event Handling Guide for iOS</a></p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> UIView </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[我有烦恼，你有答案]]></title>
+      <url>/2017/02/19/%E6%88%91%E6%9C%89%E7%83%A6%E6%81%BC%EF%BC%8C%E4%BD%A0%E6%9C%89%E7%AD%94%E6%A1%88/</url>
+      <content type="html"><![CDATA[<p>被友人种草东野圭吾，拾取碎片时间，拜读了这本书。<br>怎么说呢，《解忧杂货店》那么多人宣扬还是有它的道理的。</p>
+<a id="more"></a>
+<p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/jyzhd_bg.png" alt=""></p>
+<p>正如译者所言：他的作品并非只有谜团，只是卖弄诡计。一个更重要的元素，即他过人的说故事能力，以及有温度的文字书写。</p>
+<blockquote>
+<p>这里不只卖日常生活用品</p>
+<p>还提供消烦解忧的谘询</p>
+<p>困惑不安的你，纠结不安的你</p>
+<p>欢迎来信讨论心中的问题</p>
+</blockquote>
+<p>小说从三个盗窃的小偷开始，讲述他们在九月十三日误入荒废的“浪矢杂货店”，误打误撞开始帮助三十三年前的谘询者解决问题。到最后从盗来的皮包中发现了谘询者对自己帮助的感谢信。</p>
+<p>小说的五章讲的是五个不同的故事，但却彼此有着联系。在“照顾患病男友”和“完成两人梦想”之间犹豫的运动员，“追求音乐梦想”和“继承渔松家业”之间踌躇的年轻人，被男人抛弃谘询是否生下孩子的女人，喜欢披头四考虑是否应该跟负债的父母跑路的少年，想赚钱报答亲人的酒店女郎。不管是在人物之间还是境遇的串联，环环相扣，描写让人动容，平淡的语言中写的才是最真的情感。看完整本小说，能感受到其中的温暖和奇妙。</p>
+<p>小说围绕“浪矢杂货店”和“丸光园”两个特定的场所展开，到杂货店谘询的人都跟孤儿院，即丸光园有着一丝一缕的联系。小说的中间讲到丸光园时，你并不会知道这两处地方会有什么联系，但东野在最后告诉你：他们的主人曾经是一对恋人，虽然最后没有私奔成功，但是彼此深爱对方，默默在付出。</p>
+<p>小说以倒叙的方式开始讲述东野圭吾脑中天马行空的故事。前一晚在杂货店投入谘询的信件，第二天清晨会在店后的牛奶箱里得到真诚的回复。而信件却奇妙地在时空穿梭，三十三年后的九月十三号收到了三十三年前的信件，而放在牛奶箱的回信会被投递到三十三年前。三十三年后的浪矢杂货店跟外部的时空是错乱的，里面几天，外面可能只过了几秒。正因为一瞬间的交会，跨越三十年时空，才演变成一生一世的救赎。</p>
+<p>时空的跳转和人物的变换，让你会努力地去回忆故事的情节和人物设定，真正地去读书，而不是一目千行地浏览。东野能抓住大多数人都有烦恼都渴望得到帮助的心理，将各种人物的心理精妙地表达。而浪矢杂货店开在无名小镇的静僻的街道旁，旁敲侧击地指出有烦恼的想寻求帮助的人会尽量避开别人的眼光，这一点，也在小说中得到正面的证实。</p>
+<p>在终篇还是没有点明时空错乱的原因，但是这已经不重要了。</p>
+<p>最后你会发现：你的赞叹，你的感动，都是东野的本事…</p>
+<p>以上</p>
+<p>写于读完《解忧杂货店》的13小时后，广州，晴</p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> Mood </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Hello World Again]]></title>
+      <url>/2017/02/17/hello-world/</url>
+      <content type="html"><![CDATA[<p>决定给博客的名字起为OAOA。</p>
+<p>趁着最近没有动力看书，又不想脑袋生锈，又看腻了之前Hexo的yilia主题。所以换个博客主题，Hello World Again。</p>
+<a id="more"></a>
+<p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/helloworld_background.png" alt=""></p>
+<h2 id="开始捣鼓"><a href="#开始捣鼓" class="headerlink" title="开始捣鼓"></a>开始捣鼓</h2><p>不是前端er要自己写个主题出来还真不是简单的事情。所以借鉴了hollow主题，并在其上进行修改。</p>
+<h3 id="主页"><a href="#主页" class="headerlink" title="主页"></a>主页</h3><p>主页大致上没有做太多的修改，因为一开始就是看上这种简简单单的，没有太多复杂成分的排版。厌倦了yilia，第一是：不想要左右版式的页面，显得左侧的菜单栏有点喧宾夺主。第二是：总把人脸留在左边显眼的位置，不太好意思～</p>
+<p>hollow主题只是包含了主页，也就是现实文章序列和文章详情。其他的都没有。</p>
+<h3 id="Categories"><a href="#Categories" class="headerlink" title="Categories"></a>Categories</h3><p>进入分类页面在主页右上角的钻石按钮，分类页面是显示所有博文的分类。</p>
+<p>因为暂时不支持站内搜索，如果要找某一篇文章需要一页页地翻，感觉会很繁琐。所以建立了个分类页面。</p>
+<p>我是通过修改page.ejs来达到目的。</p>
+<pre><code class="html">&lt;section class=&quot;article-container&quot;&gt;
+&lt;!-- Back Home --&gt;
+&lt;%- partial(&#39;_partial/backhome&#39;) %&gt;
+
+&lt;!-- Page Header --&gt;
+&lt;header class=&quot;intro-header&quot;&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row&quot;&gt;
+            &lt;div class=&quot;col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1&quot;&gt;
+                &lt;div class=&quot;post-heading&quot;&gt;
+                    &lt;h1&gt;Categories&lt;/h1&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/header&gt;
+
+&lt;!-- Post Content --&gt;
+&lt;article&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row&quot;&gt;
+            &lt;!-- Post Main Content --&gt;
+            &lt;div class=&quot;post-content col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1&quot;&gt;
+                &lt;% site.categories.each(function(category){ %&gt;
+                    &lt;a class=&quot;category&quot; href=&quot;&lt;%-category.name%&gt;&quot;&gt;&lt;%-category.name%&gt;&lt;/a&gt;
+                &lt;% }); %&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/article&gt;
+&lt;/section&gt;
+&lt;!-- Back to top --&gt;
+&lt;%- partial(&#39;_partial/backtop&#39;) %&gt;
+</code></pre>
+<p>修改完page.ejs后，执行<code>hexo new page &quot;categories&quot;</code>就可以创建categories页了。然后调整格式就可以了。</p>
+<h3 id="About和Demo"><a href="#About和Demo" class="headerlink" title="About和Demo"></a>About和Demo</h3><p>这两个页面是自己添加的。</p>
+<p>这两个页面是最复杂的。首先Hexo只支持index,page,post,layout,archive这几种自定义页面，所以修改了page后作为category页面之后就不能通过修改项目页面模板来添加新的自定义页面了。</p>
+<p>但是好在Hexo还是比较人性化的。</p>
+<p>除了修改Hexo的模板，有两种方法可以实现自定义页面</p>
+<ol>
+<li>先执行<code>hexo new page &quot;xxx&quot;</code>，在source中出现xxx文件夹，其中有xxx.md，然后在xxx.md前加上layout：false，可以绕过Hexo解析，直接将md中的内容显示出来，这样就可以在md里面写html代码了。详见<a href="https://hexo.io/zh-cn/docs/writing.html" target="_blank" rel="external">Hexo文档</a></li>
+<li>执行<code>hexo new page &quot;xxx&quot;</code>，同样得到xxx文件夹，你可以将这个文件夹当作一个项目的根目录，然后在其中尽情创建html，css，js，whatever you want。然后记得在博客的主_config.yml中的skip_render项添加xxx/**，就可以了。</li>
+</ol>
+<h3 id="评论"><a href="#评论" class="headerlink" title="评论"></a>评论</h3><p>评论就不加啦，毕竟清清爽爽还是最爱啊。</p>
+<p>有问题在微博等社交平台联系吧。</p>
+<h2 id="写在后面"><a href="#写在后面" class="headerlink" title="写在后面"></a>写在后面</h2><p>博客是在hollow主题的<a href="https://github.com/zchen9/hexo-theme-hollow" target="_blank" rel="external">创作家</a>的基础上进行修改的，表示真挚的感谢。</p>
+<p>如果要自己写主题，<a href="https://hexo.io/zh-cn/docs/writing.html" target="_blank" rel="external">Hexo文档</a>记得多看看。</p>
+<h3 id="对于这次实践的总结："><a href="#对于这次实践的总结：" class="headerlink" title="对于这次实践的总结："></a>对于这次实践的总结：</h3><p>不是很难，像我没学过Node.js的都可以弄出来。</p>
+<p>html,css,js这些基础一定要会。</p>
+<p>需要学习下ejs,stylus，都不是很难的东西。</p>
+<p>多看看别人的代码，受受别人的启发。</p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> Mood </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[类方法的Block不会内存泄漏....吗？！]]></title>
+      <url>/2016/07/17/%E7%B1%BB%E6%96%B9%E6%B3%95Block%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F/</url>
+      <content type="html"><![CDATA[<p>Block在很多时候会引起循环引用，已经是老生常谈了。很多文章在讲述Block的时候都会谈及这个问题：<br>在一个对象中有着对Block的强引用，而在该Block中又保留着对该对象的强引用。循环引用所带来的后果相信大家也知道，有一个环存在，就意味着每次创建该对象，就会占据一定的内存不会被释放，等到内存不足以继续维持该App的存在时，就会Crash。    </p>
+<a id="more"></a>
+<p>　　常见的解决方法是使用__weak或将有可能造成循环引用的对象作为Block的参数传入。<br>　　循环引用我不打算在此展开，因为有很多好的文章已经讲得很详细，大家可自行找找。<br>　　<br>　　很多文章提及：循环引用所针对的是对象，能够形成环的是“对象——Block——对象”。换种方式思考，类方法就不会造成相似的内存泄漏。真的是这样吗？！<br>　　<strong>不是。</strong><br>　　<strong>不是。</strong><br>　　<strong>不是。</strong>    </p>
+<h2 id="举个栗子"><a href="#举个栗子" class="headerlink" title="举个栗子"></a>举个栗子</h2><p>　　平常使用UIView的Animation之时，例如<code>[UIView animateWithDuration:animations:];</code>使用Block可以方便快捷地将设置需要变换的属性。对于类方法可以放心地写self而不必担心循环引用的问题。但是，对于<code>[UIView animateWithDuration: animations: completion:];</code>除了在动画结束时做一些操作外，当我们需要动画循环播放的时候，很常用的方法类似于：     </p>
+<pre><code class="objectivec">- (void)startAnimation {
+    [UIView animateWithDuration:3.5 animations:^{
+        CGRect frame = self.initFrame;
+        frame.origin.y += 2 * self.initFrame.size.height;
+        self.frame = frame;
+    } completion:^(BOOL finished) {
+        self.frame = self.initFrame;
+        [self startAnimation];        // 递归调用，再次执行此函数
+    }];
+}
+</code></pre>
+<p>　　别告诉我你没这样用过，科科。    </p>
+<p>　　如果你也像我这么写，可能已经埋下了潜在的内存泄漏的危险。    </p>
+<p>　　我们通过Instruments来看看是否真的有内存泄漏(例子中EZScanNetGrid是我自定义的View,View中有执行动画的代码，见上方代码块，QRCodeScanner是对应的Controller)：    </p>
+<ol>
+<li>多次创建QRCodeScanner并销毁：<br><img src="http://7xs4ed.com1.z0.glb.clouddn.com/block_self.jpg" alt="self"><br>QRCodeScanner被销毁后：<br><img src="http://7xs4ed.com1.z0.glb.clouddn.com/block_self2.jpg" alt="self">     </li>
+</ol>
+<ol>
+<li>将上述代码的self改成weakSelf，再来看看Instruments：<br><img src="http://7xs4ed.com1.z0.glb.clouddn.com/block_weakSelf.jpg" alt="weakSelf"><br>QRCodeScanner被销毁后：<br><img src="http://7xs4ed.com1.z0.glb.clouddn.com/block_weakSelf2.jpg" alt="weakSelf">     </li>
+</ol>
+<p>　　结果很明显，若是使用self，EZScanNetGrid这个View一直存在于内存中没有被释放，因为UIView Animation对其的强引用使其一直存在于内存中，直至Block里面的代码执行完毕。但是这段代码里可以看到，completion中又继续调用了<code>[self startAnimation];</code>因此，系统会继续保留对EZScanNetGrid的引用，从而即使EZScanNetGrid的SuperView被销毁了，EZScanNetGrid还是没有被销毁，无限地循环调用着动画，占据内存的同时也耗费着CPU。:(</p>
+<p>　　此文有点晦涩，附上<a href="https://github.com/objchris/ChrisDerDemos/tree/master/ClassBlockDemo" target="_blank" rel="external">DEMO地址</a></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>关于Block的内存泄漏不只是循环引用会引起。</li>
+<li>不仅仅是UIView，其他将Block作为参数的类方法，如果在一个Block中递归调用到本Block，记得将引用的对象加上__weak。你说，在Block被调用的时候self被释放了怎么办？！去看看__strong的资料吧。</li>
+<li><del>很多iOS的类方法传入的Block是_NSConcreteStackBlock，可见_NSConcreteStackBlock也会对Block中的对象保持强引用。(待考究)</del>确实，没有强指针引用的block都是StackBlock，表面看起来系统API传入的Block都是StackBlock，但是以下四种情况：<br>1.手动调用copy<br>2.Block是函数的返回值<br>3.Block被强引用，Block被赋值给__strong或者id类型<br>4.调用系统API入参中含有usingBlcok的方法<br>系统都会默认调用copy方法把Block复制到堆中，变成MallocBlock，会对对象进行持有。</li>
+<li>关于ARC和MRC下的三种Block是否能执行，请做做这几道测试题<a href="http://blog.parse.com/learn/engineering/objective-c-blocks-quiz/" target="_blank" rel="external">Objective-C Blocks Quiz</a></li>
+</ol>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> Block </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[穿越的桃心~]]></title>
+      <url>/2016/05/21/EZHeartForLike/</url>
+      <content type="html"><![CDATA[<p>最近没事看看Instagram的时候，对于双击点赞的功能感觉蛮Like。所以就想自己仿照做一个。但是嘞，直接仿造感觉不是很好玩，所以就自己想添加点新东西，因此就有了EZHeartForLike。:)</p>
+<a id="more"></a>
+<p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/EZHeartForLike_logo.png" alt="logo"><br>效果图(第一张是双击图片触发，第二张是单击按钮)：<br><img src="https://raw.githubusercontent.com/Ezfen/EZHeartForLike/master/double.gif" alt="">       <img src="https://raw.githubusercontent.com/Ezfen/EZHeartForLike/master/single.gif" alt=""><br>先说说这是个什么东西。<br>一开始我是在Instagram的基础上开始做的。双击点击图片可以弹出一个桃心，随即下面的小桃心点亮。完成点赞的操作。like this(专门截了我❤️GEM❤️过来，Instagram的心挡住她的脸了。。。)：<br><img src="http://7xs4ed.com1.z0.glb.clouddn.com/EZHeartForLike_gem.jpg" alt="instagram"><br>好吧，尺寸是是用我又爱又恨的4S的 320 x 480<br>紧接着就想，能不能实现大桃心一边移动一边缩小，最后到大小桃心的位置并替换它？！就像上面最终效果一样<br><img src="http://7xs4ed.com1.z0.glb.clouddn.com/common/aixin.jpg" alt="aixin"><br>很快我遇到问题：如果两个桃心都在同一个View中，话甘易啦！！！但是现在的情况是两个桃心并不在同一个View中（现实中很多情况都不会），<strong>位置不明确</strong>是一个Super巨大的问题。因此跨View的动画是EZHeartForLike是这次的主要话题。当然动画是使用UIView来实现的~~<br>那么，讲讲我的思路历程吧：<br>首先，我想了下能不能在一个EZHeartForLikeView中分别放入下列三个View，已实现我的想法：    </p>
+<ul>
+<li>ContentView ：用于让用户将自己的View放入其中。类似iOS8里面的UIVisualEffectView的contentView一样。    </li>
+<li>SmallHeart ：被当做按钮的小桃心，是Public的，提供给用户改造它的样式、大小、位置等。 </li>
+<li>BigHeart ：出现在图片(ImageView)中的大桃心</li>
+</ul>
+<p>在我自己涂涂画画后是这样的：<br><img src="http://7xs4ed.com1.z0.glb.clouddn.com/EZHeartForLike_begin.jpg" alt="begin"></p>
+<p>一开始觉得可能能行，因为两个桃心都在同一个View中(EZHeartForLikeView)，要实现动画应该是没什么问题，但是后来想到，既然我把小桃心作为Public对外提供，那么用户就可以将它放入自己的View中。因此这个想法很快被否了。。。</p>
+<p>这个问题让我便秘了两天，哈哈哈哈。后来在洗澡时想到一个或许能解决问题的方法，虽然大小桃心的位置都不清楚，但是他们至少有同一个SuperView，或许加以利用就能实现这个想法。谁知道嘞，试一下吧：<br>简单一句话就是：<strong>找到相同的SuperView，映射坐标，在SuperView上完成动画的实现</strong><br><img src="http://7xs4ed.com1.z0.glb.clouddn.com/EZHeartForLike_findview.jpg" alt=""><br>具体怎么找到相同的SuperView嘞，那就要扯到另外一个算法了，那就是判断两条链表是否相交，且交点是哪一个的问题。<br>这里我又要祭出我的灵魂画风了<br><img src="http://7xs4ed.com1.z0.glb.clouddn.com/EZHeartForLike_lianbiao.jpg" alt=""><br>实现起来其实不是能难，且看代码：</p>
+<pre><code class="objc">- (UIView *)findTheMutualSuperView {
+    // 找出小桃心（self）和大桃心（self.BigHeart）的共同的SuperView
+    // 计算self到UIWindow的距离（以中间View的层数为距离计量）
+    UIView *view1 = self;
+    NSInteger smallViewSuperViewCount = 0;
+    while (![view1 isKindOfClass:[UIWindow class]]) {
+        smallViewSuperViewCount ++;
+        view1 = view1.superview;
+    }
+    // 计算self.BigHeart到UIWindow的距离（以中间View的层数为距离计量）
+    UIView *view2 = self.BigHeart;
+    NSInteger bigViewSuperViewCount = 0;
+    while (![view2 isKindOfClass:[UIWindow class]]) {
+        bigViewSuperViewCount ++;
+        view2 = view2.superview;
+    }
+    // 共同的SuperView之后的View肯定是一致的，因此小桃心和大桃心到UIWindow的距离之间的差
+    // 实在共同的SuperView之前就存在的。所以，判断二者到UIWindow的距离大小，并利用两者之间
+    // 的差距就可以找到共同的SuperView
+    NSInteger mutualViewCount = labs(smallViewSuperViewCount - bigViewSuperViewCount);
+    view1 = self;
+    view2 = self.BigHeart;
+    if (smallViewSuperViewCount &gt; bigViewSuperViewCount) {
+        for (int i = 0; i &lt; mutualViewCount; ++ i) {
+            view1 = view1.superview;
+        }
+    } else {
+        for (int i = 0; i &lt; mutualViewCount; ++ i) {
+            view2 = view2.superview;
+        }
+    }
+    while (view1 != view2) {
+        view1 = view1.superview;
+        view2 = view2.superview;
+    }
+    return view1;
+}
+</code></pre>
+<p>有了上面的思想，映射坐标同样变得简单：</p>
+<pre><code class="objc">    //映射两个Heart的坐标。
+    // 首先是小桃心(self)
+    UIView *view1 = self;
+    CGPoint smallHeartPoint = CGPointZero;
+    while (view1 != mutualSuperView) {
+        smallHeartPoint.x += view1.frame.origin.x;
+        smallHeartPoint.y += view1.frame.origin.y;
+        view1 = view1.superview;
+    }
+    // 其次是大桃心(self.BigHeart)
+    UIView *view2 = self.BigHeart;
+    CGPoint bigHeartPoint = CGPointZero;
+    while (view2 != mutualSuperView) {
+        bigHeartPoint.x += view2.frame.origin.x;
+        bigHeartPoint.y += view2.frame.origin.y;
+        view2 = view2.superview;
+    }
+</code></pre>
+<p>既然得到两个桃心的坐标了，实现动画就自然变得简单啦，就不赘述了:)<br>有兴趣的同学可以查看我的<a href="https://github.com/objchris/EZHeartForLike" target="_blank" rel="external">Github</a>，可以下载在项目中，顺便给我个Like吧<img src="http://7xs4ed.com1.z0.glb.clouddn.com/common/hahahahaha.jpg" alt="hahaha"></p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> Animation </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[简简单单说说PKI On iOS]]></title>
+      <url>/2016/04/09/%E7%AE%80%E7%AE%80%E5%8D%95%E5%8D%95%E8%AF%B4%E8%AF%B4PKIOniOS/</url>
+      <content type="html"><![CDATA[<p>Hacker,问你惊未Σ( ° △ °|||)︴</p>
+<a id="more"></a>
+<p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/Crypto_Sherlock.jpg" alt="神探夏洛克"> </p>
+<p>看了很多侦探片之后，逐渐发现加解密的神奇所在。能够在别人无法察觉的情况下传递信息（我很喜欢看这些片子，哈哈哈）。无论是Morse Code还是对着某本书根据页码行数字数来确定表达信息，都能让我看到前人的智慧。说真的，我特别钟意神探夏洛克，就算英文渣渣也会在更新的时候到Youtube上看看，等翻译完再翻看一次。记得中国剧场那一集最后根据伦敦地图破解了藏在苏州码子里的暗号，So Sexy~··<br>​<br>今天来聊聊阿澤君的故事，顺便谈谈</p>
+<ol>
+<li>CommonCryto中关于DES、AES的部分内容</li>
+<li>iOS的Security框架里关于RSA加密的部分内容….</li>
+</ol>
+<p>阿澤君是个大四🐶，最近在烦毕业论文的事情。辛辛苦苦撸了二十个年(xiao)头(shi)的论文，肯定要第一时间交到老师手里，让他看看，好舒缓阿澤君难产的心情。阿澤君知道有个Hacker君一直在觊觎阿澤君的论文，想拿过来一抄了之。而且Hacker君是一流的网络黑客，盗线偷取别人的信息是最在行的了。因此怎么发给千里之外的老师可难为阿澤君了。。。    </p>
+<p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/common/focusOnCom.jpg" alt="沉思...">    </p>
+<p>很快，阿澤君想到用加密的方法，利用对称加密的方法给论文加密后发送给老师。</p>
+<p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/common/bucuowo.jpg" alt="开心"></p>
+<h1 id="对称加密"><a href="#对称加密" class="headerlink" title="对称加密"></a>对称加密</h1><p>采用单钥密码系统的加密方法，同一个密钥可以同时用作信息的加密和解密。加密算法中数DES、3DES、AES(块算法)和RC4(流算法)最为常用了。</p>
+<h2 id="DES"><a href="#DES" class="headerlink" title="DES"></a>DES</h2><p>DES 使用一个 56 位的密钥以及附加的 8 位奇偶校验位，产生最大 64 位的分组大小。这是一个迭代的分组密码，使用称为 Feistel 的技术，其中将加密的文本块分成两半。使用子密钥对其中一半应用循环功能，然后将输出与另一半进行“异或”运算；接着交换这两半，这一过程会继续下去，但最后一个循环不交换。DES 使用 16 个循环，使用异或，置换，代换，移位操作四种基本运算。    </p>
+<p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/Crypto_DES.jpg" alt="DES">    </p>
+<p>图片是度娘找的，将就看看哈~</p>
+<h3 id="3DES"><a href="#3DES" class="headerlink" title="3DES"></a>3DES</h3><p>3DES是在DES的基础上做了两次加密和一次解密。具体实现如下：设Ek()和Dk()代表DES算法的加密和解密过程，K代表DES算法使用的密钥，P代表明文，C代表密文，这样：<br>3DES加密过程为：C=Ek3(Dk2(Ek1(P)))<br>3DES解密过程为：P=Dk1(EK2(Dk3(C)))<br>若<strong>Ek1 == Ek2 == Ek3</strong>，就是简单的DES了。</p>
+<h2 id="AES"><a href="#AES" class="headerlink" title="AES"></a>AES</h2><p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/Crypto_AES.png" alt="AES"><br>图片来自网络，若有侵犯到权利之处，请告知，谢谢~    </p>
+<p>AES加密过程涉及到4种操作：字节替代（SubBytes）、行移位（ShiftRows）、列混淆（MixColumns）和轮密钥加（AddRoundKey）。解密过程分别为对应的逆操作。由于每一步操作都是可逆的，按照相反的顺序进行解密即可恢复明文。加解密中每轮的密钥分别由初始密钥扩展得到。算法中16字节的明文、密文和轮密钥都以一个4x4的矩阵表示。<br>算法详细已经有其他人写了，我就不再造轮子了。<a href="http://www.blogfshare.com/aes-rijndael.html" target="_blank" rel="external">密码算法详解——AES</a><br>还有算法及解密算法的<a href="http://blog.csdn.net/searchsun/article/details/2516191" target="_blank" rel="external">模式介绍</a>，可以了解了解~    </p>
+<h2 id="RC4"><a href="#RC4" class="headerlink" title="RC4"></a>RC4</h2><p>不同于块算法的是，RC4等流算法不是对明文进行分组处理，而是字节流的方式依次加密明文中的每一个字节，解密的时候也是依次对密文中的每一个字节进行解密。</p>
+<h2 id="CommonCrypto"><a href="#CommonCrypto" class="headerlink" title="CommonCrypto"></a>CommonCrypto</h2><p>对于身为iOS攻城狮的阿澤君来说，感觉还是这一部分比较重要。    </p>
+<h3 id="CommonCrypto的一些主要的结构体"><a href="#CommonCrypto的一些主要的结构体" class="headerlink" title="CommonCrypto的一些主要的结构体"></a>CommonCrypto的一些主要的结构体</h3><ol>
+<li>CCOperation：定义操作：加密或解密</li>
+</ol>
+<pre><code>enum {
+    kCCEncrypt = 0, 
+    kCCDecrypt,     
+};
+typedef uint32_t CCOperation;
+</code></pre><ol>
+<li>CCAlgorithm：加解密算法，很明显就不详细说明了。</li>
+</ol>
+<pre><code class="objc">enum {
+    kCCAlgorithmAES128 = 0,
+    kCCAlgorithmAES = 0,
+    kCCAlgorithmDES,
+    kCCAlgorithm3DES,       
+    kCCAlgorithmCAST,       
+    kCCAlgorithmRC4,
+    kCCAlgorithmRC2,   
+    kCCAlgorithmBlowfish    
+};
+typedef uint32_t CCAlgorithm;
+</code></pre>
+<ol>
+<li>CCOptions：选项：按照P7补足块算法的块长度或者选择ECB模式，关于模式请看上面AES中介绍的文章。对于RC4等流算法不适用。或者说不需要使用到</li>
+</ol>
+<pre><code class="objc">enum {
+    kCCOptionPKCS7Padding   = 0x0001,
+    kCCOptionECBMode        = 0x0002
+};
+</code></pre>
+<ol>
+<li>KeySize和BlockSize：规定加解密密钥的长度和明文密文块的长度</li>
+</ol>
+<pre><code class="objc">enum {
+    kCCKeySizeAES128          = 16,
+    kCCKeySizeAES192          = 24,
+    kCCKeySizeAES256          = 32,
+    kCCKeySizeDES             = 8,
+    kCCKeySize3DES            = 24,
+    kCCKeySizeMinCAST         = 5,
+    kCCKeySizeMaxCAST         = 16,
+    kCCKeySizeMinRC4          = 1,
+    kCCKeySizeMaxRC4          = 512,
+    kCCKeySizeMinRC2          = 1,
+    kCCKeySizeMaxRC2          = 128,
+    kCCKeySizeMinBlowfish     = 8,
+    kCCKeySizeMaxBlowfish     = 56,
+};
+enum {
+    /* AES */
+    kCCBlockSizeAES128        = 16,
+    /* DES */
+    kCCBlockSizeDES           = 8,
+    /* 3DES */
+    kCCBlockSize3DES          = 8,
+    /* CAST */
+    kCCBlockSizeCAST          = 8,
+    kCCBlockSizeRC2           = 8,
+    kCCBlockSizeBlowfish      = 8,
+};
+</code></pre>
+<h3 id="通过代码实现"><a href="#通过代码实现" class="headerlink" title="通过代码实现"></a>通过代码实现</h3><h4 id="导入CommonCrypto的头文件。"><a href="#导入CommonCrypto的头文件。" class="headerlink" title="导入CommonCrypto的头文件。"></a>导入CommonCrypto的头文件。</h4><pre><code class="objc">#import &lt;CommonCrypto/CommonCrypto.h&gt;
+</code></pre>
+<h4 id="symCrypt"><a href="#symCrypt" class="headerlink" title="symCrypt"></a>symCrypt</h4><pre><code class="objc">/*!
+    @function   symCrypt
+    @abstract   对称解密
+    @param      operation       加密或解密
+    @param      data            需要加解密的数据
+    @param      algorithm       加解密所采用的算法
+    @param      key             加解密时提供的密钥
+    @param      iv              Initialization Vector(CBC模式下需要)
+    @param      options         加密数据字节数不是block的整数倍时需要制定padding
+                                详情参见CommonCryptor头文件
+    @param      status          加解密成功与否所返回的状态
+    @result     解密后得到的结果
+ */
+- (NSData *)symCrypt:(CCOperation)operation
+         processData:(NSData *)data
+      UsingAlgorithm:(CCAlgorithm)algorithm
+                 key:(NSData *)key
+ initalizationVector:(NSData *)iv
+             options:(CCOptions)options
+              status:(CCCryptorStatus *)status
+{
+    NSData *result = nil;
+    NSMutableData *cKey = [key mutableCopy], *cIV = [iv mutableCopy];
+    [self fixKeyLengthsByAlgorithm:algorithm keyData:cKey ivData:cIV];//1
+    size_t bufferSize = [data length] + [self blockSizeByAlgorithm:algorithm]; // 2
+    void *buffer = malloc(bufferSize); //3
+    size_t encryptedSize = 0;
+    *status = CCCrypt(operation, algorithm, options, [cKey bytes], [cKey length], [cIV bytes], [data bytes], [data length], buffer, bufferSize, &amp;encryptedSize); //4
+    if (*status == kCCSuccess) {
+        result = [NSData dataWithBytes:buffer length:encryptedSize];  //5
+    } else {
+        NSLog(@&quot;[ERROR] failed to encrypt|CCCryptoStatus: %d&quot;, *status);
+    }
+    free(buffer);  //6
+    return result;  //7
+}
+</code></pre>
+<ol>
+<li>根据加解密算法检查Key和iv的长度是否符合要求，详细请看下面列出的函数fixKeyLength</li>
+<li>加密后的数据总小于等于数据长度加上block的大小</li>
+<li>申请bufferSize的空间以保存加密或解密后的数据</li>
+<li>调用CCCrypt函数实现加解密。<pre><code class="objc">CCCryptorStatus CCCrypt(
+ CCOperation op,         /* 加密或解密：kCCEncrypt, etc. */
+ CCAlgorithm alg,        /* 加解密采用的算法：kCCAlgorithmAES128, etc. */
+ CCOptions options,      /* kCCOptionPKCS7Padding, etc. */
+ const void *key,        /* 密钥 */
+ size_t keyLength,       /* 密钥长度 */
+ const void *iv,         /* iv，使用与CBC模式下，明文后32位和iv异或后做为下一阶段的前32位 */
+ const void *dataIn,     /* 要加密或解密的数据 */
+ size_t dataInLength,    /* 数据长度 */
+ void *dataOut,          /* 注意传入的是指针，加解密后的数据将从此处返回 */
+ size_t dataOutAvailable,/* 为dataOut申请的可写长度 */
+ size_t *dataOutMoved    /* 结果所占的长度 */
+ )    
+ __OSX_AVAILABLE_STARTING(__MAC_10_4, __IPHONE_2_0);
+</code></pre>
+</li>
+<li>若成功，则将(void *)类型的数据封装到NSData中。</li>
+<li>释放申请的buffer内存</li>
+<li>返回。</li>
+</ol>
+<h4 id="fixKeyLength"><a href="#fixKeyLength" class="headerlink" title="fixKeyLength"></a>fixKeyLength</h4><pre><code class="objc">/*!
+    @function   fixKeyLength
+    @abstract   修改密钥长度至与算法匹配
+    @param      algorithm       加解密所采用的算法
+    @param      keyData         密钥
+    @param      ivData          Initialization Vector
+    @result     将密钥长度和iv修改至与算法匹配的长度
+ */
+- (void)fixKeyLengthsByAlgorithm:(CCAlgorithm)algorithm
+                         keyData:(NSMutableData *)keyData
+                          ivData:(NSMutableData *)ivData
+{
+    NSUInteger keyLength = [keyData length];
+    switch (algorithm) {
+        case kCCAlgorithmAES:
+        {
+            if (keyLength &lt; kCCKeySizeAES128) {
+                keyData.length = kCCKeySizeAES128;
+            } else if (keyLength &lt; kCCKeySizeAES192) {
+                keyData.length = kCCKeySizeAES192;
+            } else {
+                keyData.length = kCCKeySizeAES256;
+            }
+            break;
+        }
+        case kCCAlgorithmDES:
+        {
+            keyData.length = kCCKeySizeDES;
+            break;
+        }
+        case kCCAlgorithm3DES:
+        {
+            keyData.length = kCCKeySize3DES;
+            break;
+        }
+        case kCCAlgorithmRC4:
+        {
+            keyData.length = kCCKeySizeMaxRC4;
+            break;
+        }
+        default:
+            break;
+    }
+    ivData.length = keyData.length;
+}
+</code></pre>
+<h4 id="blockSizeByAlgorithm"><a href="#blockSizeByAlgorithm" class="headerlink" title="blockSizeByAlgorithm"></a>blockSizeByAlgorithm</h4><pre><code class="objc">/*!
+    @function   blockSizeByAlgorithm
+    @abstract   根据算法获取每个block的大小
+    @param      algorithm       加密所采用的算法
+    @result     该算法对应的block大小
+ */
+- (size_t)blockSizeByAlgorithm:(CCAlgorithm)algorithm {
+    switch (algorithm) {
+        case kCCAlgorithmAES:
+            return kCCBlockSizeAES128;
+        case kCCAlgorithmDES:
+        case kCCAlgorithm3DES:
+        case kCCAlgorithmRC4:
+            return kCCBlockSizeDES;
+        default:
+            return 0;
+    }
+}
+</code></pre>
+<p>上述两个函数主要是为了规范密钥的长度和获取明文密文块的长度，很好理解就不详细介绍了。这样还是不能傻瓜式地调用，因此阿澤君创建了DESCipherActor继承于SymCipherActor，进一步进行封装：<br>　　DESCipherActor.h<br>　　``` objc</p>
+<pre><code>- (NSString *)encryptInCBC:(NSString *)plainText key:(NSString *)key iv:(NSData *)iv;
+- (NSString *)decryptInCBC:(NSString *)cipherText key:(NSString *)key iv:(NSData *)iv;
+- (NSString *)encryptInEBC:(NSString *)plainText key:(NSString *)key;
+- (NSString *)decryptInEBC:(NSString *)cipherText key:(NSString *)key;
+</code></pre><p>　　```<br>　　还有AES、RC4的实现大致相同，具体可参考Demo，已经上传<a href="https://github.com/objchris/PKIDemo" target="_blank" rel="external">Github</a></p>
+<p>　　果然，采用加密算法加密后的论文顺利发到老师那里，问题是解密用密钥还在阿澤君手上，老师还是无法看到论文内容，密钥不能通过网络传输给老师，因为Hacker君还在监听着阿澤君和老师的通讯。难道要阿澤君不惧千里（其实不是很远，哈哈哈。我就夸张那么一点点~）去到老师那边，那为何不直接将论文交给老师呢？！！！<br>　　What the <em>**</em>！！！💔💔阿澤君此时心里千万只草泥马在奔腾。        </p>
+<p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/common/desk.jpg" alt="掀桌子">    </p>
+<p>　　但是阿澤君不会这样轻易地狗带，因为还可以通过非对称加密来解决…</p>
+<h1 id="非对称加密"><a href="#非对称加密" class="headerlink" title="非对称加密"></a>非对称加密</h1><p>对称加密算法在加密和解密时使用的是同一个秘钥；而非对称加密算法需要两个密钥来进行加密和解密，这两个秘钥是公开密钥（public key，简称公钥）和私有密钥（private key，简称私钥）。<br>如甲乙双方需要加密通信：</p>
+<ol>
+<li>乙方生成一对密钥（公钥和私钥）并将公钥向其它方公开。</li>
+<li>得到该公钥的甲方使用该密钥对机密信息进行加密后再发送给乙方。</li>
+<li>乙方再用自己保存的另一把专用密钥（私钥）对加密后的信息进行解密。乙方只能用其专用密钥（私钥）解密由对应的公钥加密后的信息。</li>
+</ol>
+<p>　　在传输过程中，即使攻击者截获了传输的密文，并得到了乙的公钥，也无法破解密文，因为只有乙的私钥才能解密密文。<br>　　同样，如果乙要回复加密信息给甲，那么需要甲先公布甲的公钥给乙用于加密，甲自己保存甲的私钥用于解密。<br>　　说到非对称加密，不得不说RSA（其实是阿澤君只接触过这个。。。）</p>
+<p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/common/yaoMing.png" alt=""></p>
+<h2 id="RSA"><a href="#RSA" class="headerlink" title="RSA"></a>RSA</h2><h3 id="算法原理"><a href="#算法原理" class="headerlink" title="算法原理"></a>算法原理</h3><ol>
+<li>选取两个质数p和q, 计算<code>n = p * q</code> 。p和q要尽量大</li>
+<li>根据质数<code>φ(p)=p-1</code>和欧拉方程满足乘法结合率的规律求出φ(n),即<code>φ(n)=(p-1)(q-1)</code></li>
+<li>选取质数e作为公钥指数, e的范围<code>1&lt;e&lt;φ(n)</code>,且 e 与 φ(n) 互质</li>
+<li>出e对φ(n)的模反元素d，求解公式：<code>ed ≡ 1 (mod φ(n))</code>即可得出<br>这样计算后(n,e)是公钥，(n,d)是私钥。<blockquote>
+<p>公钥加密公式<br>m^e ≡ c (mod n) 即 c = m^e mod n<br>私钥解密公式<br>c^d ≡ m (mod n) 即 m = c^d mod n    </p>
+</blockquote>
+</li>
+</ol>
+<p>RSA加密常用的填充方式有下面3种：    </p>
+<ol>
+<li>RSA_PKCS1_PADDING 填充模式，最常用的模式<br>输入：必须 比RSA钥模长(modulus)短至少11个字节，也就是RSA_size(rsa) – 11。如果输入的明文过长，必须切割，然后填充<br>输出：和modulus一样长<br>根据这个要求，对于1024bit的密钥，block length = 1024/8 – 11 = 117 字节     </li>
+<li>RSA_PKCS1_OAEP_PADDING<br>输入：RSA_size(rsa) – 41<br>输出：和modulus一样长    </li>
+<li>for RSA_NO_PADDING 不填充<br>输入：可以和RSA钥模长一样长，如果输入的明文过长，必须切割，然后填充<br>输出：和modulus一样长    </li>
+</ol>
+<p>特别推荐的是阮一峰的日志两篇日志，写得非常好，我也是参考这个写的：<br><a href="http://www.ruanyifeng.com/blog/2013/06/rsa_algorithm_part_one.html" target="_blank" rel="external">RSA算法原理（一）</a><br><a href="http://www.ruanyifeng.com/blog/2013/07/rsa_algorithm_part_two.html" target="_blank" rel="external">RSA算法原理（二）</a></p>
+<h3 id="iOS-Security-framework"><a href="#iOS-Security-framework" class="headerlink" title="iOS Security.framework"></a>iOS Security.framework</h3><h4 id="encryptWithPublicKey"><a href="#encryptWithPublicKey" class="headerlink" title="encryptWithPublicKey"></a>encryptWithPublicKey</h4><pre><code class="objc">- (NSString *)encrypt:(NSString *)stringToEncrypt withPublicKey:(SecKeyRef)publicKey{
+    OSStatus status = noErr;
+    size_t cipherBufferSize;
+    uint8_t *cipherBuffer;
+    uint8_t *dataToEncrypt = (uint8_t *)[stringToEncrypt cStringUsingEncoding:NSUTF8StringEncoding];
+    size_t dataLength = stringToEncrypt.length;
+    NSLog(@&quot;dataLength: %zu&quot;, dataLength);
+    cipherBufferSize = SecKeyGetBlockSize(publicKey);       // 1
+    cipherBuffer = malloc(cipherBufferSize);
+    size_t totalBufferSize = 0;
+    NSMutableData *data = [[NSMutableData alloc] init];    // 2
+    //使用kSecPaddingPKCS1作为加密的padding
+    if ((cipherBufferSize - 11) &lt; dataLength) {            // 3
+        //若需要加密的数据长度过长，需要分块加密
+        size_t toEncryptDataLength = dataLength;
+        while ((cipherBufferSize - 11) &lt; toEncryptDataLength) { // 4
+            status = SecKeyEncrypt(publicKey,
+                                   kSecPaddingPKCS1,
+                                   dataToEncrypt + (dataLength - toEncryptDataLength),
+                                   cipherBufferSize - 11,
+                                   cipherBuffer,
+                                   &amp;cipherBufferSize);          // 5
+            toEncryptDataLength = toEncryptDataLength - (cipherBufferSize - 11);        //6
+            //CipherBuffer是通过malloc创建，没有对内存空间进行初始化，有很多其他数据
+            //转储成NSData，确保对正确长度的cipherBuffer的获取
+            [data appendData:[NSData dataWithBytes:cipherBuffer length:cipherBufferSize]];    //7
+            totalBufferSize += cipherBufferSize;    //8
+        }
+        //对剩余的数据进行加密
+        status = SecKeyEncrypt(publicKey,
+                               kSecPaddingPKCS1,
+                               dataToEncrypt + (dataLength - toEncryptDataLength),
+                               toEncryptDataLength,
+                               cipherBuffer,
+                               &amp;cipherBufferSize);
+        [data appendData:[NSData dataWithBytes:cipherBuffer length:cipherBufferSize]];               
+        totalBufferSize += cipherBufferSize;
+    } else {
+        //需要加密的数据长度小于SecKeyGetBlockSize(publicKey)－11，直接加密
+        status = SecKeyEncrypt(publicKey, kSecPaddingPKCS1, dataToEncrypt, dataLength, cipherBuffer, &amp;cipherBufferSize);
+        [data appendData:[NSData dataWithBytes:cipherBuffer length:cipherBufferSize]];
+    }
+    if (publicKey) {
+        CFRelease(publicKey);
+    }
+    NSString *encryptedString = [GTMBase64 stringByEncodingData:[data copy]];            //9
+    free(cipherBuffer);            //10
+    return encryptedString;
+}
+</code></pre>
+<ol>
+<li>根据Key判断加解密块大小（若使用kSecPaddingPKCS1，需要手动调整块大小小于这个返回值 - 11）</li>
+<li>创建MutableData用以下面操作添加Data</li>
+<li>判断数据总大小是否大于SecKeyGetBlockSize(publicKey) - 11，是则拆分成多个块加解密，否则直接加解密。</li>
+<li>while循环多次操作</li>
+<li>使用SecKeyEncrypt进行加解密<pre><code class="objc">OSStatus SecKeyEncrypt(
+ SecKeyRef           key,                //加解密使用的密钥
+ SecPadding          padding,            //padding，一般为kSecPaddingPKCS1，需要注意数据块的大小问题
+ const uint8_t       *plainText,          //明文
+ size_t              plainTextLen,        //明文长度
+ uint8_t             *cipherText,        //返回的密文
+ size_t              *cipherTextLen)     //返回的密文长度
+ __OSX_AVAILABLE_STARTING(__MAC_10_7, __IPHONE_2_0);
+</code></pre>
+</li>
+<li>将已经加解密过的数据剔除</li>
+<li>往MutableData中添加数据</li>
+<li>计算总的BufferSize，这里只是做个统计</li>
+<li>将得到的数据进行Base64转码</li>
+<li>记得释放cipherBuffer</li>
+</ol>
+<h4 id="decryptWithPrivateKey"><a href="#decryptWithPrivateKey" class="headerlink" title="decryptWithPrivateKey"></a>decryptWithPrivateKey</h4><pre><code class="objc">- (NSString *)decrypt: (NSString *)stringToDecrypt withPrivateKey:(SecKeyRef)privateKey {
+    NSData *dataToDecrypt = [GTMBase64 decodeString:stringToDecrypt];
+    OSStatus status = noErr;
+    size_t cipherBufferSize = [dataToDecrypt length];
+    uint8_t *cipherBuffer = (uint8_t *)[dataToDecrypt bytes];
+    size_t plainBufferSize;
+    uint8_t *plainBuffer;
+    plainBufferSize = SecKeyGetBlockSize(privateKey);
+    plainBuffer = malloc(plainBufferSize);
+    NSMutableData *data = [[NSMutableData alloc] init];
+    size_t decryptLengthPer = SecKeyGetBlockSize(privateKey);
+    if (decryptLengthPer &lt; cipherBufferSize) {
+        size_t toDecryptDataLength = cipherBufferSize;
+        size_t totalBufferSize = 0;
+        while (decryptLengthPer &lt; toDecryptDataLength) {
+            status = SecKeyDecrypt(privateKey,
+                                   kSecPaddingPKCS1,
+                                   cipherBuffer + (cipherBufferSize - toDecryptDataLength),
+                                   decryptLengthPer,
+                                   plainBuffer,
+                                   &amp;plainBufferSize);
+            toDecryptDataLength = toDecryptDataLength - decryptLengthPer;
+            if (status == noErr) {
+                [data appendData:[NSData dataWithBytes:plainBuffer length:plainBufferSize]];
+            }
+            totalBufferSize += plainBufferSize;
+        }
+        status = SecKeyDecrypt(privateKey,
+                               kSecPaddingPKCS1,
+                               cipherBuffer + (cipherBufferSize - toDecryptDataLength),
+                               decryptLengthPer,
+                               plainBuffer,
+                               &amp;plainBufferSize);
+        if (status == noErr) {
+            [data appendData:[NSData dataWithBytes:plainBuffer length:plainBufferSize]];
+        }
+        totalBufferSize += plainBufferSize;
+    } else {
+        status = SecKeyDecrypt(privateKey, kSecPaddingPKCS1, cipherBuffer, cipherBufferSize, plainBuffer, &amp;plainBufferSize);
+        if (status == noErr) {
+            [data appendData:[NSData dataWithBytes:plainBuffer length:plainBufferSize]];
+        }
+    }
+    if (privateKey) {
+        CFRelease(privateKey);
+    }
+    NSString *decryptedString = [[NSString alloc] initWithData:[data copy] encoding:NSUTF8StringEncoding];
+    free(plainBuffer);
+    return decryptedString;
+}
+</code></pre>
+<p>解密和加密的方式基本一样，此处不多加赘述。<br><a href="https://github.com/objchris/PKIDemo" target="_blank" rel="external">Demo</a></p>
+<p><strong>Hacker君，问你惊未，哈哈哈哈哈。</strong><br>非对称加密对阿澤君来说完全解决了问题(づ￣ 3￣)づ，使用老师的公钥加密论文后发送回给他。Hacker君就算截取到也无济于事，因为Hacker君没有老师的私钥，无法获取到其中的内容。老师获取到阿澤君发送的论文后自然可以解密查看。    </p>
+<p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/common/hahahahaha.jpg" alt="哈哈哈哈"><br>从中阿澤君也学到了很多，所以分享给大家❤️。故事有(fei)点(chang)弱智，希望大家不要在意，关注加解密算法就好了~
+　　</p>
+<p>题外话：PKI基础最近才接触，学得不深，有些东西写错请大家见谅。<br>更多的算法，eg：数字摘要、数字签名、口令认证等等都在<a href="https://github.com/objchris/PKIDemo" target="_blank" rel="external">Github</a>上了，有兴趣请移步。<br>关于加解密，貌似OpenSSL会经常用，具体阿澤君也不清楚，还需要更加深入的学习，共勉吧！！！！</p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> Security </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[阿澤君的独白]]></title>
+      <url>/2016/04/02/%E9%98%BF%E6%BE%A4%E5%90%9B%E7%9A%84%E7%8B%AC%E7%99%BD/</url>
+      <content type="html"><![CDATA[<p>接近两个星期没有发博客了，可能是因为最近毕业季忙于东跑西跑找工作，加上毕业设计、论文等东西的烦扰。没什么自己可以支配的时间，所以这篇博文只是随便扯扯，发发牢骚，并没有干货~~</p>
+<a id="more"></a>
+<p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/Dubai_paohui.jpg" alt=""><br>　　对于一个学iOS只有半年左右的人来说，我不知道自己是不是认真地在学，但是我知道自己对iOS是热枕的。。。<br>　　四年前，大学是多么憧憬的地方，我凭着不好不坏的成绩顺利被华南师范大学录取，算是广东不错的一本院校了。当其时因为爸爸妈妈都希望我能就读经济专业，以后从事经济方面的工作，而我自己从小就喜欢玩电脑，比较倾向于选择计算机类的吧。但是爸爸妈妈的要求那么坚定，所以我最后还是迷迷糊糊地将经济学摆在志愿第一项。若果你以为我是经济学的学生，那你就错了，哈哈哈哈。志愿第一项没有被录取，我被调剂到软件工程。家里人也没办法，只能任由我了。。<br>　　进入大学，感觉什么都是新的。不同的上课模式让我体会到新鲜感，一开始是很少逃课的（我是个好孩子😄😄）。爸爸妈妈希望我从事经济方面工作的想法还没有打消，他们希望我读多个学位，利用周末时间辅修，进一步加强自己。我没有拒绝，因为我自己也有点试试看的想法。所以在大一第一学期即将结束的时候递上了经济学的辅修申请表。<br>　　自从辅修了经济学，时间似乎追赶得更快了。我花费在本专业上的时间也被占据了相当一部分。辅修听回来的东西有一些还是很有趣的，但是绝大部分让我这个理科生感觉枯燥。很多科目都是考试前一两周疯狂复习。那些时候心里总会抱怨，觉得特别辛苦。四年说长不长，说短不短，但是我还是坚持了下来。直到最近赶完辅修论文，算是结束了辅修生涯，我才意识到，原来很多事情只要咬咬牙就过来了。你们说我怎么才意识到。。。<br>　　为什么要说辅修，我只是想说最后一句，为什么现在才意识到<font color="#ff7073" size="3" face="黑体">很多事情只要咬咬牙就过来了！！！</font><br>　　我想成为iOS开发者，学习iOS时间不长。其实一开始接触的是C、Cpp。可能这是大部分甚至是全部计算机专业同学都会学到的。因为接触的都是Console，不免让人觉得无聊吧。大一年少无知，不知道原来C、Cpp也是很牛逼的语言。当时对专业方向也没多大想法，处于迷茫期吧可能，谁的青春不迷茫呢？！<br>　　后来又一段时间，身边有几个同学在学iOS开发，但是电脑非果机。折腾安装个黑苹果都要两个星期，原因大家都知道，驱动难求、各种五国。。。我也想去尝试，因为iPhone的界面、UI等等确实看起来好看且用户体验也不错。我的iPhone4s陪我走到现在整整四年，还没换（没钱💔 + 有感情❤️）。所以我也加入了安装黑苹果的行列，我的电脑是Acer，当时默认是很好装黑苹果的机器，但是来来去去折腾了很久（具体忘了多久）都没有装成功。那时候就气馁了。。现在想起来真想扇自己巴掌，跳打再飞踢。。<br>　　我觉得自己很容易摇摆，很容易就跟着别人的脚步走。所以在接触到Java的时候就果断放弃了前者。Java是大二的一门课程，实验课也蛮多，所以学起来比较省心。后来也萌生了做后台的想法。大二下学期和大三上学期都在看关于J2EE的知识。大三下也出去实习过一段时间，辗辗转转发现自己真心不喜欢，说实在的，学习成本大，真的大。。而且很多时候出错信息十分冗长，很难看得下去。。<br>　　所以，我又作死地想回到iOS行列，因为我很喜欢看起来漂亮的事物。身为大四狗，转方向是非常危险且不理智的行为。但是我还是这样做了。这次花了两周时间成功装上了黑苹果，也意识到快毕业了，很多事情都不是自己想得那么简单。时间在背后追得很紧，有时候发发呆一天就TM地过去了。经常后悔之前没有坚持弄完黑苹果开始学习iOS，导致现在这么被动。。。<br>曾经还发过朋友圈宣泄负能量<br><img src="http://7xs4ed.com1.z0.glb.clouddn.com/Dubai_piaoquan.jpg" alt=""><br>　　错过了秋招，我把希望都放在了春招了，似乎一切都这么顺利，然而这只是我的幻想。面试了第一家公司感觉还行，可能是急需人，所以问题都很简单。工资不高，所以我也没有特别大的想法，所以还是拒绝了。接下来的其他公司的面试让我觉得简直就是地狱，也就是最近这段时间的事，每次挫败感都超级强，压得我喘不过气来。<br>　　<strong>最近经历的跌宕起伏确实是人生一段会经常想起来的经历，鞭笞自己变得更好，我总这样安慰自己。</strong>但是要感谢何君(づ￣ 3￣)づ（真名我才不说呢）给我的鼓励：<br><img src="http://7xs4ed.com1.z0.glb.clouddn.com/Dubai_douzhi.jpg" alt="鼓励"><br>　　很多时候都想放弃，但是自己深深知道不能。。。所以最近面试的这短短两周时间学到的东西比过去两个月还多，真的很多事情只要咬咬牙就过来了。现在也找到了毕业后栖身的公司，继续发展我的iOS开发事业。现在我有了更好的心态，不会好高骛远，还是脚踏实地吧。<br><img src="http://7xs4ed.com1.z0.glb.clouddn.com/Dubai_gongsi.jpg" alt="所在公司一角"><br>　　最近在听五月天的《勇敢》，为了那个将来，要自己，勇敢再勇敢。<br>　　最后，我想说：<font color="#ff7073" size="3" face="黑体">很多事情只要咬咬牙就过来了！！！</font></p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> Mood </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Autoresizing Mask]]></title>
+      <url>/2016/03/19/autoresizingMask/</url>
+      <content type="html"><![CDATA[<p>不知道大家在开发的时候会不会使用到UIView的autoresizingMask属性。我自己的话自从开始出现autoLayout就没再用过了。前几天翻看一些较老的书籍，发现了它静静躺在角落。不知不觉还真的有些忘记了，于是温故知新，再学习了一下。</p>
+<a id="more"></a>
+<h1 id="autoresizingMask"><a href="#autoresizingMask" class="headerlink" title="autoresizingMask"></a>autoresizingMask</h1><p>它对应着一个枚举，属性是自动调整SubView和SuperView之间的位置和宽高。</p>
+<pre><code>enum {
+   UIViewAutoresizingNone                 = 0,
+   UIViewAutoresizingFlexibleLeftMargin   = 1 &lt;&lt; 0,
+   UIViewAutoresizingFlexibleWidth        = 1 &lt;&lt; 1,
+   UIViewAutoresizingFlexibleRightMargin  = 1 &lt;&lt; 2,
+   UIViewAutoresizingFlexibleTopMargin    = 1 &lt;&lt; 3,
+   UIViewAutoresizingFlexibleHeight       = 1 &lt;&lt; 4,
+   UIViewAutoresizingFlexibleBottomMargin = 1 &lt;&lt; 5
+};
+</code></pre><h2 id="简单介绍"><a href="#简单介绍" class="headerlink" title="简单介绍"></a>简单介绍</h2><h3 id="UIViewAutoresizingNone"><a href="#UIViewAutoresizingNone" class="headerlink" title="UIViewAutoresizingNone"></a>UIViewAutoresizingNone</h3><p>不设置自动调整，默认值</p>
+<h3 id="UIViewAutoresizingFlexibleRightMargin"><a href="#UIViewAutoresizingFlexibleRightMargin" class="headerlink" title="UIViewAutoresizingFlexibleRightMargin"></a>UIViewAutoresizingFlexibleRightMargin</h3><p>这里就只讲UIViewAutoresizingFlexibleRightMargin,因为上下左右四个方位是一致的原理<br><img src="http://7xs4ed.com1.z0.glb.clouddn.com/autoresizingMask_FlexibleRightMargin.jpg" alt="UIViewAutoresizingFlexibleRightMargin"></p>
+<h3 id="UIViewAutoresizingFlexibleWidth"><a href="#UIViewAutoresizingFlexibleWidth" class="headerlink" title="UIViewAutoresizingFlexibleWidth"></a>UIViewAutoresizingFlexibleWidth</h3><p>UIViewAutoresizingFlexibleWidth和UIViewAutoresizingFlexibleHeight也是同样的原理<br><img src="http://7xs4ed.com1.z0.glb.clouddn.com/autoresizingMask_FlexibleWidthCompare.jpg" alt="UIViewAutoresizingFlexibleWidth"></p>
+<h3 id="组合起来"><a href="#组合起来" class="headerlink" title="组合起来"></a>组合起来</h3><p>枚举中的值是允许使用|组合起来的，同时拥有多个值的功能，like this：</p>
+<pre><code class="objc">UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRIGHTMargin
+</code></pre>
+<p>表示左右间隔都可以修改，效果就像上面那张图一样~</p>
+<h2 id="有点代码对比会好些"><a href="#有点代码对比会好些" class="headerlink" title="有点代码对比会好些"></a>有点代码对比会好些</h2><pre><code class="objc">#define kTopSpace 64
+#define kMargin 20
+#define kTopViewHeight 44
+#define kTopViewWidth 280
+#define kTextLabelWidth 200
+#define kTextLabelHeight 30
+//以Iphone4（320， 480）为基础，设置各控件的位置
+//注意：必须所有控件都按照Iphone4（320， 480）为基础初始化一次，不然按比例缩放时会发生错误！
+UIView *topView = [[UIView alloc] initWithFrame:CGRectMake(kMargin, kTopSpace, kTopViewWidth, kTopViewHeight)];
+CGFloat textLabelTop = (topView.frame.size.width - kTextLabelWidth) / 2;
+CGFloat textLabelWidth = (topView.frame.size.height - kTextLabelHeight) / 2;
+UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(textLabelTop, textLabelWidth, kTextLabelWidth, kTextLabelHeight)];
+//设置文字及居中
+[textLabel setText:@&quot;Ezfen&quot;];
+[textLabel setTextAlignment:NSTextAlignmentCenter];
+//分别设置样式
+[topView setBackgroundColor:[UIColor redColor]];
+[textLabel setTextColor:[UIColor whiteColor]];
+//设置文字控件的宽度按照上一级视图（topView）的比例进行缩放
+[textLabel setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
+//添加视图
+[topView addSubview:textLabel];
+[self.view addSubview:topView];
+//注意：重新设置topView位置的代码，必须要写在添加视图的后面，不然autoresizing的位置计算会出错！
+CGFloat topViewWidth = kUIScreen.size.width - kMargin * 2;
+[topView setFrame:CGRectMake(kMargin, kTopSpace, topViewWidth, kTopViewHeight)];
+</code></pre>
+<p>上面的代码中尺寸宽度被限定为iPhone4s的320。没有设置子View（蓝色的View）的autoresizingMask属性的话运行结果如下：<br><img src="http://7xs4ed.com1.z0.glb.clouddn.com/autoresizingMask_4s.jpg" alt=""></p>
+<p>设置了子View（蓝色的View）autoresizingMask后，再修改父View的宽度，可以看到随着赋值的不同，有不同的效果：<br>设置了UIViewAutoresizingFlexibleLeftMargin<br><img src="http://7xs4ed.com1.z0.glb.clouddn.com/autoresizingMask_FlexibleLeftMargin.jpg" alt="UIViewAutoresizingFlexibleLeftMargin"></p>
+<p>还有的其他值对应的效果图在上文已经摆出来了，请参阅哈~~</p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> UIView </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[iOS下重要的多线程GCD]]></title>
+      <url>/2016/03/13/iOS%E4%B8%8B%E9%87%8D%E8%A6%81%E7%9A%84%E5%A4%9A%E7%BA%BF%E7%A8%8BGCD/</url>
+      <content type="html"><![CDATA[<p><strong>多线程</strong>是每个系统都必须具备的功能，带给用户更多的便利，伴随着友好度的提升，APP的被使用率和被使用频率也会更加高。<br>此篇笔记参考了网络上一些好文，学习到了很多。在Ray Wenderlich上摘录了一些队列的常用情景，希望自己得到提高的同时分享给大家。</p>
+<a id="more"></a>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2014/01/Concurrency_vs_Parallelism.png" alt=""></p>
+<h2 id="一些概念"><a href="#一些概念" class="headerlink" title="一些概念"></a>一些概念</h2><h3 id="串行（Serial）与-并发（Concurrent）"><a href="#串行（Serial）与-并发（Concurrent）" class="headerlink" title="串行（Serial）与 并发（Concurrent）"></a>串行（Serial）与 并发（Concurrent）</h3><ul>
+<li>任务串行，意味着在同一时间，有且只有一个任务被执行，即一个任务执行完毕之后再执行下一个任务。</li>
+<li>任务并发，意味着对于用户体验，在同一时间，有多个任务被执行。</li>
+</ul>
+<h3 id="同步（Synchronous）与-异步-（Asynchronous）"><a href="#同步（Synchronous）与-异步-（Asynchronous）" class="headerlink" title="同步（Synchronous）与 异步 （Asynchronous）"></a>同步（Synchronous）与 异步 （Asynchronous）</h3><ul>
+<li>同步派发(sync)会尽可能地在当前线程派发任务。但如果在其他队列往主队列同步派发，任务会在主线程执行。 </li>
+<li>异步派发(async)也不绝对会另开线程。例如在主线程异步派发到主线程，派发依旧是异步的，任务也会在主线程执行。</li>
+</ul>
+<p>同步异步的重要区别在于派发方法是否需要等待 block 完成后才能返回。</p>
+<h3 id="临界区（Critical-Section）"><a href="#临界区（Critical-Section）" class="headerlink" title="临界区（Critical Section）"></a>临界区（Critical Section）</h3><p>一段代码不能被并发执行，也就是，两个线程不能同时执行这段代码。这很常见，因为代码去操作一个共享资源，例如一个变量若能被并发进程访问，那么它很可能会变质（它的值不再可信）。</p>
+<h3 id="死锁（Deadlock）"><a href="#死锁（Deadlock）" class="headerlink" title="死锁（Deadlock）"></a>死锁（Deadlock）</h3><p>停止等待事情的线程会导致多个线程相互维持等待，即死锁。<br>两个（或更多）线程卡住了，等待对方完成或执行其它操作。第一个不能完成是因为它在等待第二个的完成。但第二个也不能完成，因为它在等待第一个的完成。</p>
+<h3 id="线程安全（Thread-Safe）"><a href="#线程安全（Thread-Safe）" class="headerlink" title="线程安全（Thread Safe）"></a>线程安全（Thread Safe）</h3><p>线程安全的代码能在多线程或并发任务中被安全的调用，而不会导致任何问题（数据损坏，崩溃等）。线程不安全的代码在某个时刻只能在一个上下文中运行。一个线程安全代码的例子是NSDictionary。你可以在同一时间在多个线程中使用它而不会有问题。另一方面，NSMutableDictionary就不是线程安全的，应该保证一次只能有一个线程访问它。更多请看：<a href="https://developer.apple.com/library/mac/documentation/cocoa/conceptual/multithreading/ThreadSafetySummary/ThreadSafetySummary.html" target="_blank" rel="external">helpful and somewhat chilling list</a></p>
+<h3 id="上下文切换（Context-Switch）"><a href="#上下文切换（Context-Switch）" class="headerlink" title="上下文切换（Context Switch）"></a>上下文切换（Context Switch）</h3><p>一个上下文切换指当你在单个进程里切换执行不同的线程时存储与恢复执行状态的过程。这个过程在编写多任务应用时很普遍，但会带来一些额外的开销。</p>
+<h3 id="并发（Concurrency）与-并行-（Parallelism）"><a href="#并发（Concurrency）与-并行-（Parallelism）" class="headerlink" title="并发（Concurrency）与 并行 （Parallelism）"></a>并发（Concurrency）与 并行 （Parallelism）</h3><p>并行要求并发，但并发不能保证并行，就计算机操作系统来说，开启线程是很耗性能的，也就是说，事实上，在某次并发处理任务中，开启的线程是有上限的，如果上限为2，即每次开启的新线程为2，那么是有可能出现并发却不并行的情况。<br>并发代码的不同部分可以“同步”执行。然而，该怎样发生或是否发生都取决于系统。多核设备通过并行来同时执行多个线程；然而，为了使单核设备也能实现这一点，它们必须先运行一个线程，执行一个上下文切换，然后运行另一个线程或进程。这通常发生地足够快以致给我们并发执行地错觉，如下图所示：<br><img src="https://koenig-media.raywenderlich.com/uploads/2014/01/Concurrency_vs_Parallelism.png" alt=""></p>
+<h2 id="队列（queue）"><a href="#队列（queue）" class="headerlink" title="队列（queue）"></a>队列（queue）</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">队列</th>
+<th style="text-align:center">线程</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">串行</td>
+<td style="text-align:center">当前线程运行</td>
+</tr>
+<tr>
+<td style="text-align:center">并发</td>
+<td style="text-align:center">另开线程运行</td>
+</tr>
+</tbody>
+</table>
+<h3 id="串行队列（Serial-Queues）"><a href="#串行队列（Serial-Queues）" class="headerlink" title="串行队列（Serial Queues）"></a>串行队列（Serial Queues）</h3><hr>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2014/01/Serial-Queue.png" alt=""><br><code>dispatch_queue_create(&quot;com.selander.GooglyPuff.photoQueue&quot;,DISPATCH_QUEUE_SERIAL);</code><br>串行队列最典型的是<strong>main queue</strong>：主线程所对应的queue，主要用于更新UI。</p>
+<h3 id="并发队列（Concurrent-Queues）"><a href="#并发队列（Concurrent-Queues）" class="headerlink" title="并发队列（Concurrent Queues）"></a>并发队列（Concurrent Queues）</h3><hr>
+<p><img src="https://koenig-media.raywenderlich.com/uploads/2014/01/Concurrent-Queue.png" alt=""><br><code>dispatch_queue_create(&quot;com.selander.GooglyPuff.photoQueue&quot;,DISPATCH_QUEUE_CONCURRENT);</code><br>除了通过DISPATCH_QUEUE_CONCURRENT创建的queue外，系统提供了Global Dispatch Queues：分别有四种优先级（background, low, default, high）<br><code>dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)</code></p>
+<h2 id="GCD语法和适用范围"><a href="#GCD语法和适用范围" class="headerlink" title="GCD语法和适用范围"></a>GCD语法和适用范围</h2><h3 id="dispatch-sync"><a href="#dispatch-sync" class="headerlink" title="dispatch_sync"></a>dispatch_sync</h3><p><img src="https://koenig-media.raywenderlich.com/uploads/2014/01/dispatch_sync_in_action.gif" alt="">    </p>
+<ul>
+<li>串行队列：Caution！！需要注意不能往本队列派发任务，否则会造成死锁。    </li>
+<li>并发队列：√</li>
+</ul>
+<h3 id="dispatch-async"><a href="#dispatch-async" class="headerlink" title="dispatch_async"></a>dispatch_async</h3><p><img src="https://koenig-media.raywenderlich.com/uploads/2014/01/dispatch_async_in_action.gif" alt="">    </p>
+<ul>
+<li>串行队列：√    </li>
+<li>并发队列：√</li>
+</ul>
+<h3 id="dispatch-barriers"><a href="#dispatch-barriers" class="headerlink" title="dispatch barriers"></a>dispatch barriers</h3><p><img src="https://koenig-media.raywenderlich.com/uploads/2014/01/Dispatch-Barrier.png" alt=""><br>正如上图所示：使用dispatch_barriers_sync或dispatch_barries_async会在你创建的队列中插入Barrier Block，而这个Block被执行时确保当前仅有一个任务在执行中。这就很好地在并发队列中保持一段暂时串行的任务执行顺序。这很适合于：如对某一个数组或存储结构添加数据时，就可以将该任务作为Barrier Block插入到队列中，即保证了该数组的原子性，防止脏数据的产生。    </p>
+<ul>
+<li>串行队列：完全没必要….</li>
+<li>并发队列：√</li>
+</ul>
+<h4 id="read-and-write-读写问题"><a href="#read-and-write-读写问题" class="headerlink" title="read and write 读写问题"></a>read and write 读写问题</h4><pre><code>- (void)addPhoto:(Photo *)photo 
+{ 
+if (photo) { // 1 
+dispatch_barrier_async(self.concurrentPhotoQueue, ^{ // 2 
+[_photosArray addObject:photo]; // 3 
+dispatch_async(dispatch_get_main_queue(), ^{ // 4 
+[self postContentAddedNotification]; 
+}); 
+}); 
+} 
+}
+</code></pre><pre><code>- (NSArray *)photos 
+{ 
+__block NSArray *array; // 1 
+dispatch_sync(self.concurrentPhotoQueue, ^{ // 2 
+array = [NSArray arrayWithArray:_photosArray]; // 3 
+}); 
+return array; 
+}
+</code></pre><h3 id="dispatch-after"><a href="#dispatch-after" class="headerlink" title="dispatch_after"></a>dispatch_after</h3><p>dispatch_after有一个非常使用的情景：当你需要在APP启动时让启动图片再显示就一些，让APP有更充足的时间准备一些初始化的工作时，就使用dispatch_after.而且正如下文将说到的：dispatch_after最好只在main queue中使用。</p>
+<pre><code>double delayInSeconds = 1.0; 
+dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC)); // 1 
+dispatch_after(popTime, dispatch_get_main_queue(), ^(void){ // 2 
+if (!count) { 
+[self.navigationItem setPrompt:@&quot;Add photos with faces to Googlyify them!&quot;]; 
+} else { 
+[self.navigationItem setPrompt:nil]; 
+} 
+});
+</code></pre><p><strong>只能用于Main Queue！！！！！！！！！！！！！！</strong></p>
+<h3 id="dispatch-once"><a href="#dispatch-once" class="headerlink" title="dispatch_once"></a>dispatch_once</h3><pre><code>static PhotoManager *sharedPhotoManager = nil; 
+static dispatch_once_t onceToken; 
+dispatch_once(&amp;onceToken, ^{ 
+sharedPhotoManager = [[PhotoManager alloc] init]; 
+sharedPhotoManager-&gt;_photosArray = [NSMutableArray array]; 
+}); 
+return sharedPhotoManager;
+</code></pre><h3 id="dispatch-groups"><a href="#dispatch-groups" class="headerlink" title="dispatch_groups"></a>dispatch_groups</h3><pre><code>dispatch_group_t downloadGroup = dispatch_group_create(); 
+//任务开始之前要执行下面的enter函数 
+dispatch_group_enter(downloadGroup); 
+//在任务结束的时候要执行下面的leave函数 
+dispatch_group_leave(downloadGroup); 
+dispatch_group_wait(downloadGroup, DISPATCH_TIME_FOREVER);//阻塞进程等待所有任务结束 
+// or 交给group通知 
+dispatch_group_notify(downloadGroup, dispatch_get_main_queue(), ^{ // 4 
+if (completionBlock) { 
+completionBlock(error); 
+} 
+});
+</code></pre><p>group中的任务不一定在同一个queue里面。串行队列和并发队列都可用。</p>
+<ul>
+<li>串行队列：√    </li>
+<li>并发队列：√</li>
+</ul>
+<h3 id="dispatch-apply"><a href="#dispatch-apply" class="headerlink" title="dispatch_apply"></a>dispatch_apply</h3><pre><code>dispatch_apply(3, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^(size_t i) { 
+}//就像for循环一样
+</code></pre><ul>
+<li>串行队列：没什么必要….串行队列使用跟普通的循环没有区别。</li>
+<li>并发队列：√</li>
+</ul>
+<hr>
+<p>参考文献：</p>
+<p><a href="https://www.raywenderlich.com/60749/grand-central-dispatch-in-depth-part-1" target="_blank" rel="external">Grand Central Dispatch In-Depth: Part 1/2</a></p>
+<p><a href="https://www.raywenderlich.com/63338/grand-central-dispatch-in-depth-part-2" target="_blank" rel="external">Grand Central Dispatch In-Depth: Part 2/2</a></p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> iOSThread </tag>
+            
+        </tags>
+        
+    </entry>
+    
+  
+  
+</search>

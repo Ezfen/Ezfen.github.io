@@ -29,6 +29,7 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/search.css">
 
     <!-- Custom Fonts -->
     <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -75,8 +76,8 @@
             <div class="post-content col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 <p>本来不想重复造轮子，因为网上已经很多关于iOS触碰事件传递响应链的文章，而且苹果官方文档也已经解释得很清楚。但是上周和朋友吃饭的时候聊到却不能很好地将想法表达出来，所以感觉还是写一写，加深印象吧～</p>
 <a id="more"></a>
-<p>毋庸置疑地，在论及事件传递的时候我们都会很顺口地使用用上下方向来表达事件传递(Event Delivery)，从UIApplication到响应事件的UIView是「从下往上」，反过来自然就是「从上往下」啦～</p>
-<h2 id="从下往上——寻找HitTest-View"><a href="#从下往上——寻找HitTest-View" class="headerlink" title="从下往上——寻找HitTest View"></a>从下往上——寻找HitTest View</h2><p>当一个用户产生的事件发生并被系统捕获到后，UIKit会创建一个事件对象(Event Object)，携带着一些处理信息eg:点击位置、事件类型等，然后将这个对象存放在UIApplication的事件队列中，等待处理。</p>
+<p>毋庸置疑地，在论及事件传递的时候我们都会很顺口地使用用上下方向来表达事件传递(Event Delivery)，从UIApplication到响应事件的UIView是「从下往上」，反过来自然就是「从上往下」了。</p>
+<h2 id="从下往上——寻找HitTest-View"><a href="#从下往上——寻找HitTest-View" class="headerlink" title="从下往上——寻找HitTest View"></a>从下往上——寻找HitTest View</h2><p>当一个用户产生的事件发生并被系统捕获到后，UIKit会创建一个事件对象(Event Object)，携带着一些处理信息，eg:点击位置、事件类型等，然后将这个对象存放在UIApplication的事件队列中，等待处理。</p>
 <p>我们开发中使用的最多的是触碰事件(Touch Event)，也只有触碰事件才需要iOS为我们寻找<strong>HitTest View</strong>，即<strong>寻找响应该事件的View</strong>，这一过程，官方文档里称为<strong><em>Hit-Testing</em></strong>。</p>
 <p>了解这一过程，先了解UIView的两个可重载的方法：</p>
 <ol>
@@ -111,7 +112,7 @@
       return self;    // 自己成为HitTest View
 }
 </code></pre>
-<h2 id="从上往下——寻找响应对象"><a href="#从上往下——寻找响应对象" class="headerlink" title="从上往下——寻找响应对象"></a>从上往下——寻找响应对象</h2><p><img src="https://developer.apple.com/library/content/documentation/EventHandling/Conceptual/EventHandlingiPhoneOS/Art/iOS_responder_chain_2x.png" alt="这张图已经看了不止一千遍了"></p>
+<h2 id="从上往下——寻找响应对象"><a href="#从上往下——寻找响应对象" class="headerlink" title="从上往下——寻找响应对象"></a>从上往下——寻找响应对象</h2><p><img src="https://upload-images.jianshu.io/upload_images/1387344-cd500e5bd93d9606.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700" alt="这张图已经看了不止一千遍了"></p>
 <p>这张图相信在其他地方已经看了一千遍了，但是有图还是容易理解，从上往下的意思是：</p>
 <p>当上一步找到的HitTest View没能响应事件时(eg:userInteractionEnabled为NO或者没有定义响应事件的方法)，那么事件就会被传递到SuperView或着Controller。直至Applicaion都不能处理该事件则忽略。</p>
 <p>需要注意的是：这里的传递只会给SuperView或着Controller，并不会传递给与自己相同级别的View，除非你自己控制。</p>
@@ -137,6 +138,12 @@
                 <div class="post-meta">
                     <hr>
                     <br>
+                    
+                        <div class="mddl">
+                            <img src="http://7xs4ed.com1.z0.glb.clouddn.com/TouchEvent_WechatIMG3.jpeg"/>
+                            <a>本篇文章.md</a>
+                        </div>
+                    
                     <div class="post-tags">
                         
                             
@@ -183,6 +190,7 @@
 </script>
 
 <script src="/js/backtop.js"></script>
+<script src="/js/search.js"></script>
     <!-- Google Analytics -->
     
 

@@ -29,6 +29,7 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/search.css">
 
     <!-- Custom Fonts -->
     <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -73,11 +74,11 @@
         <div class="row">
             <!-- Post Main Content -->
             <div class="post-content col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <p>说来惭愧，自己的C/C++水平还没有到达很高的水平，但是最近工作上需要将Win上的一个C库移植到iOS上以支持业务的开展，修改代码后需要编译成静态库供iOS使用。     </p>
-<p>一种很简单的方式就是创建Cocoa Touch Static Library项目，然后直接将所需要的代码文件无脑添加到项目里面，编译，合成，结束~    </p>
-<p>但是为了使用Windows或Linux的同事在修改完代码后也能编译出静态库而无需再搬到Mac上操作，所以学习了一下makefile，完成了这项工作。    </p>
+                <p>最近工作上需要将Win上的一个C库移植到iOS上以支持业务的开展，修改代码后需要编译成静态库供iOS使用，为了使用Windows或Linux的同事在修改完代码后也能编译出静态库而无需再搬到Mac上操作，学习了一下makefile。    </p>
 <a id="more"></a>
-<p>本文只是皮毛，写点在此次工作中的一些历程。     </p>
+<p>说来惭愧，自己的C/C++水平还没有到达很高的水平，最开始想到的最简单的方式就是创建<code>Cocoa Touch Static Library</code>项目，然后直接将所需要的代码文件无脑添加到项目里面，编译，合成。    </p>
+<p>但是为了让其他同事更快捷地完成工作，学习了如何使用makefile来编译静态库。</p>
+<p>本文只是皮毛，主要是在此次工作中的一些历程。     </p>
 <h2 id="静态库特点"><a href="#静态库特点" class="headerlink" title="静态库特点"></a>静态库特点</h2><blockquote>
 <ul>
 <li>静态库对函数库的链接是放在编译时期完成的。</li>
@@ -96,7 +97,7 @@
 <li>如果这个工程的头文件被改变了，那么我们需要编译引用了这几个头文件的C文件，并链接目标程序。</li>
 </ul>
 </blockquote>
-<p>Google可以搜素到很多makefile的好文章，这里简略介绍一下：</p>
+<p>Google可以搜索到很多makefile的好文章，这里简略介绍一下：</p>
 <h3 id="基本语句"><a href="#基本语句" class="headerlink" title="基本语句"></a>基本语句</h3><pre><code>target : prerequisites
     command
 </code></pre><ul>
@@ -302,6 +303,7 @@ lipo -create ${LIB_SIM_PATHS[@]} -output ${LIB_SIMULATOR_NAME}
                 <div class="post-meta">
                     <hr>
                     <br>
+                    
                     <div class="post-tags">
                         
                             
@@ -348,6 +350,7 @@ lipo -create ${LIB_SIM_PATHS[@]} -output ${LIB_SIMULATOR_NAME}
 </script>
 
 <script src="/js/backtop.js"></script>
+<script src="/js/search.js"></script>
     <!-- Google Analytics -->
     
 
