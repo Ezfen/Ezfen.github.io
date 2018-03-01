@@ -34,6 +34,7 @@ skip_render:
 - demo/**
 - about/**
 - README.md
+- md/**
 
 # Writing
 new_post_name: :title.md # File name of new posts
@@ -72,6 +73,11 @@ pagination_dir: page
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
 theme: hollow
+
+# Local Search
+search:
+  path: search.xml
+  field: post
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html

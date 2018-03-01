@@ -1,3 +1,10 @@
-<a class="allcategory search" href="<%- config.about_dir %>">
-  <i class="fa fa-search" ></i>
-</a>
+<div class="search-wrapper">
+	<div class="input-holder">
+		<input type="text" class="search-input" id="local-search-input" placeholder="Searchhhhh..." />
+	</div>
+	<button class="search-icon" onclick="searchToggle(this, event);">
+			<i class="fa fa-search" id="search-icon"></i>
+	</button>
+	<span class="close" onclick="searchToggle(this, event);"></span>
+</div>
+

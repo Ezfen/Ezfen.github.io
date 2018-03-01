@@ -27,6 +27,12 @@
                 <div class="post-meta">
                     <hr>
                     <br>
+                    <% if (item.mddl) { %>
+                        <div class="mddl">
+                            <img src="<%- item.thumbnail %>"/>
+                            <a>本篇文章.md</a>
+                        </div>
+                    <% }%>
                     <div class="post-tags">
                         <% if (item.tags && item.tags.length){ %>
                             <%- partial('article-tags', {item: item}) %>

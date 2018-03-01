@@ -1,8 +1,6 @@
 ---
 title: iOS Touch Event传递和响应链
 date: 2017-02-27 18:54:59
-mddl: /iOS-Event传递和响应链.md
-thumbnail: http://7xs4ed.com1.z0.glb.clouddn.com/TouchEvent_WechatIMG3.jpeg
 tags: 
 - UIView 
 ---
@@ -11,11 +9,11 @@ tags:
 
 <!-- more -->
 
-毋庸置疑地，在论及事件传递的时候我们都会很顺口地使用用上下方向来表达事件传递(Event Delivery)，从UIApplication到响应事件的UIView是「从下往上」，反过来自然就是「从上往下」了。
+毋庸置疑地，在论及事件传递的时候我们都会很顺口地使用用上下方向来表达事件传递(Event Delivery)，从UIApplication到响应事件的UIView是「从下往上」，反过来自然就是「从上往下」啦～
 
 ## 从下往上——寻找HitTest View
 
-当一个用户产生的事件发生并被系统捕获到后，UIKit会创建一个事件对象(Event Object)，携带着一些处理信息，eg:点击位置、事件类型等，然后将这个对象存放在UIApplication的事件队列中，等待处理。
+当一个用户产生的事件发生并被系统捕获到后，UIKit会创建一个事件对象(Event Object)，携带着一些处理信息eg:点击位置、事件类型等，然后将这个对象存放在UIApplication的事件队列中，等待处理。
 
 我们开发中使用的最多的是触碰事件(Touch Event)，也只有触碰事件才需要iOS为我们寻找**HitTest View**，即**寻找响应该事件的View**，这一过程，官方文档里称为***Hit-Testing***。
 

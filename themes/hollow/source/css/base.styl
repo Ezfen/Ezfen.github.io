@@ -5,19 +5,51 @@ body,
 html
   width 100%
   font-size 18px
+  font-weight 300
   color gray-dark
-  @extend .serif
+  @extend .sans-serif
 
 p
   letter-spacing .1px
-  line-height 1.5
+  line-height 1.8
   margin 20px 0
   a
     text-decoration underline
 
 h1, h2, h3, h4, h5, h6
-  @extend .serif
+  @extend .sans-serif
   font-weight 800
+  margin 20px 0
+
+h2
+  transform translate(-32px, 0)
+  &:before
+    content ' H2 '
+    color #CCC
+    font-size 13px
+    margin-right 10px
+
+h3
+  transform translate(-32px, 0)
+  &:before
+    content ' H3 '
+    color #CCC
+    font-size 12px
+    margin-right 10px
+
+h4
+  transform translate(-32px, 0)
+  &:before
+    content ' H4 '
+    color #CCC
+    font-size 11px
+    margin-right 10px
+
+ul
+  margin-left -25px
+
+li
+  margin 10px 0
 
 a
   color red
@@ -66,7 +98,7 @@ nav
   left 0
   width 100%
   z-index 3
-  @extend .serif
+  @extend .sans-serif
 
 .intro 
   width 100%
@@ -97,7 +129,7 @@ nav
       font-size 24px
       line-height 1.1
       display block
-      @extend .serif
+      @extend .sans-serif
       font-weight 300
       margin 10px 0 0
     @media only screen and (min-width: 768px)
@@ -155,6 +187,10 @@ nav
       width 30%
       height 100%
       font-size 2em
+      transform translate(0, 0)
+      &:before
+        margin-right 0
+        font-size 0
       &.archive
         font-size 22px
         width 100%
@@ -182,6 +218,11 @@ nav
   
 .post-meta
   padding-top 50px
+  .mddl
+    display inline
+    border 1px dashed red
+    border-radius 5px
+    padding 10px
 
 .post-tags, .post-categories, .post-date
   text-align right
@@ -280,7 +321,7 @@ form .row:first-child .floating-label-form-group
   li
     display inline
     > a, > span
-      @extend .serif
+      @extend .sans-serif
       text-transform uppercase
       font-size 14px
       font-weight 800
