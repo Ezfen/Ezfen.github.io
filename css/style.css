@@ -109,8 +109,8 @@ article .container .row blockquote {
     opacity: 1;
   }
 }
-html {
-  cursor: url("/images/default.cur");
+* {
+  cursor: url("/images/default.cur"), default;
 }
 body,
 html {
@@ -207,8 +207,12 @@ a.nav-back .fa {
   top: 12px;
   left: 12px;
 }
+a.nav-back .fa:hover {
+  cursor: url("/images/pointer.cur"), pointer;
+}
 a.nav-back:hover,
 a.nav-back:focus {
+  cursor: url("/images/pointer.cur"), pointer;
   border: 1px solid #cc543a;
   color: #cc543a;
 }
@@ -829,7 +833,7 @@ pre .deletion {
   padding: 20px;
   transition: all 300ms linear;
   z-index: 9;
-  cursor: pointer;
+  cursor: url("/images/pointer.cur"), pointer;
 }
 .allcategory i {
   color: #ccc;
@@ -841,8 +845,12 @@ pre .deletion {
 .allcategory i .fa .fa-rocket {
   font-size: 1.1em;
 }
+.allcategory i:hover {
+  cursor: url("/images/pointer.cur"), pointer;
+}
 .allcategory:hover {
   border: 1px solid #cc543a;
+  cursor: url("/images/pointer.cur"), pointer;
 }
 .allcategory:hover i {
   color: #cc543a;
@@ -860,6 +868,7 @@ pre .deletion {
 }
 .expand-left:hover {
   border: 1px solid #ccc;
+  cursor: url("/images/pointer.cur"), pointer;
 }
 .expand-left:hover i {
   color: #ccc;
@@ -886,7 +895,7 @@ pre .deletion {
   padding: 20px;
   transition: all 300ms linear;
   z-index: 9;
-  cursor: pointer;
+  cursor: url("/images/pointer.cur"), pointer;
 }
 #returnTop i {
   color: #ccc;
@@ -899,8 +908,12 @@ pre .deletion {
 #returnTop i .fa .fa-rocket {
   font-size: 1.1em;
 }
+#returnTop i:hover {
+  cursor: url("/images/pointer.cur"), pointer;
+}
 #returnTop:hover {
   border: 1px solid #cc543a;
+  cursor: url("/images/pointer.cur"), pointer;
 }
 #returnTop:hover i {
   color: #cc543a;

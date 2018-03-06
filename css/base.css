@@ -107,8 +107,8 @@ nav,
     opacity: 1;
   }
 }
-html {
-  cursor: url("/images/default.cur");
+* {
+  cursor: url("/images/default.cur"), default;
 }
 body,
 html {
@@ -205,8 +205,12 @@ a.nav-back .fa {
   top: 12px;
   left: 12px;
 }
+a.nav-back .fa:hover {
+  cursor: url("/images/pointer.cur"), pointer;
+}
 a.nav-back:hover,
 a.nav-back:focus {
+  cursor: url("/images/pointer.cur"), pointer;
   border: 1px solid #cc543a;
   color: #cc543a;
 }
