@@ -107,6 +107,9 @@ nav,
     opacity: 1;
   }
 }
+html {
+  cursor: url("/images/default.cur");
+}
 body,
 html {
   width: 100%;
