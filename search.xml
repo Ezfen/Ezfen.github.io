@@ -243,7 +243,7 @@ lipo -create ${LIB_SIM_PATHS[@]} -output ${LIB_SIMULATOR_NAME}
       <title><![CDATA[外包项目《Beauty》札记]]></title>
       <url>/2017/07/17/%E9%A1%B9%E7%9B%AEBeauty%E6%80%BB%E7%BB%93/</url>
       <content type="html"><![CDATA[<p>三月底开始了自己的第一个外包项目“Beauty”，App的名字是“CHARMER”，是一个促进美容技师和客户之间达成服务协议的App，搭建供求双方沟通和交易的桥梁和平台。在做完第一版之后，几乎每晚都需要修改功能修复Bug，现在突然间一段时间没有了消息，应该算是完结了。    </p>
-<p>2017-10-12 更: 项目运营烂尾，终于停止上线…</p>
+<p>2017-10-12 更: 项目运营烂尾…</p>
 <a id="more"></a>
 <p>​         </p>
 <h2 id="所做的事情"><a href="#所做的事情" class="headerlink" title="所做的事情"></a>所做的事情</h2><p>总的来说，有这么几个功能：</p>
@@ -288,13 +288,13 @@ lipo -create ${LIB_SIM_PATHS[@]} -output ${LIB_SIMULATOR_NAME}
 </li>
 </ul>
 <h2 id="一些具体实现"><a href="#一些具体实现" class="headerlink" title="一些具体实现"></a>一些具体实现</h2><p>　　基本实现下来都不是特别难，所以挑一些值得记录的写下来：</p>
-<h3 id="项目文件结构"><a href="#项目文件结构" class="headerlink" title="项目文件结构"></a>项目文件结构</h3><p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/Beauty_%E9%A1%B9%E7%9B%AE%E5%A4%A7%E8%87%B4%E7%BB%93%E6%9E%84.png" alt=""></p>
+<h3 id="项目文件结构"><a href="#项目文件结构" class="headerlink" title="项目文件结构"></a>项目文件结构</h3><p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/yjc6f.png" alt="Beauty_项目大致结构"></p>
 <p>　　因为App是用户与技师统一客户端，所以，对于每个Module，都分成Charmer和User分别对应技师和用户，再在其下分为Model、View、Controller，很常见的MVC架构。    </p>
 <p>　　这样做的好处是，文件结构清晰，分类清楚，一下子就能找到需要的文件（虽然搜索才是最快的&gt;w&lt;）。但是有个问题就出现了，前面有提到说：用户与技师统一客户端，那就不免有界面相同的情况出现，这次开发使用的解决方案是复用所有相同的文件，这个错误的决定让后期维护的我一直想狠扇自己嘴巴。毕竟面向不同的使用团体，很多功能需要定制，所以后期加新需求的时候只能一直if-else，if-else，if-else。惨绝人寰～      </p>
 <p>　　觉得，以后再有这样的情况出现，视类的复杂程度和文件的大小而定， 可能会重写一个同样实现的类文件，感觉这条线很难界定，只能靠以后的开发经验去慢慢学。     </p>
-<h3 id="地图"><a href="#地图" class="headerlink" title="地图"></a>地图</h3><p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/Beauty_Google%E5%9C%B0%E5%9B%BE_%E5%B0%8F.jpg" alt=""></p>
+<h3 id="地图"><a href="#地图" class="headerlink" title="地图"></a>地图</h3><p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/m8ev4.jpg" alt="Beauty_Google地图_小"></p>
 <p>　　因为App即将在香港上线，自然地使用Google地图。第一次用Google地图做开发，感觉跟百度、高德没有太大的区别， 有一点就是：文档基本只有官方文档，遇到问题要Google，基本都是讲百度或高德。关于Google地图，后面再重新写篇文章介绍，包括使用，自定义Marker（地图上紫色的标志），PopView（点击Marker弹出的View）     </p>
-<h3 id="左侧滑动菜单"><a href="#左侧滑动菜单" class="headerlink" title="左侧滑动菜单"></a>左侧滑动菜单</h3><p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/Beauty_%E5%B7%A6%E8%BE%B9%E6%A0%8F.jpg" alt=""></p>
+<h3 id="左侧滑动菜单"><a href="#左侧滑动菜单" class="headerlink" title="左侧滑动菜单"></a>左侧滑动菜单</h3><p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/1h42p.jpg" alt="Beauty_左边栏"></p>
 <p>　　图片好像压缩得有点过分了….</p>
 <p>　　一开始左侧滑动菜单是主界面Controller的一个View，所以滑动的时候会被上方的Navigation Controller（Navigation Bar）遮挡住，可以想象是多么吃藕。后来在滑动的时候动态隐藏和显示Navigation Bar，就出现了诡异的上面一整条高度为64px的空白区域，发现更吃藕了…</p>
 <p>　　所以在AlertController的启发下，决定用UIWindow来解决这个问题，正如巧神<a href="https://book.douban.com/subject/26287173/" target="_blank" rel="external">《iOS开发进阶》</a>一书的第十二章提及，使用UIWindow在所有View（当然包括当前Window的Navigation Bar）前展示自己想要的内容，所以有了下面的代码：</p>
@@ -378,7 +378,7 @@ lipo -create ${LIB_SIM_PATHS[@]} -output ${LIB_SIMULATOR_NAME}
 
 }
 </code></pre>
-<h3 id="CHARMER-PROFILE"><a href="#CHARMER-PROFILE" class="headerlink" title="CHARMER PROFILE"></a>CHARMER PROFILE</h3><p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/Beauty_CollectionView.jpg" alt=""></p>
+<h3 id="CHARMER-PROFILE"><a href="#CHARMER-PROFILE" class="headerlink" title="CHARMER PROFILE"></a>CHARMER PROFILE</h3><p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/f7cwa.jpg" alt="Beauty_CollectionView"></p>
 <p>　　技师Profile页面，为什么会拿出来写？！是因为Conllection Viewz在日常开发中非常非常非常常见。基本每个App都会用到（TableView是特殊的Conllection View）。这个Collection View分为三部分：</p>
 <ol>
 <li>最上方的HeaderView是一个跑马灯，使用了之前写过的一个小组件<a href="https://github.com/objchris/EZRecycleImageView" target="_blank" rel="external">EZRecycleImageView</a>，在开发中边使用边改进是最好不过的事情了。</li>
@@ -459,7 +459,7 @@ end
 <p><code>hitTest:withEvent:</code>内部会先调用<code>pointInside:withEvent:</code>，来检测触碰点是否在当前View中</p>
 <ul>
 <li><p>若返回<code>NO</code>,则直接返回nil，且所有的SubView都不会响应当前事件。所以，敲重点啦，对于<code>clipsToBounds</code>设置为<code>NO</code>，允许SubView向外延伸的View，需要重载<code>pointInside:withEvent:</code>，例如：</p>
-<p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/TouchEvent_WechatIMG3.jpeg" alt=""></p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/rkb9k.jpg" alt="TouchEvent_WechatIMG3"></p>
 <pre><code class="objective-c">- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event{
       //以下是伪代码  
       if (point inside blueArea) return true;
@@ -471,7 +471,7 @@ end
 </ul>
 <ul>
 <li><p>若返回<code>YES</code>，则调用所有SubView的<code>hitTest:withEvent:</code>，继续寻找HitTest View。在视图层级树(这样翻译?! view hierarchy)中<strong>最后添加的叶结点</strong>且<strong>包含触碰点</strong>的View就会光荣地成为<strong>HitTest View</strong>(如下图最后一个UIView)，首先接受事件，并做下一步操作——寻找响应对象。</p>
-<p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/TouchEvent_WechatIMG1.jpeg" alt=""></p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/zedzb.jpg" alt="TouchEvent_WechatIMG1"></p>
 </li>
 </ul>
 <p>我们也可以在中途截断系统的Hit-Testing，如果你想让某个View的所有SubView都不响应事件，最简单的就是重载该View的<code>hitTest:withEvent:</code>，返回View（自己响应点击事件）或者nil（都不响应）。</p>
@@ -480,7 +480,7 @@ end
       return self;    // 自己成为HitTest View
 }
 </code></pre>
-<h2 id="从上往下——寻找响应对象"><a href="#从上往下——寻找响应对象" class="headerlink" title="从上往下——寻找响应对象"></a>从上往下——寻找响应对象</h2><p><img src="https://upload-images.jianshu.io/upload_images/1387344-cd500e5bd93d9606.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700" alt="这张图已经看了不止一千遍了"></p>
+<h2 id="从上往下——寻找响应对象"><a href="#从上往下——寻找响应对象" class="headerlink" title="从上往下——寻找响应对象"></a>从上往下——寻找响应对象</h2><p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/2fznc.png" alt="1387344-cd500e5bd93d9606"></p>
 <p>这张图相信在其他地方已经看了一千遍了，但是有图还是容易理解，从上往下的意思是：</p>
 <p>当上一步找到的HitTest View没能响应事件时(eg:userInteractionEnabled为NO或者没有定义响应事件的方法)，那么事件就会被传递到SuperView或着Controller。直至Applicaion都不能处理该事件则忽略。</p>
 <p>需要注意的是：这里的传递只会给SuperView或着Controller，并不会传递给与自己相同级别的View，除非你自己控制。</p>
@@ -499,7 +499,7 @@ end
 <p>你不如先反问一句，两个View是否为SuperView和SubView的关系？！</p>
 <p>再分门别类地回答～</p>
 <p>以上</p>
-<p>最后奉上教条：<a href="https://developer.apple.com/library/content/documentation/EventHandling/Conceptual/EventHandlingiPhoneOS/event_delivery_responder_chain/event_delivery_responder_chain.html#//apple_ref/doc/uid/TP40009541-CH4-SW1" target="_blank" rel="external">Event Handling Guide for iOS</a></p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a href="https://developer.apple.com/library/content/documentation/EventHandling/Conceptual/EventHandlingiPhoneOS/event_delivery_responder_chain/event_delivery_responder_chain.html#//apple_ref/doc/uid/TP40009541-CH4-SW1" target="_blank" rel="external">Event Handling Guide for iOS</a></p>
 ]]></content>
       
         
@@ -516,7 +516,7 @@ end
       <url>/2017/02/19/%E6%88%91%E6%9C%89%E7%83%A6%E6%81%BC%EF%BC%8C%E4%BD%A0%E6%9C%89%E7%AD%94%E6%A1%88/</url>
       <content type="html"><![CDATA[<p>被友人种草东野圭吾，拾取碎片时间，拜读了这本书。<br>怎么说呢，《解忧杂货店》那么多人宣扬还是有它的道理的。</p>
 <a id="more"></a>
-<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/%E4%B8%83%E7%89%9BBackUp/jyzhd_bg.png" alt=""></p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/kk1if.png" alt="jyzhd_bg"></p>
 <p>正如译者所言：他的作品并非只有谜团，只是卖弄诡计。一个更重要的元素，即他过人的说故事能力，以及有温度的文字书写。</p>
 <blockquote>
 <p>这里不只卖日常生活用品</p>
@@ -547,14 +547,14 @@ end
     <entry>
       <title><![CDATA[Hello World Again]]></title>
       <url>/2017/02/17/hello-world/</url>
-      <content type="html"><![CDATA[<p>决定给博客的名字起为OAOA。</p>
+      <content type="html"><![CDATA[<p>决定给博客的名字起为<strong>少年</strong>。</p>
+<p><strong>如少年般真实，热爱，不朽。</strong></p>
 <p>趁着最近没有动力看书，又不想脑袋生锈，又看腻了之前Hexo的yilia主题。所以换个博客主题，Hello World Again。</p>
 <a id="more"></a>
-<p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/helloworld_background.png" alt=""></p>
 <h2 id="开始捣鼓"><a href="#开始捣鼓" class="headerlink" title="开始捣鼓"></a>开始捣鼓</h2><p>不是前端er要自己写个主题出来还真不是简单的事情。所以借鉴了hollow主题，并在其上进行修改。</p>
-<h3 id="主页"><a href="#主页" class="headerlink" title="主页"></a>主页</h3><p>主页大致上没有做太多的修改，因为一开始就是看上这种简简单单的，没有太多复杂成分的排版。厌倦了yilia，第一是：不想要左右版式的页面，显得左侧的菜单栏有点喧宾夺主。第二是：总把人脸留在左边显眼的位置，不太好意思～</p>
+<h3 id="主页"><a href="#主页" class="headerlink" title="主页"></a>主页</h3><p>主页大致上没有做太多的修改，因为一开始就是看上这种简简单单的，没有太多复杂成分的排版。厌倦了yilia，第一是：不想要左右版式的页面，显得左侧的菜单栏有点喧宾夺主。第二是：总把人脸留在左边显眼的位置，纯粹的不喜欢。</p>
 <p>hollow主题只是包含了主页，也就是现实文章序列和文章详情。其他的都没有。</p>
-<h3 id="Categories"><a href="#Categories" class="headerlink" title="Categories"></a>Categories</h3><p>进入分类页面在主页右上角的钻石按钮，分类页面是显示所有博文的分类。</p>
+<h3 id="Tags"><a href="#Tags" class="headerlink" title="Tags"></a>Tags</h3><p>进入分类页面在主页右上角的钻石按钮，分类页面是显示所有博文的分类。</p>
 <p>因为暂时不支持站内搜索，如果要找某一篇文章需要一页页地翻，感觉会很繁琐。所以建立了个分类页面。</p>
 <p>我是通过修改page.ejs来达到目的。</p>
 <pre><code class="html">&lt;section class=&quot;article-container&quot;&gt;
@@ -567,7 +567,7 @@ end
         &lt;div class=&quot;row&quot;&gt;
             &lt;div class=&quot;col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1&quot;&gt;
                 &lt;div class=&quot;post-heading&quot;&gt;
-                    &lt;h1&gt;Categories&lt;/h1&gt;
+                    &lt;h1&gt;TAGS&lt;/h1&gt;
                 &lt;/div&gt;
             &lt;/div&gt;
         &lt;/div&gt;
@@ -580,7 +580,7 @@ end
         &lt;div class=&quot;row&quot;&gt;
             &lt;!-- Post Main Content --&gt;
             &lt;div class=&quot;post-content col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1&quot;&gt;
-                &lt;% site.categories.each(function(category){ %&gt;
+                &lt;% site.tags.each(function(category){ %&gt;
                     &lt;a class=&quot;category&quot; href=&quot;&lt;%-category.name%&gt;&quot;&gt;&lt;%-category.name%&gt;&lt;/a&gt;
                 &lt;% }); %&gt;
             &lt;/div&gt;
@@ -591,9 +591,9 @@ end
 &lt;!-- Back to top --&gt;
 &lt;%- partial(&#39;_partial/backtop&#39;) %&gt;
 </code></pre>
-<p>修改完page.ejs后，执行<code>hexo new page &quot;categories&quot;</code>就可以创建categories页了。然后调整格式就可以了。</p>
-<h3 id="About和Demo"><a href="#About和Demo" class="headerlink" title="About和Demo"></a>About和Demo</h3><p>这两个页面是自己添加的。</p>
-<p>这两个页面是最复杂的。首先Hexo只支持index,page,post,layout,archive这几种自定义页面，所以修改了page后作为category页面之后就不能通过修改项目页面模板来添加新的自定义页面了。</p>
+<p>修改完page.ejs后，执行<code>hexo new page &quot;tags&quot;</code>就可以创建tags页了。然后调整格式就可以了。</p>
+<h3 id="About"><a href="#About" class="headerlink" title="About"></a>About</h3><p>这个页面是自己添加的。</p>
+<p>这个页面是最复杂的。首先Hexo只支持<code>index</code>,<code>page</code>,<code>post</code>,<code>layout</code>,<code>archive</code>这几种自定义页面，所以修改了<code>page</code>后作为category页面之后就不能通过修改项目页面模板来添加新的自定义页面了。</p>
 <p>但是好在Hexo还是比较人性化的。</p>
 <p>除了修改Hexo的模板，有两种方法可以实现自定义页面</p>
 <ol>
@@ -601,13 +601,39 @@ end
 <li>执行<code>hexo new page &quot;xxx&quot;</code>，同样得到xxx文件夹，你可以将这个文件夹当作一个项目的根目录，然后在其中尽情创建html，css，js，whatever you want。然后记得在博客的主_config.yml中的skip_render项添加xxx/**，就可以了。</li>
 </ol>
 <h3 id="评论"><a href="#评论" class="headerlink" title="评论"></a>评论</h3><p>评论就不加啦，毕竟清清爽爽还是最爱啊。</p>
+<p>而且好像也没有很多人来过这个博客，等以后有需要再加上评论吧。</p>
+<p>厌倦了多说等评论管理平台的话，推荐一个 <a href="https://github.com/imsun/gitment" target="_blank" rel="external">Gitment</a>，观望了很久还是觉得这个比较清爽，它是将评论放在Github的issue里面，很适合托管在第三方服务器空间的博客使用。</p>
 <p>有问题在微博等社交平台联系吧。</p>
+<h3 id="域名和全站HTTPS"><a href="#域名和全站HTTPS" class="headerlink" title="域名和全站HTTPS"></a>域名和全站HTTPS</h3><p>域名在万网上购买，实名认证，解析到github page。都是很简单的操作。</p>
+<p>在实现全站HTTPS的时候走了不少弯路。主要想实现的有如下几点：</p>
+<ul>
+<li>[x] 全站小绿锁</li>
+</ul>
+<ul>
+<li>[x] 怕HTTPS慢，所以上CDN</li>
+</ul>
+<ul>
+<li>[ ] <del>自定义SSL证书</del> (无解)</li>
+</ul>
+<p>因为博客是托管在Github上的，要强制HTTPS，Coding可以做到，但是没有必要再部署一套到Coding上。所以就想到使用CDN来实现，顺便解决网页的访问速度问题。</p>
+<p>CDN有国内几家云服务厂商有免费流量，又拍云、腾讯云等。都支持上传自定义SSL证书。但我的博客没有国内的服务器空间，自然没有私钥，无法申请证书。</p>
+<p>工信部的备案系统虽然减少了很多黑网站，但也让我们这些只有域名没有空间的人徒增了许多麻烦。所以最后选了国外的CDN厂商<a href="https://www.cloudflare.com/" target="_blank" rel="external">Cloudflare</a>来解析我的域名，Cloudflare和百度云合作，在国内也有CDN服务器，先试试速度如何，且免费版本基本能够满足要求，配置也不难。</p>
+<p>在Cloudflare成功解析后，在Page rules中定义重定向，将<code>http</code>301永久重定向到<code>https</code>。Cloudflare还可以设置缓存时间，设置用户与DNS、DNS与我们博客的服务器之间是否使用SSL，压缩CSS、JS，永久在线（不定时向服务器请求数据），安全级别（防DDoS）等。</p>
+<p>设置完后，看到了久违的小绿锁：</p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/rwfkq.png" alt=""></p>
+<p>但是，点击文章，可以看到：</p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/dw1rg.png" alt=""></p>
+<p>访问时就有『并非完成安全』的提示，这涉及一个小问题，就是图床，我的图片资源是托管在七牛云上的，之前七牛云还提供<code>https</code>的二级域名，但现在已经关闭，要使用<code>https</code>需要自定义域名，这又回到上面所说的备案问题。纠结之余，将七牛云迁移到腾讯云COS上，腾讯云COS就有支持SSL的图床测试域名，且提供CDN服务，同样是每月免费空间，免费流量，对于我这个小站来说，足够了。</p>
+<p>所以，Congratulations~😄😄😄🎉🎉🎉~</p>
 <h2 id="写在后面"><a href="#写在后面" class="headerlink" title="写在后面"></a>写在后面</h2><p>博客是在hollow主题的<a href="https://github.com/zchen9/hexo-theme-hollow" target="_blank" rel="external">创作家</a>的基础上进行修改的，表示真挚的感谢。</p>
 <p>如果要自己写主题，<a href="https://hexo.io/zh-cn/docs/writing.html" target="_blank" rel="external">Hexo文档</a>记得多看看。</p>
-<h3 id="对于这次实践的总结："><a href="#对于这次实践的总结：" class="headerlink" title="对于这次实践的总结："></a>对于这次实践的总结：</h3><p>不是很难，像我没学过Node.js的都可以弄出来。</p>
-<p>html,css,js这些基础一定要会。</p>
-<p>需要学习下ejs,stylus，都不是很难的东西。</p>
-<p>多看看别人的代码，受受别人的启发。</p>
+<p>对于域名购买和Cloudflare、腾讯云的使用，Google可以搜到许多精彩且详细的文章，此处就不在赘述了。</p>
+<h3 id="对于这次实践的总结："><a href="#对于这次实践的总结：" class="headerlink" title="对于这次实践的总结："></a>对于这次实践的总结：</h3><ul>
+<li>虽然Node.js小白都可以弄出来，因为一行nodejs的代码都没写到</li>
+<li>HTML、CSS、JS可以做很多事情</li>
+<li>需要学习下ejs、stylus，都不是很难</li>
+<li>多看看别人的代码，很受启发</li>
+</ul>
 ]]></content>
       
         
@@ -641,10 +667,10 @@ end
 <p>　　如果你也像我这么写，可能已经埋下了潜在的内存泄漏的危险。    </p>
 <p>　　我们通过Instruments来看看是否真的有内存泄漏(例子中EZScanNetGrid是我自定义的View,View中有执行动画的代码，见上方代码块，QRCodeScanner是对应的Controller)：    </p>
 <ol>
-<li>多次创建QRCodeScanner并销毁：<br><img src="http://7xs4ed.com1.z0.glb.clouddn.com/block_self.jpg" alt="self"><br>QRCodeScanner被销毁后：<br><img src="http://7xs4ed.com1.z0.glb.clouddn.com/block_self2.jpg" alt="self">     </li>
+<li>多次创建QRCodeScanner并销毁：<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/g3gqy.jpg" alt="block_self"><br>QRCodeScanner被销毁后：<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/97ewo.jpg" alt="block_self2">     </li>
 </ol>
 <ol>
-<li>将上述代码的self改成weakSelf，再来看看Instruments：<br><img src="http://7xs4ed.com1.z0.glb.clouddn.com/block_weakSelf.jpg" alt="weakSelf"><br>QRCodeScanner被销毁后：<br><img src="http://7xs4ed.com1.z0.glb.clouddn.com/block_weakSelf2.jpg" alt="weakSelf">     </li>
+<li>将上述代码的self改成weakSelf，再来看看Instruments：<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/jnbwl.jpg" alt="block_weakSelf"><br>QRCodeScanner被销毁后：<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/p1pae.jpg" alt="block_weakSelf2">     </li>
 </ol>
 <p>　　结果很明显，若是使用self，EZScanNetGrid这个View一直存在于内存中没有被释放，因为UIView Animation对其的强引用使其一直存在于内存中，直至Block里面的代码执行完毕。但是这段代码里可以看到，completion中又继续调用了<code>[self startAnimation];</code>因此，系统会继续保留对EZScanNetGrid的引用，从而即使EZScanNetGrid的SuperView被销毁了，EZScanNetGrid还是没有被销毁，无限地循环调用着动画，占据内存的同时也耗费着CPU。:(</p>
 <p>　　此文有点晦涩，附上<a href="https://github.com/objchris/ChrisDerDemos/tree/master/ClassBlockDemo" target="_blank" rel="external">DEMO地址</a></p>
@@ -670,15 +696,15 @@ end
       <url>/2016/05/21/EZHeartForLike/</url>
       <content type="html"><![CDATA[<p>最近没事看看Instagram的时候，对于双击点赞的功能感觉蛮Like。所以就想自己仿照做一个。但是嘞，直接仿造感觉不是很好玩，所以就自己想添加点新东西，因此就有了EZHeartForLike。:)</p>
 <a id="more"></a>
-<p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/EZHeartForLike_logo.png" alt="logo"><br>效果图(第一张是双击图片触发，第二张是单击按钮)：<br><img src="https://raw.githubusercontent.com/Ezfen/EZHeartForLike/master/double.gif" alt="">       <img src="https://raw.githubusercontent.com/Ezfen/EZHeartForLike/master/single.gif" alt=""><br>先说说这是个什么东西。<br>一开始我是在Instagram的基础上开始做的。双击点击图片可以弹出一个桃心，随即下面的小桃心点亮。完成点赞的操作。like this(专门截了我❤️GEM❤️过来，Instagram的心挡住她的脸了。。。)：<br><img src="http://7xs4ed.com1.z0.glb.clouddn.com/EZHeartForLike_gem.jpg" alt="instagram"><br>好吧，尺寸是是用我又爱又恨的4S的 320 x 480<br>紧接着就想，能不能实现大桃心一边移动一边缩小，最后到大小桃心的位置并替换它？！就像上面最终效果一样<br><img src="http://7xs4ed.com1.z0.glb.clouddn.com/common/aixin.jpg" alt="aixin"><br>很快我遇到问题：如果两个桃心都在同一个View中，话甘易啦！！！但是现在的情况是两个桃心并不在同一个View中（现实中很多情况都不会），<strong>位置不明确</strong>是一个Super巨大的问题。因此跨View的动画是EZHeartForLike是这次的主要话题。当然动画是使用UIView来实现的~~<br>那么，讲讲我的思路历程吧：<br>首先，我想了下能不能在一个EZHeartForLikeView中分别放入下列三个View，已实现我的想法：    </p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/pwmtz.png" alt="EZHeartForLike_logo"><br>效果图(第一张是双击图片触发，第二张是单击按钮)：<br><img src="https://raw.githubusercontent.com/Ezfen/EZHeartForLike/master/double.gif" alt="">       <img src="https://raw.githubusercontent.com/Ezfen/EZHeartForLike/master/single.gif" alt=""><br>先说说这是个什么东西。<br>一开始我是在Instagram的基础上开始做的。双击点击图片可以弹出一个桃心，随即下面的小桃心点亮。完成点赞的操作。like this(专门截了我❤️GEM❤️过来，Instagram的心挡住她的脸了。。。)：<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/37lsw.jpg" alt="EZHeartForLike_gem"><br>好吧，尺寸是是用我又爱又恨的4S的 320 x 480<br>紧接着就想，能不能实现大桃心一边移动一边缩小，最后到大小桃心的位置并替换它？！就像上面最终效果一样<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/4p80z.jpg" alt="aixin"><br>很快我遇到问题：如果两个桃心都在同一个View中，话甘易啦！！！但是现在的情况是两个桃心并不在同一个View中（现实中很多情况都不会），<strong>位置不明确</strong>是一个Super巨大的问题。因此跨View的动画是EZHeartForLike是这次的主要话题。当然动画是使用UIView来实现的~~<br>那么，讲讲我的思路历程吧：<br>首先，我想了下能不能在一个EZHeartForLikeView中分别放入下列三个View，已实现我的想法：    </p>
 <ul>
 <li>ContentView ：用于让用户将自己的View放入其中。类似iOS8里面的UIVisualEffectView的contentView一样。    </li>
 <li>SmallHeart ：被当做按钮的小桃心，是Public的，提供给用户改造它的样式、大小、位置等。 </li>
 <li>BigHeart ：出现在图片(ImageView)中的大桃心</li>
 </ul>
-<p>在我自己涂涂画画后是这样的：<br><img src="http://7xs4ed.com1.z0.glb.clouddn.com/EZHeartForLike_begin.jpg" alt="begin"></p>
+<p>在我自己涂涂画画后是这样的：<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/r0ov5.jpg" alt="EZHeartForLike_begin"></p>
 <p>一开始觉得可能能行，因为两个桃心都在同一个View中(EZHeartForLikeView)，要实现动画应该是没什么问题，但是后来想到，既然我把小桃心作为Public对外提供，那么用户就可以将它放入自己的View中。因此这个想法很快被否了。。。</p>
-<p>这个问题让我便秘了两天，哈哈哈哈。后来在洗澡时想到一个或许能解决问题的方法，虽然大小桃心的位置都不清楚，但是他们至少有同一个SuperView，或许加以利用就能实现这个想法。谁知道嘞，试一下吧：<br>简单一句话就是：<strong>找到相同的SuperView，映射坐标，在SuperView上完成动画的实现</strong><br><img src="http://7xs4ed.com1.z0.glb.clouddn.com/EZHeartForLike_findview.jpg" alt=""><br>具体怎么找到相同的SuperView嘞，那就要扯到另外一个算法了，那就是判断两条链表是否相交，且交点是哪一个的问题。<br>这里我又要祭出我的灵魂画风了<br><img src="http://7xs4ed.com1.z0.glb.clouddn.com/EZHeartForLike_lianbiao.jpg" alt=""><br>实现起来其实不是能难，且看代码：</p>
+<p>这个问题让我便秘了两天，哈哈哈哈。后来在洗澡时想到一个或许能解决问题的方法，虽然大小桃心的位置都不清楚，但是他们至少有同一个SuperView，或许加以利用就能实现这个想法。谁知道嘞，试一下吧：<br>简单一句话就是：<strong>找到相同的SuperView，映射坐标，在SuperView上完成动画的实现</strong><br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/1c4s3.jpg" alt="EZHeartForLike_findview"><br>具体怎么找到相同的SuperView嘞，那就要扯到另外一个算法了，那就是判断两条链表是否相交，且交点是哪一个的问题。<br>这里我又要祭出我的灵魂画风了<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/e0q6r.jpg" alt="EZHeartForLike_lianbiao"><br>实现起来其实不是能难，且看代码：</p>
 <pre><code class="objc">- (UIView *)findTheMutualSuperView {
     // 找出小桃心（self）和大桃心（self.BigHeart）的共同的SuperView
     // 计算self到UIWindow的距离（以中间View的层数为距离计量）
@@ -736,7 +762,7 @@ end
         view2 = view2.superview;
     }
 </code></pre>
-<p>既然得到两个桃心的坐标了，实现动画就自然变得简单啦，就不赘述了:)<br>有兴趣的同学可以查看我的<a href="https://github.com/objchris/EZHeartForLike" target="_blank" rel="external">Github</a>，可以下载在项目中，顺便给我个Like吧<img src="http://7xs4ed.com1.z0.glb.clouddn.com/common/hahahahaha.jpg" alt="hahaha"></p>
+<p>既然得到两个桃心的坐标了，实现动画就自然变得简单啦，就不赘述了:)<br>有兴趣的同学可以查看我的<a href="https://github.com/objchris/EZHeartForLike" target="_blank" rel="external">Github</a>，可以下载在项目中，顺便给我个Like吧<img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/pivxc.jpg" alt="hahaha"></p>
 ]]></content>
       
         
@@ -753,22 +779,21 @@ end
       <url>/2016/04/09/%E7%AE%80%E7%AE%80%E5%8D%95%E5%8D%95%E8%AF%B4%E8%AF%B4PKIOniOS/</url>
       <content type="html"><![CDATA[<p>Hacker,问你惊未Σ( ° △ °|||)︴</p>
 <a id="more"></a>
-<p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/Crypto_Sherlock.jpg" alt="神探夏洛克"> </p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/sijuh.jpg" alt="Crypto_Sherlock"> </p>
 <p>看了很多侦探片之后，逐渐发现加解密的神奇所在。能够在别人无法察觉的情况下传递信息（我很喜欢看这些片子，哈哈哈）。无论是Morse Code还是对着某本书根据页码行数字数来确定表达信息，都能让我看到前人的智慧。说真的，我特别钟意神探夏洛克，就算英文渣渣也会在更新的时候到Youtube上看看，等翻译完再翻看一次。记得中国剧场那一集最后根据伦敦地图破解了藏在苏州码子里的暗号，So Sexy~··<br>​<br>今天来聊聊阿澤君的故事，顺便谈谈</p>
 <ol>
 <li>CommonCryto中关于DES、AES的部分内容</li>
 <li>iOS的Security框架里关于RSA加密的部分内容….</li>
 </ol>
 <p>阿澤君是个大四🐶，最近在烦毕业论文的事情。辛辛苦苦撸了二十个年(xiao)头(shi)的论文，肯定要第一时间交到老师手里，让他看看，好舒缓阿澤君难产的心情。阿澤君知道有个Hacker君一直在觊觎阿澤君的论文，想拿过来一抄了之。而且Hacker君是一流的网络黑客，盗线偷取别人的信息是最在行的了。因此怎么发给千里之外的老师可难为阿澤君了。。。    </p>
-<p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/common/focusOnCom.jpg" alt="沉思...">    </p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/r6p4c.jpg" alt="focusOnCom">    </p>
 <p>很快，阿澤君想到用加密的方法，利用对称加密的方法给论文加密后发送给老师。</p>
-<p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/common/bucuowo.jpg" alt="开心"></p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/i66ud.jpg" alt="bucuowo"></p>
 <h1 id="对称加密"><a href="#对称加密" class="headerlink" title="对称加密"></a>对称加密</h1><p>采用单钥密码系统的加密方法，同一个密钥可以同时用作信息的加密和解密。加密算法中数DES、3DES、AES(块算法)和RC4(流算法)最为常用了。</p>
 <h2 id="DES"><a href="#DES" class="headerlink" title="DES"></a>DES</h2><p>DES 使用一个 56 位的密钥以及附加的 8 位奇偶校验位，产生最大 64 位的分组大小。这是一个迭代的分组密码，使用称为 Feistel 的技术，其中将加密的文本块分成两半。使用子密钥对其中一半应用循环功能，然后将输出与另一半进行“异或”运算；接着交换这两半，这一过程会继续下去，但最后一个循环不交换。DES 使用 16 个循环，使用异或，置换，代换，移位操作四种基本运算。    </p>
-<p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/Crypto_DES.jpg" alt="DES">    </p>
-<p>图片是度娘找的，将就看看哈~</p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/7o3yv.jpg" alt="Crypto_DES"></p>
 <h3 id="3DES"><a href="#3DES" class="headerlink" title="3DES"></a>3DES</h3><p>3DES是在DES的基础上做了两次加密和一次解密。具体实现如下：设Ek()和Dk()代表DES算法的加密和解密过程，K代表DES算法使用的密钥，P代表明文，C代表密文，这样：<br>3DES加密过程为：C=Ek3(Dk2(Ek1(P)))<br>3DES解密过程为：P=Dk1(EK2(Dk3(C)))<br>若<strong>Ek1 == Ek2 == Ek3</strong>，就是简单的DES了。</p>
-<h2 id="AES"><a href="#AES" class="headerlink" title="AES"></a>AES</h2><p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/Crypto_AES.png" alt="AES"><br>图片来自网络，若有侵犯到权利之处，请告知，谢谢~    </p>
+<h2 id="AES"><a href="#AES" class="headerlink" title="AES"></a>AES</h2><p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/1lfh4.png" alt="Crypto_AES"><br>图片来自网络，若有侵犯到权利之处，请告知，谢谢~    </p>
 <p>AES加密过程涉及到4种操作：字节替代（SubBytes）、行移位（ShiftRows）、列混淆（MixColumns）和轮密钥加（AddRoundKey）。解密过程分别为对应的逆操作。由于每一步操作都是可逆的，按照相反的顺序进行解密即可恢复明文。加解密中每轮的密钥分别由初始密钥扩展得到。算法中16字节的明文、密文和轮密钥都以一个4x4的矩阵表示。<br>算法详细已经有其他人写了，我就不再造轮子了。<a href="http://www.blogfshare.com/aes-rijndael.html" target="_blank" rel="external">密码算法详解——AES</a><br>还有算法及解密算法的<a href="http://blog.csdn.net/searchsun/article/details/2516191" target="_blank" rel="external">模式介绍</a>，可以了解了解~    </p>
 <h2 id="RC4"><a href="#RC4" class="headerlink" title="RC4"></a>RC4</h2><p>不同于块算法的是，RC4等流算法不是对明文进行分组处理，而是字节流的方式依次加密明文中的每一个字节，解密的时候也是依次对密文中的每一个字节进行解密。</p>
 <h2 id="CommonCrypto"><a href="#CommonCrypto" class="headerlink" title="CommonCrypto"></a>CommonCrypto</h2><p>对于身为iOS攻城狮的阿澤君来说，感觉还是这一部分比较重要。    </p>
@@ -969,7 +994,7 @@ enum {
 - (NSString *)decryptInEBC:(NSString *)cipherText key:(NSString *)key;
 </code></pre><p>　　```<br>　　还有AES、RC4的实现大致相同，具体可参考Demo，已经上传<a href="https://github.com/objchris/PKIDemo" target="_blank" rel="external">Github</a></p>
 <p>　　果然，采用加密算法加密后的论文顺利发到老师那里，问题是解密用密钥还在阿澤君手上，老师还是无法看到论文内容，密钥不能通过网络传输给老师，因为Hacker君还在监听着阿澤君和老师的通讯。难道要阿澤君不惧千里（其实不是很远，哈哈哈。我就夸张那么一点点~）去到老师那边，那为何不直接将论文交给老师呢？！！！<br>　　What the <em>**</em>！！！💔💔阿澤君此时心里千万只草泥马在奔腾。        </p>
-<p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/common/desk.jpg" alt="掀桌子">    </p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/9hwet.jpg" alt="desk">    </p>
 <p>　　但是阿澤君不会这样轻易地狗带，因为还可以通过非对称加密来解决…</p>
 <h1 id="非对称加密"><a href="#非对称加密" class="headerlink" title="非对称加密"></a>非对称加密</h1><p>对称加密算法在加密和解密时使用的是同一个秘钥；而非对称加密算法需要两个密钥来进行加密和解密，这两个秘钥是公开密钥（public key，简称公钥）和私有密钥（private key，简称私钥）。<br>如甲乙双方需要加密通信：</p>
 <ol>
@@ -978,7 +1003,7 @@ enum {
 <li>乙方再用自己保存的另一把专用密钥（私钥）对加密后的信息进行解密。乙方只能用其专用密钥（私钥）解密由对应的公钥加密后的信息。</li>
 </ol>
 <p>　　在传输过程中，即使攻击者截获了传输的密文，并得到了乙的公钥，也无法破解密文，因为只有乙的私钥才能解密密文。<br>　　同样，如果乙要回复加密信息给甲，那么需要甲先公布甲的公钥给乙用于加密，甲自己保存甲的私钥用于解密。<br>　　说到非对称加密，不得不说RSA（其实是阿澤君只接触过这个。。。）</p>
-<p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/common/yaoMing.png" alt=""></p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/6tgz2.png" alt="yaoMing"></p>
 <h2 id="RSA"><a href="#RSA" class="headerlink" title="RSA"></a>RSA</h2><h3 id="算法原理"><a href="#算法原理" class="headerlink" title="算法原理"></a>算法原理</h3><ol>
 <li>选取两个质数p和q, 计算<code>n = p * q</code> 。p和q要尽量大</li>
 <li>根据质数<code>φ(p)=p-1</code>和欧拉方程满足乘法结合率的规律求出φ(n),即<code>φ(n)=(p-1)(q-1)</code></li>
@@ -1119,7 +1144,7 @@ enum {
 </code></pre>
 <p>解密和加密的方式基本一样，此处不多加赘述。<br><a href="https://github.com/objchris/PKIDemo" target="_blank" rel="external">Demo</a></p>
 <p><strong>Hacker君，问你惊未，哈哈哈哈哈。</strong><br>非对称加密对阿澤君来说完全解决了问题(づ￣ 3￣)づ，使用老师的公钥加密论文后发送回给他。Hacker君就算截取到也无济于事，因为Hacker君没有老师的私钥，无法获取到其中的内容。老师获取到阿澤君发送的论文后自然可以解密查看。    </p>
-<p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/common/hahahahaha.jpg" alt="哈哈哈哈"><br>从中阿澤君也学到了很多，所以分享给大家❤️。故事有(fei)点(chang)弱智，希望大家不要在意，关注加解密算法就好了~
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/pivxc.jpg" alt="hahahahaha"><br>从中阿澤君也学到了很多，所以分享给大家❤️。故事有(fei)点(chang)弱智，希望大家不要在意，关注加解密算法就好了~
 　　</p>
 <p>题外话：PKI基础最近才接触，学得不深，有些东西写错请大家见谅。<br>更多的算法，eg：数字摘要、数字签名、口令认证等等都在<a href="https://github.com/objchris/PKIDemo" target="_blank" rel="external">Github</a>上了，有兴趣请移步。<br>关于加解密，貌似OpenSSL会经常用，具体阿澤君也不清楚，还需要更加深入的学习，共勉吧！！！！</p>
 ]]></content>
@@ -1138,7 +1163,7 @@ enum {
       <url>/2016/04/02/%E9%98%BF%E6%BE%A4%E5%90%9B%E7%9A%84%E7%8B%AC%E7%99%BD/</url>
       <content type="html"><![CDATA[<p>接近两个星期没有发博客了，可能是因为最近毕业季忙于东跑西跑找工作，加上毕业设计、论文等东西的烦扰。没什么自己可以支配的时间，所以这篇博文只是随便扯扯，发发牢骚，并没有干货~~</p>
 <a id="more"></a>
-<p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/Dubai_paohui.jpg" alt=""><br>　　对于一个学iOS只有半年左右的人来说，我不知道自己是不是认真地在学，但是我知道自己对iOS是热枕的。。。<br>　　四年前，大学是多么憧憬的地方，我凭着不好不坏的成绩顺利被华南师范大学录取，算是广东不错的一本院校了。当其时因为爸爸妈妈都希望我能就读经济专业，以后从事经济方面的工作，而我自己从小就喜欢玩电脑，比较倾向于选择计算机类的吧。但是爸爸妈妈的要求那么坚定，所以我最后还是迷迷糊糊地将经济学摆在志愿第一项。若果你以为我是经济学的学生，那你就错了，哈哈哈哈。志愿第一项没有被录取，我被调剂到软件工程。家里人也没办法，只能任由我了。。<br>　　进入大学，感觉什么都是新的。不同的上课模式让我体会到新鲜感，一开始是很少逃课的（我是个好孩子😄😄）。爸爸妈妈希望我从事经济方面工作的想法还没有打消，他们希望我读多个学位，利用周末时间辅修，进一步加强自己。我没有拒绝，因为我自己也有点试试看的想法。所以在大一第一学期即将结束的时候递上了经济学的辅修申请表。<br>　　自从辅修了经济学，时间似乎追赶得更快了。我花费在本专业上的时间也被占据了相当一部分。辅修听回来的东西有一些还是很有趣的，但是绝大部分让我这个理科生感觉枯燥。很多科目都是考试前一两周疯狂复习。那些时候心里总会抱怨，觉得特别辛苦。四年说长不长，说短不短，但是我还是坚持了下来。直到最近赶完辅修论文，算是结束了辅修生涯，我才意识到，原来很多事情只要咬咬牙就过来了。你们说我怎么才意识到。。。<br>　　为什么要说辅修，我只是想说最后一句，为什么现在才意识到<font color="#ff7073" size="3" face="黑体">很多事情只要咬咬牙就过来了！！！</font><br>　　我想成为iOS开发者，学习iOS时间不长。其实一开始接触的是C、Cpp。可能这是大部分甚至是全部计算机专业同学都会学到的。因为接触的都是Console，不免让人觉得无聊吧。大一年少无知，不知道原来C、Cpp也是很牛逼的语言。当时对专业方向也没多大想法，处于迷茫期吧可能，谁的青春不迷茫呢？！<br>　　后来又一段时间，身边有几个同学在学iOS开发，但是电脑非果机。折腾安装个黑苹果都要两个星期，原因大家都知道，驱动难求、各种五国。。。我也想去尝试，因为iPhone的界面、UI等等确实看起来好看且用户体验也不错。我的iPhone4s陪我走到现在整整四年，还没换（没钱💔 + 有感情❤️）。所以我也加入了安装黑苹果的行列，我的电脑是Acer，当时默认是很好装黑苹果的机器，但是来来去去折腾了很久（具体忘了多久）都没有装成功。那时候就气馁了。。现在想起来真想扇自己巴掌，跳打再飞踢。。<br>　　我觉得自己很容易摇摆，很容易就跟着别人的脚步走。所以在接触到Java的时候就果断放弃了前者。Java是大二的一门课程，实验课也蛮多，所以学起来比较省心。后来也萌生了做后台的想法。大二下学期和大三上学期都在看关于J2EE的知识。大三下也出去实习过一段时间，辗辗转转发现自己真心不喜欢，说实在的，学习成本大，真的大。。而且很多时候出错信息十分冗长，很难看得下去。。<br>　　所以，我又作死地想回到iOS行列，因为我很喜欢看起来漂亮的事物。身为大四狗，转方向是非常危险且不理智的行为。但是我还是这样做了。这次花了两周时间成功装上了黑苹果，也意识到快毕业了，很多事情都不是自己想得那么简单。时间在背后追得很紧，有时候发发呆一天就TM地过去了。经常后悔之前没有坚持弄完黑苹果开始学习iOS，导致现在这么被动。。。<br>曾经还发过朋友圈宣泄负能量<br><img src="http://7xs4ed.com1.z0.glb.clouddn.com/Dubai_piaoquan.jpg" alt=""><br>　　错过了秋招，我把希望都放在了春招了，似乎一切都这么顺利，然而这只是我的幻想。面试了第一家公司感觉还行，可能是急需人，所以问题都很简单。工资不高，所以我也没有特别大的想法，所以还是拒绝了。接下来的其他公司的面试让我觉得简直就是地狱，也就是最近这段时间的事，每次挫败感都超级强，压得我喘不过气来。<br>　　<strong>最近经历的跌宕起伏确实是人生一段会经常想起来的经历，鞭笞自己变得更好，我总这样安慰自己。</strong>但是要感谢何君(づ￣ 3￣)づ（真名我才不说呢）给我的鼓励：<br><img src="http://7xs4ed.com1.z0.glb.clouddn.com/Dubai_douzhi.jpg" alt="鼓励"><br>　　很多时候都想放弃，但是自己深深知道不能。。。所以最近面试的这短短两周时间学到的东西比过去两个月还多，真的很多事情只要咬咬牙就过来了。现在也找到了毕业后栖身的公司，继续发展我的iOS开发事业。现在我有了更好的心态，不会好高骛远，还是脚踏实地吧。<br><img src="http://7xs4ed.com1.z0.glb.clouddn.com/Dubai_gongsi.jpg" alt="所在公司一角"><br>　　最近在听五月天的《勇敢》，为了那个将来，要自己，勇敢再勇敢。<br>　　最后，我想说：<font color="#ff7073" size="3" face="黑体">很多事情只要咬咬牙就过来了！！！</font></p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/l44uf.jpg" alt=""><br>　　对于一个学iOS只有半年左右的人来说，我不知道自己是不是认真地在学，但是我知道自己对iOS是热枕的。。。<br>　　四年前，大学是多么憧憬的地方，我凭着不好不坏的成绩顺利被华南师范大学录取，算是广东不错的一本院校了。当其时因为爸爸妈妈都希望我能就读经济专业，以后从事经济方面的工作，而我自己从小就喜欢玩电脑，比较倾向于选择计算机类的吧。但是爸爸妈妈的要求那么坚定，所以我最后还是迷迷糊糊地将经济学摆在志愿第一项。若果你以为我是经济学的学生，那你就错了，哈哈哈哈。志愿第一项没有被录取，我被调剂到软件工程。家里人也没办法，只能任由我了。。<br>　　进入大学，感觉什么都是新的。不同的上课模式让我体会到新鲜感，一开始是很少逃课的（我是个好孩子😄😄）。爸爸妈妈希望我从事经济方面工作的想法还没有打消，他们希望我读多个学位，利用周末时间辅修，进一步加强自己。我没有拒绝，因为我自己也有点试试看的想法。所以在大一第一学期即将结束的时候递上了经济学的辅修申请表。<br>　　自从辅修了经济学，时间似乎追赶得更快了。我花费在本专业上的时间也被占据了相当一部分。辅修听回来的东西有一些还是很有趣的，但是绝大部分让我这个理科生感觉枯燥。很多科目都是考试前一两周疯狂复习。那些时候心里总会抱怨，觉得特别辛苦。四年说长不长，说短不短，但是我还是坚持了下来。直到最近赶完辅修论文，算是结束了辅修生涯，我才意识到，原来很多事情只要咬咬牙就过来了。你们说我怎么才意识到。。。<br>　　为什么要说辅修，我只是想说最后一句，为什么现在才意识到<font color="#ff7073" size="3" face="黑体">很多事情只要咬咬牙就过来了！！！</font><br>　　我想成为iOS开发者，学习iOS时间不长。其实一开始接触的是C、Cpp。可能这是大部分甚至是全部计算机专业同学都会学到的。因为接触的都是Console，不免让人觉得无聊吧。大一年少无知，不知道原来C、Cpp也是很牛逼的语言。当时对专业方向也没多大想法，处于迷茫期吧可能，谁的青春不迷茫呢？！<br>　　后来又一段时间，身边有几个同学在学iOS开发，但是电脑非果机。折腾安装个黑苹果都要两个星期，原因大家都知道，驱动难求、各种五国。。。我也想去尝试，因为iPhone的界面、UI等等确实看起来好看且用户体验也不错。我的iPhone4s陪我走到现在整整四年，还没换（没钱💔 + 有感情❤️）。所以我也加入了安装黑苹果的行列，我的电脑是Acer，当时默认是很好装黑苹果的机器，但是来来去去折腾了很久（具体忘了多久）都没有装成功。那时候就气馁了。。现在想起来真想扇自己巴掌，跳打再飞踢。。<br>　　我觉得自己很容易摇摆，很容易就跟着别人的脚步走。所以在接触到Java的时候就果断放弃了前者。Java是大二的一门课程，实验课也蛮多，所以学起来比较省心。后来也萌生了做后台的想法。大二下学期和大三上学期都在看关于J2EE的知识。大三下也出去实习过一段时间，辗辗转转发现自己真心不喜欢，说实在的，学习成本大，真的大。。而且很多时候出错信息十分冗长，很难看得下去。。<br>　　所以，我又作死地想回到iOS行列，因为我很喜欢看起来漂亮的事物。身为大四狗，转方向是非常危险且不理智的行为。但是我还是这样做了。这次花了两周时间成功装上了黑苹果，也意识到快毕业了，很多事情都不是自己想得那么简单。时间在背后追得很紧，有时候发发呆一天就TM地过去了。经常后悔之前没有坚持弄完黑苹果开始学习iOS，导致现在这么被动。。。<br>曾经还发过朋友圈宣泄负能量<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/pkram.jpg" alt="Dubai_piaoquan"><br>　　错过了秋招，我把希望都放在了春招了，似乎一切都这么顺利，然而这只是我的幻想。面试了第一家公司感觉还行，可能是急需人，所以问题都很简单。工资不高，所以我也没有特别大的想法，所以还是拒绝了。接下来的其他公司的面试让我觉得简直就是地狱，也就是最近这段时间的事，每次挫败感都超级强，压得我喘不过气来。<br>　　<strong>最近经历的跌宕起伏确实是人生一段会经常想起来的经历，鞭笞自己变得更好，我总这样安慰自己。</strong>但是要感谢何君(づ￣ 3￣)づ（真名我才不说呢）给我的鼓励：<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/8ooyk.jpg" alt="Dubai_douzhi"><br>　　很多时候都想放弃，但是自己深深知道不能。。。所以最近面试的这短短两周时间学到的东西比过去两个月还多，真的很多事情只要咬咬牙就过来了。现在也找到了毕业后栖身的公司，继续发展我的iOS开发事业。现在我有了更好的心态，不会好高骛远，还是脚踏实地吧。<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/e8so3.jpg" alt="Dubai_gongsi"><br>　　最近在听五月天的《勇敢》，为了那个将来，要自己，勇敢再勇敢。<br>　　最后，我想说：<font color="#ff7073" size="3" face="黑体">很多事情只要咬咬牙就过来了！！！</font></p>
 ]]></content>
       
         
@@ -1166,8 +1191,8 @@ enum {
    UIViewAutoresizingFlexibleBottomMargin = 1 &lt;&lt; 5
 };
 </code></pre><h2 id="简单介绍"><a href="#简单介绍" class="headerlink" title="简单介绍"></a>简单介绍</h2><h3 id="UIViewAutoresizingNone"><a href="#UIViewAutoresizingNone" class="headerlink" title="UIViewAutoresizingNone"></a>UIViewAutoresizingNone</h3><p>不设置自动调整，默认值</p>
-<h3 id="UIViewAutoresizingFlexibleRightMargin"><a href="#UIViewAutoresizingFlexibleRightMargin" class="headerlink" title="UIViewAutoresizingFlexibleRightMargin"></a>UIViewAutoresizingFlexibleRightMargin</h3><p>这里就只讲UIViewAutoresizingFlexibleRightMargin,因为上下左右四个方位是一致的原理<br><img src="http://7xs4ed.com1.z0.glb.clouddn.com/autoresizingMask_FlexibleRightMargin.jpg" alt="UIViewAutoresizingFlexibleRightMargin"></p>
-<h3 id="UIViewAutoresizingFlexibleWidth"><a href="#UIViewAutoresizingFlexibleWidth" class="headerlink" title="UIViewAutoresizingFlexibleWidth"></a>UIViewAutoresizingFlexibleWidth</h3><p>UIViewAutoresizingFlexibleWidth和UIViewAutoresizingFlexibleHeight也是同样的原理<br><img src="http://7xs4ed.com1.z0.glb.clouddn.com/autoresizingMask_FlexibleWidthCompare.jpg" alt="UIViewAutoresizingFlexibleWidth"></p>
+<h3 id="UIViewAutoresizingFlexibleRightMargin"><a href="#UIViewAutoresizingFlexibleRightMargin" class="headerlink" title="UIViewAutoresizingFlexibleRightMargin"></a>UIViewAutoresizingFlexibleRightMargin</h3><p>这里就只讲UIViewAutoresizingFlexibleRightMargin,因为上下左右四个方位是一致的原理<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/skwhi.jpg" alt="autoresizingMask_FlexibleRightMargin"></p>
+<h3 id="UIViewAutoresizingFlexibleWidth"><a href="#UIViewAutoresizingFlexibleWidth" class="headerlink" title="UIViewAutoresizingFlexibleWidth"></a>UIViewAutoresizingFlexibleWidth</h3><p>UIViewAutoresizingFlexibleWidth和UIViewAutoresizingFlexibleHeight也是同样的原理<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/wrxva.jpg" alt="autoresizingMask_FlexibleWidthCompare"></p>
 <h3 id="组合起来"><a href="#组合起来" class="headerlink" title="组合起来"></a>组合起来</h3><p>枚举中的值是允许使用|组合起来的，同时拥有多个值的功能，like this：</p>
 <pre><code class="objc">UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRIGHTMargin
 </code></pre>
@@ -1199,8 +1224,8 @@ UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(textLabelTop, tex
 CGFloat topViewWidth = kUIScreen.size.width - kMargin * 2;
 [topView setFrame:CGRectMake(kMargin, kTopSpace, topViewWidth, kTopViewHeight)];
 </code></pre>
-<p>上面的代码中尺寸宽度被限定为iPhone4s的320。没有设置子View（蓝色的View）的autoresizingMask属性的话运行结果如下：<br><img src="http://7xs4ed.com1.z0.glb.clouddn.com/autoresizingMask_4s.jpg" alt=""></p>
-<p>设置了子View（蓝色的View）autoresizingMask后，再修改父View的宽度，可以看到随着赋值的不同，有不同的效果：<br>设置了UIViewAutoresizingFlexibleLeftMargin<br><img src="http://7xs4ed.com1.z0.glb.clouddn.com/autoresizingMask_FlexibleLeftMargin.jpg" alt="UIViewAutoresizingFlexibleLeftMargin"></p>
+<p>上面的代码中尺寸宽度被限定为iPhone4s的320。没有设置子View（蓝色的View）的autoresizingMask属性的话运行结果如下：<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/pmjrs.jpg" alt="autoresizingMask_4s"></p>
+<p>设置了子View（蓝色的View）autoresizingMask后，再修改父View的宽度，可以看到随着赋值的不同，有不同的效果：<br>设置了UIViewAutoresizingFlexibleLeftMargin<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/m2hgw.jpg" alt="autoresizingMask_FlexibleLeftMargin"></p>
 <p>还有的其他值对应的效果图在上文已经摆出来了，请参阅哈~~</p>
 ]]></content>
       
@@ -1218,7 +1243,7 @@ CGFloat topViewWidth = kUIScreen.size.width - kMargin * 2;
       <url>/2016/03/13/iOS%E4%B8%8B%E9%87%8D%E8%A6%81%E7%9A%84%E5%A4%9A%E7%BA%BF%E7%A8%8BGCD/</url>
       <content type="html"><![CDATA[<p><strong>多线程</strong>是每个系统都必须具备的功能，带给用户更多的便利，伴随着友好度的提升，APP的被使用率和被使用频率也会更加高。<br>此篇笔记参考了网络上一些好文，学习到了很多。在Ray Wenderlich上摘录了一些队列的常用情景，希望自己得到提高的同时分享给大家。</p>
 <a id="more"></a>
-<p><img src="https://koenig-media.raywenderlich.com/uploads/2014/01/Concurrency_vs_Parallelism.png" alt=""></p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/cjuwz.png" alt="Concurrency_vs_Parallelism"></p>
 <h2 id="一些概念"><a href="#一些概念" class="headerlink" title="一些概念"></a>一些概念</h2><h3 id="串行（Serial）与-并发（Concurrent）"><a href="#串行（Serial）与-并发（Concurrent）" class="headerlink" title="串行（Serial）与 并发（Concurrent）"></a>串行（Serial）与 并发（Concurrent）</h3><ul>
 <li>任务串行，意味着在同一时间，有且只有一个任务被执行，即一个任务执行完毕之后再执行下一个任务。</li>
 <li>任务并发，意味着对于用户体验，在同一时间，有多个任务被执行。</li>
@@ -1232,7 +1257,7 @@ CGFloat topViewWidth = kUIScreen.size.width - kMargin * 2;
 <h3 id="死锁（Deadlock）"><a href="#死锁（Deadlock）" class="headerlink" title="死锁（Deadlock）"></a>死锁（Deadlock）</h3><p>停止等待事情的线程会导致多个线程相互维持等待，即死锁。<br>两个（或更多）线程卡住了，等待对方完成或执行其它操作。第一个不能完成是因为它在等待第二个的完成。但第二个也不能完成，因为它在等待第一个的完成。</p>
 <h3 id="线程安全（Thread-Safe）"><a href="#线程安全（Thread-Safe）" class="headerlink" title="线程安全（Thread Safe）"></a>线程安全（Thread Safe）</h3><p>线程安全的代码能在多线程或并发任务中被安全的调用，而不会导致任何问题（数据损坏，崩溃等）。线程不安全的代码在某个时刻只能在一个上下文中运行。一个线程安全代码的例子是NSDictionary。你可以在同一时间在多个线程中使用它而不会有问题。另一方面，NSMutableDictionary就不是线程安全的，应该保证一次只能有一个线程访问它。更多请看：<a href="https://developer.apple.com/library/mac/documentation/cocoa/conceptual/multithreading/ThreadSafetySummary/ThreadSafetySummary.html" target="_blank" rel="external">helpful and somewhat chilling list</a></p>
 <h3 id="上下文切换（Context-Switch）"><a href="#上下文切换（Context-Switch）" class="headerlink" title="上下文切换（Context Switch）"></a>上下文切换（Context Switch）</h3><p>一个上下文切换指当你在单个进程里切换执行不同的线程时存储与恢复执行状态的过程。这个过程在编写多任务应用时很普遍，但会带来一些额外的开销。</p>
-<h3 id="并发（Concurrency）与-并行-（Parallelism）"><a href="#并发（Concurrency）与-并行-（Parallelism）" class="headerlink" title="并发（Concurrency）与 并行 （Parallelism）"></a>并发（Concurrency）与 并行 （Parallelism）</h3><p>并行要求并发，但并发不能保证并行，就计算机操作系统来说，开启线程是很耗性能的，也就是说，事实上，在某次并发处理任务中，开启的线程是有上限的，如果上限为2，即每次开启的新线程为2，那么是有可能出现并发却不并行的情况。<br>并发代码的不同部分可以“同步”执行。然而，该怎样发生或是否发生都取决于系统。多核设备通过并行来同时执行多个线程；然而，为了使单核设备也能实现这一点，它们必须先运行一个线程，执行一个上下文切换，然后运行另一个线程或进程。这通常发生地足够快以致给我们并发执行地错觉，如下图所示：<br><img src="https://koenig-media.raywenderlich.com/uploads/2014/01/Concurrency_vs_Parallelism.png" alt=""></p>
+<h3 id="并发（Concurrency）与-并行-（Parallelism）"><a href="#并发（Concurrency）与-并行-（Parallelism）" class="headerlink" title="并发（Concurrency）与 并行 （Parallelism）"></a>并发（Concurrency）与 并行 （Parallelism）</h3><p>并行要求并发，但并发不能保证并行，就计算机操作系统来说，开启线程是很耗性能的，也就是说，事实上，在某次并发处理任务中，开启的线程是有上限的，如果上限为2，即每次开启的新线程为2，那么是有可能出现并发却不并行的情况。<br>并发代码的不同部分可以“同步”执行。然而，该怎样发生或是否发生都取决于系统。多核设备通过并行来同时执行多个线程；然而，为了使单核设备也能实现这一点，它们必须先运行一个线程，执行一个上下文切换，然后运行另一个线程或进程。这通常发生地足够快以致给我们并发执行地错觉，如下图所示：<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/cjuwz.png" alt="Concurrency_vs_Parallelism"></p>
 <h2 id="队列（queue）"><a href="#队列（queue）" class="headerlink" title="队列（queue）"></a>队列（queue）</h2><table>
 <thead>
 <tr>
@@ -1252,20 +1277,20 @@ CGFloat topViewWidth = kUIScreen.size.width - kMargin * 2;
 </tbody>
 </table>
 <h3 id="串行队列（Serial-Queues）"><a href="#串行队列（Serial-Queues）" class="headerlink" title="串行队列（Serial Queues）"></a>串行队列（Serial Queues）</h3><hr>
-<p><img src="https://koenig-media.raywenderlich.com/uploads/2014/01/Serial-Queue.png" alt=""><br><code>dispatch_queue_create(&quot;com.selander.GooglyPuff.photoQueue&quot;,DISPATCH_QUEUE_SERIAL);</code><br>串行队列最典型的是<strong>main queue</strong>：主线程所对应的queue，主要用于更新UI。</p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/26uxx.png" alt="Serial-Queue"><br><code>dispatch_queue_create(&quot;com.selander.GooglyPuff.photoQueue&quot;,DISPATCH_QUEUE_SERIAL);</code><br>串行队列最典型的是<strong>main queue</strong>：主线程所对应的queue，主要用于更新UI。</p>
 <h3 id="并发队列（Concurrent-Queues）"><a href="#并发队列（Concurrent-Queues）" class="headerlink" title="并发队列（Concurrent Queues）"></a>并发队列（Concurrent Queues）</h3><hr>
-<p><img src="https://koenig-media.raywenderlich.com/uploads/2014/01/Concurrent-Queue.png" alt=""><br><code>dispatch_queue_create(&quot;com.selander.GooglyPuff.photoQueue&quot;,DISPATCH_QUEUE_CONCURRENT);</code><br>除了通过DISPATCH_QUEUE_CONCURRENT创建的queue外，系统提供了Global Dispatch Queues：分别有四种优先级（background, low, default, high）<br><code>dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)</code></p>
-<h2 id="GCD语法和适用范围"><a href="#GCD语法和适用范围" class="headerlink" title="GCD语法和适用范围"></a>GCD语法和适用范围</h2><h3 id="dispatch-sync"><a href="#dispatch-sync" class="headerlink" title="dispatch_sync"></a>dispatch_sync</h3><p><img src="https://koenig-media.raywenderlich.com/uploads/2014/01/dispatch_sync_in_action.gif" alt="">    </p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/ggsfu.png" alt="Concurrent-Queue"><br><code>dispatch_queue_create(&quot;com.selander.GooglyPuff.photoQueue&quot;,DISPATCH_QUEUE_CONCURRENT);</code><br>除了通过DISPATCH_QUEUE_CONCURRENT创建的queue外，系统提供了Global Dispatch Queues：分别有四种优先级（background, low, default, high）<br><code>dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)</code></p>
+<h2 id="GCD语法和适用范围"><a href="#GCD语法和适用范围" class="headerlink" title="GCD语法和适用范围"></a>GCD语法和适用范围</h2><h3 id="dispatch-sync"><a href="#dispatch-sync" class="headerlink" title="dispatch_sync"></a>dispatch_sync</h3><p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/wx3ao.gif" alt="dispatch_sync_in_action"></p>
 <ul>
 <li>串行队列：Caution！！需要注意不能往本队列派发任务，否则会造成死锁。    </li>
 <li>并发队列：√</li>
 </ul>
-<h3 id="dispatch-async"><a href="#dispatch-async" class="headerlink" title="dispatch_async"></a>dispatch_async</h3><p><img src="https://koenig-media.raywenderlich.com/uploads/2014/01/dispatch_async_in_action.gif" alt="">    </p>
+<h3 id="dispatch-async"><a href="#dispatch-async" class="headerlink" title="dispatch_async"></a>dispatch_async</h3><p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/zst1c.gif" alt="dispatch_async_in_action">    </p>
 <ul>
 <li>串行队列：√    </li>
 <li>并发队列：√</li>
 </ul>
-<h3 id="dispatch-barriers"><a href="#dispatch-barriers" class="headerlink" title="dispatch barriers"></a>dispatch barriers</h3><p><img src="https://koenig-media.raywenderlich.com/uploads/2014/01/Dispatch-Barrier.png" alt=""><br>正如上图所示：使用dispatch_barriers_sync或dispatch_barries_async会在你创建的队列中插入Barrier Block，而这个Block被执行时确保当前仅有一个任务在执行中。这就很好地在并发队列中保持一段暂时串行的任务执行顺序。这很适合于：如对某一个数组或存储结构添加数据时，就可以将该任务作为Barrier Block插入到队列中，即保证了该数组的原子性，防止脏数据的产生。    </p>
+<h3 id="dispatch-barriers"><a href="#dispatch-barriers" class="headerlink" title="dispatch barriers"></a>dispatch barriers</h3><p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/b3668.png" alt="Dispatch-Barrier"><br>正如上图所示：使用dispatch_barriers_sync或dispatch_barries_async会在你创建的队列中插入Barrier Block，而这个Block被执行时确保当前仅有一个任务在执行中。这就很好地在并发队列中保持一段暂时串行的任务执行顺序。这很适合于：如对某一个数组或存储结构添加数据时，就可以将该任务作为Barrier Block插入到队列中，即保证了该数组的原子性，防止脏数据的产生。    </p>
 <ul>
 <li>串行队列：完全没必要….</li>
 <li>并发队列：√</li>
@@ -1330,9 +1355,7 @@ completionBlock(error);
 <li>串行队列：没什么必要….串行队列使用跟普通的循环没有区别。</li>
 <li>并发队列：√</li>
 </ul>
-<hr>
-<p>参考文献：</p>
-<p><a href="https://www.raywenderlich.com/60749/grand-central-dispatch-in-depth-part-1" target="_blank" rel="external">Grand Central Dispatch In-Depth: Part 1/2</a></p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a href="https://www.raywenderlich.com/60749/grand-central-dispatch-in-depth-part-1" target="_blank" rel="external">Grand Central Dispatch In-Depth: Part 1/2</a></p>
 <p><a href="https://www.raywenderlich.com/63338/grand-central-dispatch-in-depth-part-2" target="_blank" rel="external">Grand Central Dispatch In-Depth: Part 2/2</a></p>
 ]]></content>
       

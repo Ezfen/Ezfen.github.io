@@ -19,7 +19,7 @@
 
     <!-- Title -->
     
-    <title>外包项目《Beauty》札记 | OAOA</title>
+    <title>外包项目《Beauty》札记 | 少年</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
@@ -75,7 +75,7 @@
             <!-- Post Main Content -->
             <div class="post-content col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 <p>三月底开始了自己的第一个外包项目“Beauty”，App的名字是“CHARMER”，是一个促进美容技师和客户之间达成服务协议的App，搭建供求双方沟通和交易的桥梁和平台。在做完第一版之后，几乎每晚都需要修改功能修复Bug，现在突然间一段时间没有了消息，应该算是完结了。    </p>
-<p>2017-10-12 更: 项目运营烂尾，终于停止上线…</p>
+<p>2017-10-12 更: 项目运营烂尾…</p>
 <a id="more"></a>
 <p>​         </p>
 <h2 id="所做的事情"><a href="#所做的事情" class="headerlink" title="所做的事情"></a>所做的事情</h2><p>总的来说，有这么几个功能：</p>
@@ -120,13 +120,13 @@
 </li>
 </ul>
 <h2 id="一些具体实现"><a href="#一些具体实现" class="headerlink" title="一些具体实现"></a>一些具体实现</h2><p>　　基本实现下来都不是特别难，所以挑一些值得记录的写下来：</p>
-<h3 id="项目文件结构"><a href="#项目文件结构" class="headerlink" title="项目文件结构"></a>项目文件结构</h3><p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/Beauty_%E9%A1%B9%E7%9B%AE%E5%A4%A7%E8%87%B4%E7%BB%93%E6%9E%84.png" alt=""></p>
+<h3 id="项目文件结构"><a href="#项目文件结构" class="headerlink" title="项目文件结构"></a>项目文件结构</h3><p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/yjc6f.png" alt="Beauty_项目大致结构"></p>
 <p>　　因为App是用户与技师统一客户端，所以，对于每个Module，都分成Charmer和User分别对应技师和用户，再在其下分为Model、View、Controller，很常见的MVC架构。    </p>
 <p>　　这样做的好处是，文件结构清晰，分类清楚，一下子就能找到需要的文件（虽然搜索才是最快的&gt;w&lt;）。但是有个问题就出现了，前面有提到说：用户与技师统一客户端，那就不免有界面相同的情况出现，这次开发使用的解决方案是复用所有相同的文件，这个错误的决定让后期维护的我一直想狠扇自己嘴巴。毕竟面向不同的使用团体，很多功能需要定制，所以后期加新需求的时候只能一直if-else，if-else，if-else。惨绝人寰～      </p>
 <p>　　觉得，以后再有这样的情况出现，视类的复杂程度和文件的大小而定， 可能会重写一个同样实现的类文件，感觉这条线很难界定，只能靠以后的开发经验去慢慢学。     </p>
-<h3 id="地图"><a href="#地图" class="headerlink" title="地图"></a>地图</h3><p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/Beauty_Google%E5%9C%B0%E5%9B%BE_%E5%B0%8F.jpg" alt=""></p>
+<h3 id="地图"><a href="#地图" class="headerlink" title="地图"></a>地图</h3><p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/m8ev4.jpg" alt="Beauty_Google地图_小"></p>
 <p>　　因为App即将在香港上线，自然地使用Google地图。第一次用Google地图做开发，感觉跟百度、高德没有太大的区别， 有一点就是：文档基本只有官方文档，遇到问题要Google，基本都是讲百度或高德。关于Google地图，后面再重新写篇文章介绍，包括使用，自定义Marker（地图上紫色的标志），PopView（点击Marker弹出的View）     </p>
-<h3 id="左侧滑动菜单"><a href="#左侧滑动菜单" class="headerlink" title="左侧滑动菜单"></a>左侧滑动菜单</h3><p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/Beauty_%E5%B7%A6%E8%BE%B9%E6%A0%8F.jpg" alt=""></p>
+<h3 id="左侧滑动菜单"><a href="#左侧滑动菜单" class="headerlink" title="左侧滑动菜单"></a>左侧滑动菜单</h3><p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/1h42p.jpg" alt="Beauty_左边栏"></p>
 <p>　　图片好像压缩得有点过分了….</p>
 <p>　　一开始左侧滑动菜单是主界面Controller的一个View，所以滑动的时候会被上方的Navigation Controller（Navigation Bar）遮挡住，可以想象是多么吃藕。后来在滑动的时候动态隐藏和显示Navigation Bar，就出现了诡异的上面一整条高度为64px的空白区域，发现更吃藕了…</p>
 <p>　　所以在AlertController的启发下，决定用UIWindow来解决这个问题，正如巧神<a href="https://book.douban.com/subject/26287173/" target="_blank" rel="external">《iOS开发进阶》</a>一书的第十二章提及，使用UIWindow在所有View（当然包括当前Window的Navigation Bar）前展示自己想要的内容，所以有了下面的代码：</p>
@@ -210,7 +210,7 @@
 
 }
 </code></pre>
-<h3 id="CHARMER-PROFILE"><a href="#CHARMER-PROFILE" class="headerlink" title="CHARMER PROFILE"></a>CHARMER PROFILE</h3><p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/Beauty_CollectionView.jpg" alt=""></p>
+<h3 id="CHARMER-PROFILE"><a href="#CHARMER-PROFILE" class="headerlink" title="CHARMER PROFILE"></a>CHARMER PROFILE</h3><p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/f7cwa.jpg" alt="Beauty_CollectionView"></p>
 <p>　　技师Profile页面，为什么会拿出来写？！是因为Conllection Viewz在日常开发中非常非常非常常见。基本每个App都会用到（TableView是特殊的Conllection View）。这个Collection View分为三部分：</p>
 <ol>
 <li>最上方的HeaderView是一个跑马灯，使用了之前写过的一个小组件<a href="https://github.com/objchris/EZRecycleImageView" target="_blank" rel="external">EZRecycleImageView</a>，在开发中边使用边改进是最好不过的事情了。</li>

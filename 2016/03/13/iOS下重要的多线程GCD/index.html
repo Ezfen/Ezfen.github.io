@@ -19,7 +19,7 @@
 
     <!-- Title -->
     
-    <title>iOS下重要的多线程GCD | OAOA</title>
+    <title>iOS下重要的多线程GCD | 少年</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
@@ -76,7 +76,7 @@
             <div class="post-content col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 <p><strong>多线程</strong>是每个系统都必须具备的功能，带给用户更多的便利，伴随着友好度的提升，APP的被使用率和被使用频率也会更加高。<br>此篇笔记参考了网络上一些好文，学习到了很多。在Ray Wenderlich上摘录了一些队列的常用情景，希望自己得到提高的同时分享给大家。</p>
 <a id="more"></a>
-<p><img src="https://koenig-media.raywenderlich.com/uploads/2014/01/Concurrency_vs_Parallelism.png" alt=""></p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/cjuwz.png" alt="Concurrency_vs_Parallelism"></p>
 <h2 id="一些概念"><a href="#一些概念" class="headerlink" title="一些概念"></a>一些概念</h2><h3 id="串行（Serial）与-并发（Concurrent）"><a href="#串行（Serial）与-并发（Concurrent）" class="headerlink" title="串行（Serial）与 并发（Concurrent）"></a>串行（Serial）与 并发（Concurrent）</h3><ul>
 <li>任务串行，意味着在同一时间，有且只有一个任务被执行，即一个任务执行完毕之后再执行下一个任务。</li>
 <li>任务并发，意味着对于用户体验，在同一时间，有多个任务被执行。</li>
@@ -90,7 +90,7 @@
 <h3 id="死锁（Deadlock）"><a href="#死锁（Deadlock）" class="headerlink" title="死锁（Deadlock）"></a>死锁（Deadlock）</h3><p>停止等待事情的线程会导致多个线程相互维持等待，即死锁。<br>两个（或更多）线程卡住了，等待对方完成或执行其它操作。第一个不能完成是因为它在等待第二个的完成。但第二个也不能完成，因为它在等待第一个的完成。</p>
 <h3 id="线程安全（Thread-Safe）"><a href="#线程安全（Thread-Safe）" class="headerlink" title="线程安全（Thread Safe）"></a>线程安全（Thread Safe）</h3><p>线程安全的代码能在多线程或并发任务中被安全的调用，而不会导致任何问题（数据损坏，崩溃等）。线程不安全的代码在某个时刻只能在一个上下文中运行。一个线程安全代码的例子是NSDictionary。你可以在同一时间在多个线程中使用它而不会有问题。另一方面，NSMutableDictionary就不是线程安全的，应该保证一次只能有一个线程访问它。更多请看：<a href="https://developer.apple.com/library/mac/documentation/cocoa/conceptual/multithreading/ThreadSafetySummary/ThreadSafetySummary.html" target="_blank" rel="external">helpful and somewhat chilling list</a></p>
 <h3 id="上下文切换（Context-Switch）"><a href="#上下文切换（Context-Switch）" class="headerlink" title="上下文切换（Context Switch）"></a>上下文切换（Context Switch）</h3><p>一个上下文切换指当你在单个进程里切换执行不同的线程时存储与恢复执行状态的过程。这个过程在编写多任务应用时很普遍，但会带来一些额外的开销。</p>
-<h3 id="并发（Concurrency）与-并行-（Parallelism）"><a href="#并发（Concurrency）与-并行-（Parallelism）" class="headerlink" title="并发（Concurrency）与 并行 （Parallelism）"></a>并发（Concurrency）与 并行 （Parallelism）</h3><p>并行要求并发，但并发不能保证并行，就计算机操作系统来说，开启线程是很耗性能的，也就是说，事实上，在某次并发处理任务中，开启的线程是有上限的，如果上限为2，即每次开启的新线程为2，那么是有可能出现并发却不并行的情况。<br>并发代码的不同部分可以“同步”执行。然而，该怎样发生或是否发生都取决于系统。多核设备通过并行来同时执行多个线程；然而，为了使单核设备也能实现这一点，它们必须先运行一个线程，执行一个上下文切换，然后运行另一个线程或进程。这通常发生地足够快以致给我们并发执行地错觉，如下图所示：<br><img src="https://koenig-media.raywenderlich.com/uploads/2014/01/Concurrency_vs_Parallelism.png" alt=""></p>
+<h3 id="并发（Concurrency）与-并行-（Parallelism）"><a href="#并发（Concurrency）与-并行-（Parallelism）" class="headerlink" title="并发（Concurrency）与 并行 （Parallelism）"></a>并发（Concurrency）与 并行 （Parallelism）</h3><p>并行要求并发，但并发不能保证并行，就计算机操作系统来说，开启线程是很耗性能的，也就是说，事实上，在某次并发处理任务中，开启的线程是有上限的，如果上限为2，即每次开启的新线程为2，那么是有可能出现并发却不并行的情况。<br>并发代码的不同部分可以“同步”执行。然而，该怎样发生或是否发生都取决于系统。多核设备通过并行来同时执行多个线程；然而，为了使单核设备也能实现这一点，它们必须先运行一个线程，执行一个上下文切换，然后运行另一个线程或进程。这通常发生地足够快以致给我们并发执行地错觉，如下图所示：<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/cjuwz.png" alt="Concurrency_vs_Parallelism"></p>
 <h2 id="队列（queue）"><a href="#队列（queue）" class="headerlink" title="队列（queue）"></a>队列（queue）</h2><table>
 <thead>
 <tr>
@@ -110,20 +110,20 @@
 </tbody>
 </table>
 <h3 id="串行队列（Serial-Queues）"><a href="#串行队列（Serial-Queues）" class="headerlink" title="串行队列（Serial Queues）"></a>串行队列（Serial Queues）</h3><hr>
-<p><img src="https://koenig-media.raywenderlich.com/uploads/2014/01/Serial-Queue.png" alt=""><br><code>dispatch_queue_create(&quot;com.selander.GooglyPuff.photoQueue&quot;,DISPATCH_QUEUE_SERIAL);</code><br>串行队列最典型的是<strong>main queue</strong>：主线程所对应的queue，主要用于更新UI。</p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/26uxx.png" alt="Serial-Queue"><br><code>dispatch_queue_create(&quot;com.selander.GooglyPuff.photoQueue&quot;,DISPATCH_QUEUE_SERIAL);</code><br>串行队列最典型的是<strong>main queue</strong>：主线程所对应的queue，主要用于更新UI。</p>
 <h3 id="并发队列（Concurrent-Queues）"><a href="#并发队列（Concurrent-Queues）" class="headerlink" title="并发队列（Concurrent Queues）"></a>并发队列（Concurrent Queues）</h3><hr>
-<p><img src="https://koenig-media.raywenderlich.com/uploads/2014/01/Concurrent-Queue.png" alt=""><br><code>dispatch_queue_create(&quot;com.selander.GooglyPuff.photoQueue&quot;,DISPATCH_QUEUE_CONCURRENT);</code><br>除了通过DISPATCH_QUEUE_CONCURRENT创建的queue外，系统提供了Global Dispatch Queues：分别有四种优先级（background, low, default, high）<br><code>dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)</code></p>
-<h2 id="GCD语法和适用范围"><a href="#GCD语法和适用范围" class="headerlink" title="GCD语法和适用范围"></a>GCD语法和适用范围</h2><h3 id="dispatch-sync"><a href="#dispatch-sync" class="headerlink" title="dispatch_sync"></a>dispatch_sync</h3><p><img src="https://koenig-media.raywenderlich.com/uploads/2014/01/dispatch_sync_in_action.gif" alt="">    </p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/ggsfu.png" alt="Concurrent-Queue"><br><code>dispatch_queue_create(&quot;com.selander.GooglyPuff.photoQueue&quot;,DISPATCH_QUEUE_CONCURRENT);</code><br>除了通过DISPATCH_QUEUE_CONCURRENT创建的queue外，系统提供了Global Dispatch Queues：分别有四种优先级（background, low, default, high）<br><code>dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)</code></p>
+<h2 id="GCD语法和适用范围"><a href="#GCD语法和适用范围" class="headerlink" title="GCD语法和适用范围"></a>GCD语法和适用范围</h2><h3 id="dispatch-sync"><a href="#dispatch-sync" class="headerlink" title="dispatch_sync"></a>dispatch_sync</h3><p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/wx3ao.gif" alt="dispatch_sync_in_action"></p>
 <ul>
 <li>串行队列：Caution！！需要注意不能往本队列派发任务，否则会造成死锁。    </li>
 <li>并发队列：√</li>
 </ul>
-<h3 id="dispatch-async"><a href="#dispatch-async" class="headerlink" title="dispatch_async"></a>dispatch_async</h3><p><img src="https://koenig-media.raywenderlich.com/uploads/2014/01/dispatch_async_in_action.gif" alt="">    </p>
+<h3 id="dispatch-async"><a href="#dispatch-async" class="headerlink" title="dispatch_async"></a>dispatch_async</h3><p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/zst1c.gif" alt="dispatch_async_in_action">    </p>
 <ul>
 <li>串行队列：√    </li>
 <li>并发队列：√</li>
 </ul>
-<h3 id="dispatch-barriers"><a href="#dispatch-barriers" class="headerlink" title="dispatch barriers"></a>dispatch barriers</h3><p><img src="https://koenig-media.raywenderlich.com/uploads/2014/01/Dispatch-Barrier.png" alt=""><br>正如上图所示：使用dispatch_barriers_sync或dispatch_barries_async会在你创建的队列中插入Barrier Block，而这个Block被执行时确保当前仅有一个任务在执行中。这就很好地在并发队列中保持一段暂时串行的任务执行顺序。这很适合于：如对某一个数组或存储结构添加数据时，就可以将该任务作为Barrier Block插入到队列中，即保证了该数组的原子性，防止脏数据的产生。    </p>
+<h3 id="dispatch-barriers"><a href="#dispatch-barriers" class="headerlink" title="dispatch barriers"></a>dispatch barriers</h3><p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/b3668.png" alt="Dispatch-Barrier"><br>正如上图所示：使用dispatch_barriers_sync或dispatch_barries_async会在你创建的队列中插入Barrier Block，而这个Block被执行时确保当前仅有一个任务在执行中。这就很好地在并发队列中保持一段暂时串行的任务执行顺序。这很适合于：如对某一个数组或存储结构添加数据时，就可以将该任务作为Barrier Block插入到队列中，即保证了该数组的原子性，防止脏数据的产生。    </p>
 <ul>
 <li>串行队列：完全没必要….</li>
 <li>并发队列：√</li>
@@ -188,9 +188,7 @@ completionBlock(error);
 <li>串行队列：没什么必要….串行队列使用跟普通的循环没有区别。</li>
 <li>并发队列：√</li>
 </ul>
-<hr>
-<p>参考文献：</p>
-<p><a href="https://www.raywenderlich.com/60749/grand-central-dispatch-in-depth-part-1" target="_blank" rel="external">Grand Central Dispatch In-Depth: Part 1/2</a></p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a href="https://www.raywenderlich.com/60749/grand-central-dispatch-in-depth-part-1" target="_blank" rel="external">Grand Central Dispatch In-Depth: Part 1/2</a></p>
 <p><a href="https://www.raywenderlich.com/63338/grand-central-dispatch-in-depth-part-2" target="_blank" rel="external">Grand Central Dispatch In-Depth: Part 2/2</a></p>
 
  

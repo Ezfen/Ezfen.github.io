@@ -19,7 +19,7 @@
 
     <!-- Title -->
     
-    <title>Hello World Again | OAOA</title>
+    <title>Hello World Again | 少年</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
@@ -74,14 +74,14 @@
         <div class="row">
             <!-- Post Main Content -->
             <div class="post-content col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <p>决定给博客的名字起为OAOA。</p>
+                <p>决定给博客的名字起为<strong>少年</strong>。</p>
+<p><strong>如少年般真实，热爱，不朽。</strong></p>
 <p>趁着最近没有动力看书，又不想脑袋生锈，又看腻了之前Hexo的yilia主题。所以换个博客主题，Hello World Again。</p>
 <a id="more"></a>
-<p><img src="http://7xs4ed.com1.z0.glb.clouddn.com/helloworld_background.png" alt=""></p>
 <h2 id="开始捣鼓"><a href="#开始捣鼓" class="headerlink" title="开始捣鼓"></a>开始捣鼓</h2><p>不是前端er要自己写个主题出来还真不是简单的事情。所以借鉴了hollow主题，并在其上进行修改。</p>
-<h3 id="主页"><a href="#主页" class="headerlink" title="主页"></a>主页</h3><p>主页大致上没有做太多的修改，因为一开始就是看上这种简简单单的，没有太多复杂成分的排版。厌倦了yilia，第一是：不想要左右版式的页面，显得左侧的菜单栏有点喧宾夺主。第二是：总把人脸留在左边显眼的位置，不太好意思～</p>
+<h3 id="主页"><a href="#主页" class="headerlink" title="主页"></a>主页</h3><p>主页大致上没有做太多的修改，因为一开始就是看上这种简简单单的，没有太多复杂成分的排版。厌倦了yilia，第一是：不想要左右版式的页面，显得左侧的菜单栏有点喧宾夺主。第二是：总把人脸留在左边显眼的位置，纯粹的不喜欢。</p>
 <p>hollow主题只是包含了主页，也就是现实文章序列和文章详情。其他的都没有。</p>
-<h3 id="Categories"><a href="#Categories" class="headerlink" title="Categories"></a>Categories</h3><p>进入分类页面在主页右上角的钻石按钮，分类页面是显示所有博文的分类。</p>
+<h3 id="Tags"><a href="#Tags" class="headerlink" title="Tags"></a>Tags</h3><p>进入分类页面在主页右上角的钻石按钮，分类页面是显示所有博文的分类。</p>
 <p>因为暂时不支持站内搜索，如果要找某一篇文章需要一页页地翻，感觉会很繁琐。所以建立了个分类页面。</p>
 <p>我是通过修改page.ejs来达到目的。</p>
 <pre><code class="html">&lt;section class=&quot;article-container&quot;&gt;
@@ -94,7 +94,7 @@
         &lt;div class=&quot;row&quot;&gt;
             &lt;div class=&quot;col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1&quot;&gt;
                 &lt;div class=&quot;post-heading&quot;&gt;
-                    &lt;h1&gt;Categories&lt;/h1&gt;
+                    &lt;h1&gt;TAGS&lt;/h1&gt;
                 &lt;/div&gt;
             &lt;/div&gt;
         &lt;/div&gt;
@@ -107,7 +107,7 @@
         &lt;div class=&quot;row&quot;&gt;
             &lt;!-- Post Main Content --&gt;
             &lt;div class=&quot;post-content col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1&quot;&gt;
-                &lt;% site.categories.each(function(category){ %&gt;
+                &lt;% site.tags.each(function(category){ %&gt;
                     &lt;a class=&quot;category&quot; href=&quot;&lt;%-category.name%&gt;&quot;&gt;&lt;%-category.name%&gt;&lt;/a&gt;
                 &lt;% }); %&gt;
             &lt;/div&gt;
@@ -118,9 +118,9 @@
 &lt;!-- Back to top --&gt;
 &lt;%- partial(&#39;_partial/backtop&#39;) %&gt;
 </code></pre>
-<p>修改完page.ejs后，执行<code>hexo new page &quot;categories&quot;</code>就可以创建categories页了。然后调整格式就可以了。</p>
-<h3 id="About和Demo"><a href="#About和Demo" class="headerlink" title="About和Demo"></a>About和Demo</h3><p>这两个页面是自己添加的。</p>
-<p>这两个页面是最复杂的。首先Hexo只支持index,page,post,layout,archive这几种自定义页面，所以修改了page后作为category页面之后就不能通过修改项目页面模板来添加新的自定义页面了。</p>
+<p>修改完page.ejs后，执行<code>hexo new page &quot;tags&quot;</code>就可以创建tags页了。然后调整格式就可以了。</p>
+<h3 id="About"><a href="#About" class="headerlink" title="About"></a>About</h3><p>这个页面是自己添加的。</p>
+<p>这个页面是最复杂的。首先Hexo只支持<code>index</code>,<code>page</code>,<code>post</code>,<code>layout</code>,<code>archive</code>这几种自定义页面，所以修改了<code>page</code>后作为category页面之后就不能通过修改项目页面模板来添加新的自定义页面了。</p>
 <p>但是好在Hexo还是比较人性化的。</p>
 <p>除了修改Hexo的模板，有两种方法可以实现自定义页面</p>
 <ol>
@@ -128,13 +128,39 @@
 <li>执行<code>hexo new page &quot;xxx&quot;</code>，同样得到xxx文件夹，你可以将这个文件夹当作一个项目的根目录，然后在其中尽情创建html，css，js，whatever you want。然后记得在博客的主_config.yml中的skip_render项添加xxx/**，就可以了。</li>
 </ol>
 <h3 id="评论"><a href="#评论" class="headerlink" title="评论"></a>评论</h3><p>评论就不加啦，毕竟清清爽爽还是最爱啊。</p>
+<p>而且好像也没有很多人来过这个博客，等以后有需要再加上评论吧。</p>
+<p>厌倦了多说等评论管理平台的话，推荐一个 <a href="https://github.com/imsun/gitment" target="_blank" rel="external">Gitment</a>，观望了很久还是觉得这个比较清爽，它是将评论放在Github的issue里面，很适合托管在第三方服务器空间的博客使用。</p>
 <p>有问题在微博等社交平台联系吧。</p>
+<h3 id="域名和全站HTTPS"><a href="#域名和全站HTTPS" class="headerlink" title="域名和全站HTTPS"></a>域名和全站HTTPS</h3><p>域名在万网上购买，实名认证，解析到github page。都是很简单的操作。</p>
+<p>在实现全站HTTPS的时候走了不少弯路。主要想实现的有如下几点：</p>
+<ul>
+<li>[x] 全站小绿锁</li>
+</ul>
+<ul>
+<li>[x] 怕HTTPS慢，所以上CDN</li>
+</ul>
+<ul>
+<li>[ ] <del>自定义SSL证书</del> (无解)</li>
+</ul>
+<p>因为博客是托管在Github上的，要强制HTTPS，Coding可以做到，但是没有必要再部署一套到Coding上。所以就想到使用CDN来实现，顺便解决网页的访问速度问题。</p>
+<p>CDN有国内几家云服务厂商有免费流量，又拍云、腾讯云等。都支持上传自定义SSL证书。但我的博客没有国内的服务器空间，自然没有私钥，无法申请证书。</p>
+<p>工信部的备案系统虽然减少了很多黑网站，但也让我们这些只有域名没有空间的人徒增了许多麻烦。所以最后选了国外的CDN厂商<a href="https://www.cloudflare.com/" target="_blank" rel="external">Cloudflare</a>来解析我的域名，Cloudflare和百度云合作，在国内也有CDN服务器，先试试速度如何，且免费版本基本能够满足要求，配置也不难。</p>
+<p>在Cloudflare成功解析后，在Page rules中定义重定向，将<code>http</code>301永久重定向到<code>https</code>。Cloudflare还可以设置缓存时间，设置用户与DNS、DNS与我们博客的服务器之间是否使用SSL，压缩CSS、JS，永久在线（不定时向服务器请求数据），安全级别（防DDoS）等。</p>
+<p>设置完后，看到了久违的小绿锁：</p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/rwfkq.png" alt=""></p>
+<p>但是，点击文章，可以看到：</p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/dw1rg.png" alt=""></p>
+<p>访问时就有『并非完成安全』的提示，这涉及一个小问题，就是图床，我的图片资源是托管在七牛云上的，之前七牛云还提供<code>https</code>的二级域名，但现在已经关闭，要使用<code>https</code>需要自定义域名，这又回到上面所说的备案问题。纠结之余，将七牛云迁移到腾讯云COS上，腾讯云COS就有支持SSL的图床测试域名，且提供CDN服务，同样是每月免费空间，免费流量，对于我这个小站来说，足够了。</p>
+<p>所以，Congratulations~😄😄😄🎉🎉🎉~</p>
 <h2 id="写在后面"><a href="#写在后面" class="headerlink" title="写在后面"></a>写在后面</h2><p>博客是在hollow主题的<a href="https://github.com/zchen9/hexo-theme-hollow" target="_blank" rel="external">创作家</a>的基础上进行修改的，表示真挚的感谢。</p>
 <p>如果要自己写主题，<a href="https://hexo.io/zh-cn/docs/writing.html" target="_blank" rel="external">Hexo文档</a>记得多看看。</p>
-<h3 id="对于这次实践的总结："><a href="#对于这次实践的总结：" class="headerlink" title="对于这次实践的总结："></a>对于这次实践的总结：</h3><p>不是很难，像我没学过Node.js的都可以弄出来。</p>
-<p>html,css,js这些基础一定要会。</p>
-<p>需要学习下ejs,stylus，都不是很难的东西。</p>
-<p>多看看别人的代码，受受别人的启发。</p>
+<p>对于域名购买和Cloudflare、腾讯云的使用，Google可以搜到许多精彩且详细的文章，此处就不在赘述了。</p>
+<h3 id="对于这次实践的总结："><a href="#对于这次实践的总结：" class="headerlink" title="对于这次实践的总结："></a>对于这次实践的总结：</h3><ul>
+<li>虽然Node.js小白都可以弄出来，因为一行nodejs的代码都没写到</li>
+<li>HTML、CSS、JS可以做很多事情</li>
+<li>需要学习下ejs、stylus，都不是很难</li>
+<li>多看看别人的代码，很受启发</li>
+</ul>
 
  
                 <!-- Meta -->
