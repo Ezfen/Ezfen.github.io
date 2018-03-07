@@ -139,11 +139,6 @@
                     <hr>
                     <br>
                     
-                        <div class="mddl">
-                            <img src="http://7xs4ed.com1.z0.glb.clouddn.com/TouchEvent_WechatIMG3.jpeg"/>
-                            <a>本篇文章.md</a>
-                        </div>
-                    
                     <div class="post-tags">
                         
                             
@@ -161,7 +156,24 @@
 
             <!-- Comments -->
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                
+                <div id="container"></div>
+
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  id: '8539A86063B11E16',
+  owner: 'objchris',
+  repo: 'testGitment',
+  oauth: {
+    client_id: 'f0f51ce99c6a9e1537f5',
+    client_secret: 'a8e1135e9756220826b2290f670bb269f43566d3',
+  },
+})
+gitment.render('container')
+</script>
+
             </div>
         </div>
     </div>
