@@ -240,12 +240,11 @@ lipo -create ${LIB_SIM_PATHS[@]} -output ${LIB_SIMULATOR_NAME}
     </entry>
     
     <entry>
-      <title><![CDATA[外包项目《Beauty》札记]]></title>
+      <title><![CDATA[《Beauty》项目小总结]]></title>
       <url>/2017/07/17/%E9%A1%B9%E7%9B%AEBeauty%E6%80%BB%E7%BB%93/</url>
       <content type="html"><![CDATA[<p>三月底开始了自己的第一个外包项目“Beauty”，App的名字是“CHARMER”，是一个促进美容技师和客户之间达成服务协议的App，搭建供求双方沟通和交易的桥梁和平台。在做完第一版之后，几乎每晚都需要修改功能修复Bug，现在突然间一段时间没有了消息，应该算是完结了。    </p>
-<p>2017-10-12 更: 项目运营烂尾…</p>
 <a id="more"></a>
-<p>​         </p>
+<p>2017-10-12 更: 项目运营烂尾，最后好像没有上架，难过ing… :(</p>
 <h2 id="所做的事情"><a href="#所做的事情" class="headerlink" title="所做的事情"></a>所做的事情</h2><p>总的来说，有这么几个功能：</p>
 <ul>
 <li><p>用户端：</p>
@@ -265,7 +264,6 @@ lipo -create ${LIB_SIM_PATHS[@]} -output ${LIB_SIMULATOR_NAME}
 <li><p>订单结束评价，打分等</p>
 </li>
 <li><p>提供其他用户和技师的电话联系方式</p>
-<p>​</p>
 </li>
 </ol>
 </li>
@@ -406,14 +404,13 @@ end
 </code></pre><h2 id="总结与反思"><a href="#总结与反思" class="headerlink" title="总结与反思"></a>总结与反思</h2><ul>
 <li><p>好的方面：</p>
 <ol>
-<li><p>一位好Partner，一位一起奋斗的好朋友</p>
+<li><p>一位好Partner，一位一起奋斗的好朋友。</p>
 </li>
-<li><p>很多UI控件和底层实现都接触到了，加深了印象</p>
+<li><p>很多UI控件和底层实现都接触到了，加深了印象。</p>
 </li>
-<li><p>真正接触并使用到优秀的第三方框架，以后在开发过程中如果遇到适用的情况就不会因为无知而重复造轮子（可能还造不好….）</p>
+<li><p>真正接触并使用到优秀的第三方框架，以后在开发过程中如果遇到适用的情况就不会因为无知而重复造轮子（可能还造不好….）。</p>
 </li>
-<li><p>积累了经验，这个App算是自己一个比较完整开发的App。整个开发流程虽然没有公司项目那么正规，但是一些相关的文档、说明还是不缺的</p>
-<p>​</p>
+<li><p>积累了经验，这个App算是自己一个比较完整开发的App。整个开发流程虽然没有公司项目那么正规，但是一些相关的文档、说明还是不缺的。</p>
 </li>
 </ol>
 </li>
@@ -434,6 +431,263 @@ end
         <tags>
             
             <tag> Summary </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[iOS下重要的多线程GCD]]></title>
+      <url>/2017/03/23/iOS%E4%B8%8B%E9%87%8D%E8%A6%81%E7%9A%84%E5%A4%9A%E7%BA%BF%E7%A8%8BGCD/</url>
+      <content type="html"><![CDATA[<p><strong>多线程</strong>是每个系统都必须具备的功能，带给用户更多的便利，伴随着友好度的提升，APP的被使用率和被使用频率也会更加高。<br>此篇笔记参考了网络上一些好文，学习到了很多。在Ray Wenderlich上摘录了一些队列的常用情景，希望自己得到提高的同时分享给大家。</p>
+<a id="more"></a>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/cjuwz.png" alt="Concurrency_vs_Parallelism"></p>
+<h2 id="一些概念"><a href="#一些概念" class="headerlink" title="一些概念"></a>一些概念</h2><h3 id="串行（Serial）与-并发（Concurrent）"><a href="#串行（Serial）与-并发（Concurrent）" class="headerlink" title="串行（Serial）与 并发（Concurrent）"></a>串行（Serial）与 并发（Concurrent）</h3><ul>
+<li>任务串行，意味着在同一时间，有且只有一个任务被执行，即一个任务执行完毕之后再执行下一个任务。</li>
+<li>任务并发，意味着对于用户体验，在同一时间，有多个任务被执行。</li>
+</ul>
+<h3 id="同步（Synchronous）与-异步-（Asynchronous）"><a href="#同步（Synchronous）与-异步-（Asynchronous）" class="headerlink" title="同步（Synchronous）与 异步 （Asynchronous）"></a>同步（Synchronous）与 异步 （Asynchronous）</h3><ul>
+<li>同步派发(sync)会尽可能地在当前线程派发任务。但如果在其他队列往主队列同步派发，任务会在主线程执行。 </li>
+<li>异步派发(async)也不绝对会另开线程。例如在主线程异步派发到主线程，派发依旧是异步的，任务也会在主线程执行。</li>
+</ul>
+<p>同步异步的重要区别在于派发方法是否需要等待 block 完成后才能返回。</p>
+<h3 id="临界区（Critical-Section）"><a href="#临界区（Critical-Section）" class="headerlink" title="临界区（Critical Section）"></a>临界区（Critical Section）</h3><p>一段代码不能被并发执行，也就是，两个线程不能同时执行这段代码。这很常见，因为代码去操作一个共享资源，例如一个变量若能被并发进程访问，那么它很可能会变质（它的值不再可信）。</p>
+<h3 id="死锁（Deadlock）"><a href="#死锁（Deadlock）" class="headerlink" title="死锁（Deadlock）"></a>死锁（Deadlock）</h3><p>停止等待事情的线程会导致多个线程相互维持等待，即死锁。<br>两个（或更多）线程卡住了，等待对方完成或执行其它操作。第一个不能完成是因为它在等待第二个的完成。但第二个也不能完成，因为它在等待第一个的完成。</p>
+<h3 id="线程安全（Thread-Safe）"><a href="#线程安全（Thread-Safe）" class="headerlink" title="线程安全（Thread Safe）"></a>线程安全（Thread Safe）</h3><p>线程安全的代码能在多线程或并发任务中被安全的调用，而不会导致任何问题（数据损坏，崩溃等）。线程不安全的代码在某个时刻只能在一个上下文中运行。一个线程安全代码的例子是NSDictionary。你可以在同一时间在多个线程中使用它而不会有问题。另一方面，NSMutableDictionary就不是线程安全的，应该保证一次只能有一个线程访问它。更多请看：<a href="https://developer.apple.com/library/mac/documentation/cocoa/conceptual/multithreading/ThreadSafetySummary/ThreadSafetySummary.html" target="_blank" rel="external">helpful and somewhat chilling list</a></p>
+<h3 id="上下文切换（Context-Switch）"><a href="#上下文切换（Context-Switch）" class="headerlink" title="上下文切换（Context Switch）"></a>上下文切换（Context Switch）</h3><p>一个上下文切换指当你在单个进程里切换执行不同的线程时存储与恢复执行状态的过程。这个过程在编写多任务应用时很普遍，但会带来一些额外的开销。</p>
+<h3 id="并发（Concurrency）与-并行-（Parallelism）"><a href="#并发（Concurrency）与-并行-（Parallelism）" class="headerlink" title="并发（Concurrency）与 并行 （Parallelism）"></a>并发（Concurrency）与 并行 （Parallelism）</h3><p>并行要求并发，但并发不能保证并行，就计算机操作系统来说，开启线程是很耗性能的，也就是说，事实上，在某次并发处理任务中，开启的线程是有上限的，如果上限为2，即每次开启的新线程为2，那么是有可能出现并发却不并行的情况。<br>并发代码的不同部分可以“同步”执行。然而，该怎样发生或是否发生都取决于系统。多核设备通过并行来同时执行多个线程；然而，为了使单核设备也能实现这一点，它们必须先运行一个线程，执行一个上下文切换，然后运行另一个线程或进程。这通常发生地足够快以致给我们并发执行地错觉，如下图所示：<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/cjuwz.png" alt="Concurrency_vs_Parallelism"></p>
+<h2 id="队列（queue）"><a href="#队列（queue）" class="headerlink" title="队列（queue）"></a>队列（queue）</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">队列</th>
+<th style="text-align:center">线程</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">串行</td>
+<td style="text-align:center">当前线程运行</td>
+</tr>
+<tr>
+<td style="text-align:center">并发</td>
+<td style="text-align:center">另开线程运行</td>
+</tr>
+</tbody>
+</table>
+<h3 id="串行队列（Serial-Queues）"><a href="#串行队列（Serial-Queues）" class="headerlink" title="串行队列（Serial Queues）"></a>串行队列（Serial Queues）</h3><hr>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/26uxx.png" alt="Serial-Queue"><br><code>dispatch_queue_create(&quot;com.selander.GooglyPuff.photoQueue&quot;,DISPATCH_QUEUE_SERIAL);</code><br>串行队列最典型的是<strong>main queue</strong>：主线程所对应的queue，主要用于更新UI。</p>
+<h3 id="并发队列（Concurrent-Queues）"><a href="#并发队列（Concurrent-Queues）" class="headerlink" title="并发队列（Concurrent Queues）"></a>并发队列（Concurrent Queues）</h3><hr>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/ggsfu.png" alt="Concurrent-Queue"><br><code>dispatch_queue_create(&quot;com.selander.GooglyPuff.photoQueue&quot;,DISPATCH_QUEUE_CONCURRENT);</code><br>除了通过DISPATCH_QUEUE_CONCURRENT创建的queue外，系统提供了Global Dispatch Queues：分别有四种优先级（background, low, default, high）<br><code>dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)</code></p>
+<h2 id="GCD语法和适用范围"><a href="#GCD语法和适用范围" class="headerlink" title="GCD语法和适用范围"></a>GCD语法和适用范围</h2><h3 id="dispatch-sync"><a href="#dispatch-sync" class="headerlink" title="dispatch_sync"></a>dispatch_sync</h3><p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/wx3ao.gif" alt="dispatch_sync_in_action"></p>
+<ul>
+<li>串行队列：Caution！！需要注意不能往本队列派发任务，否则会造成死锁。    </li>
+<li>并发队列：√</li>
+</ul>
+<h3 id="dispatch-async"><a href="#dispatch-async" class="headerlink" title="dispatch_async"></a>dispatch_async</h3><p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/zst1c.gif" alt="dispatch_async_in_action">    </p>
+<ul>
+<li>串行队列：√    </li>
+<li>并发队列：√</li>
+</ul>
+<h3 id="dispatch-barriers"><a href="#dispatch-barriers" class="headerlink" title="dispatch barriers"></a>dispatch barriers</h3><p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/b3668.png" alt="Dispatch-Barrier"><br>正如上图所示：使用dispatch_barriers_sync或dispatch_barries_async会在你创建的队列中插入Barrier Block，而这个Block被执行时确保当前仅有一个任务在执行中。这就很好地在并发队列中保持一段暂时串行的任务执行顺序。这很适合于：如对某一个数组或存储结构添加数据时，就可以将该任务作为Barrier Block插入到队列中，即保证了该数组的原子性，防止脏数据的产生。    </p>
+<ul>
+<li>串行队列：完全没必要….</li>
+<li>并发队列：√</li>
+</ul>
+<h4 id="read-and-write-读写问题"><a href="#read-and-write-读写问题" class="headerlink" title="read and write 读写问题"></a>read and write 读写问题</h4><pre><code>- (void)addPhoto:(Photo *)photo 
+{ 
+if (photo) { // 1 
+dispatch_barrier_async(self.concurrentPhotoQueue, ^{ // 2 
+[_photosArray addObject:photo]; // 3 
+dispatch_async(dispatch_get_main_queue(), ^{ // 4 
+[self postContentAddedNotification]; 
+}); 
+}); 
+} 
+}
+</code></pre><pre><code>- (NSArray *)photos 
+{ 
+__block NSArray *array; // 1 
+dispatch_sync(self.concurrentPhotoQueue, ^{ // 2 
+array = [NSArray arrayWithArray:_photosArray]; // 3 
+}); 
+return array; 
+}
+</code></pre><h3 id="dispatch-after"><a href="#dispatch-after" class="headerlink" title="dispatch_after"></a>dispatch_after</h3><p>dispatch_after有一个非常使用的情景：当你需要在APP启动时让启动图片再显示就一些，让APP有更充足的时间准备一些初始化的工作时，就使用dispatch_after.而且正如下文将说到的：dispatch_after最好只在main queue中使用。</p>
+<pre><code>double delayInSeconds = 1.0; 
+dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC)); // 1 
+dispatch_after(popTime, dispatch_get_main_queue(), ^(void){ // 2 
+if (!count) { 
+[self.navigationItem setPrompt:@&quot;Add photos with faces to Googlyify them!&quot;]; 
+} else { 
+[self.navigationItem setPrompt:nil]; 
+} 
+});
+</code></pre><p><strong>只能用于Main Queue！！！！！！！！！！！！！！</strong></p>
+<h3 id="dispatch-once"><a href="#dispatch-once" class="headerlink" title="dispatch_once"></a>dispatch_once</h3><pre><code>static PhotoManager *sharedPhotoManager = nil; 
+static dispatch_once_t onceToken; 
+dispatch_once(&amp;onceToken, ^{ 
+sharedPhotoManager = [[PhotoManager alloc] init]; 
+sharedPhotoManager-&gt;_photosArray = [NSMutableArray array]; 
+}); 
+return sharedPhotoManager;
+</code></pre><h3 id="dispatch-groups"><a href="#dispatch-groups" class="headerlink" title="dispatch_groups"></a>dispatch_groups</h3><pre><code>dispatch_group_t downloadGroup = dispatch_group_create(); 
+//任务开始之前要执行下面的enter函数 
+dispatch_group_enter(downloadGroup); 
+//在任务结束的时候要执行下面的leave函数 
+dispatch_group_leave(downloadGroup); 
+dispatch_group_wait(downloadGroup, DISPATCH_TIME_FOREVER);//阻塞进程等待所有任务结束 
+// or 交给group通知 
+dispatch_group_notify(downloadGroup, dispatch_get_main_queue(), ^{ // 4 
+if (completionBlock) { 
+completionBlock(error); 
+} 
+});
+</code></pre><p>group中的任务不一定在同一个queue里面。串行队列和并发队列都可用。</p>
+<ul>
+<li>串行队列：√    </li>
+<li>并发队列：√</li>
+</ul>
+<h3 id="dispatch-apply"><a href="#dispatch-apply" class="headerlink" title="dispatch_apply"></a>dispatch_apply</h3><pre><code>dispatch_apply(3, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^(size_t i) { 
+}//就像for循环一样
+</code></pre><ul>
+<li>串行队列：没什么必要….串行队列使用跟普通的循环没有区别。</li>
+<li>并发队列：√</li>
+</ul>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a href="https://www.raywenderlich.com/60749/grand-central-dispatch-in-depth-part-1" target="_blank" rel="external">Grand Central Dispatch In-Depth: Part 1/2</a></p>
+<p><a href="https://www.raywenderlich.com/63338/grand-central-dispatch-in-depth-part-2" target="_blank" rel="external">Grand Central Dispatch In-Depth: Part 2/2</a></p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> Thread </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[对线程的简单理解]]></title>
+      <url>/2017/03/14/%E5%AF%B9%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%AE%80%E5%8D%95%E7%90%86%E8%A7%A3/</url>
+      <content type="html"><![CDATA[<p>在软件系统中，随着一个程序被打开，意味着一个进程的启动和调度的开始。对于我们程序员来说，相对于进程，我们更关注粒度更小的线程，它是我们都需要与之打交道的用来实现多任务并发执行的利器。</p>
+<a id="more"></a>
+<h2 id="什么是线程"><a href="#什么是线程" class="headerlink" title="什么是线程"></a>什么是线程</h2><p>老生常谈，但还是先说一下概念：</p>
+<blockquote>
+<p><em>线程</em>，又称轻量级进程，是程序执行流的最小单元。一个标准的线程由线程ID、当前指令指针、寄存器集合和堆栈组成。通常意义上，一个进程由一个到多个线程组成，各个线程之间共享程序的内存空间（包括代码段、数据段、堆等）及一些进程级的资源。  </p>
+</blockquote>
+<p>有两点需要注意：</p>
+<ol>
+<li><p>线程有私有的数据单元：仅仅可以让当前线程访问的寄存器和栈</p>
+</li>
+<li><p>共享进程的内存空间：多个线程同时访问一个数据段或同时执行一块代码，就会有线程安全的问题出现。<br>数据是否私有，如下表所示</p>
+</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">线程私有</th>
+<th style="text-align:center">线程间共享</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">局部变量<br>函数参数</td>
+<td style="text-align:center">全局变量<br>堆上的数据<br>函数内的静态变量<br>代码</td>
+</tr>
+</tbody>
+</table>
+<h2 id="线程调度"><a href="#线程调度" class="headerlink" title="线程调度"></a>线程调度</h2><p>如果线程数量小于等于处理器数量时，线程是真正意义的并发，不同的线程运行在不同的处理器上。这很理想。</p>
+<p>但更经常地，我们可以看到类似这样的图：</p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/cjuwz.png" alt="Concurrency_vs_Parallelism"></p>
+<p>上图中并发的情况是针对线程数量大于处理器数量（多CPU或多核时代，处理器数量不止一个）的情况。学过计算机原理，我们都知道，这种“并发”是一种模拟出来的状态，快速的时间片切换让用户觉得像是同时在执行。这种时间片切换，称为<em>线程调度</em>。</p>
+<p>在线程调度中，线程有三种状态：</p>
+<ul>
+<li>运行：拥有时间片，可以执行代码</li>
+<li>就绪：在等待队列中，随时可以被执行</li>
+<li>等待：等待IO或者因为其他原因被阻塞，等待结束后进入就绪状态</li>
+</ul>
+<p>三者的状态切换如下图所示：<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/eltyq.jpg" alt=""><br>线程有状态了，需要等待调度的发生，自然就涉及到轮换调度和优先级。</p>
+<p>轮换调度让各个线程轮流执行一小段时间后进入就绪状态或等待状态，而优先级则决定了CPU让处于就绪状态的哪个线程先执行。优先级改变有以下三种方式：</p>
+<ol>
+<li><p>在我们的编程中，我们可以手动设置优先级，最常见的，如iOS中GDC的<code>global queue</code>:</p>
+<pre><code class="Objc">// 创建一个优先级为HIGH的全局队列
+dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
+</code></pre>
+</li>
+</ol>
+<ol>
+<li>操作系统也是会根据场景来适当提高线程的优先级，让更多的线程可以执行。通常情况下，频繁等待的线程（<strong>IO密集型线程</strong>）通常只占用很少的时间，这种线程比用完时间片的线程（<strong>CPU密集型线程</strong>）更受欢迎，在操作系统的调度中优先级更容易被提高。</li>
+<li>在调度过程中，还存在<em>线程饿死(Starvation)</em> 的现象，就是优先级很低的线程一直得不到时间片。为了解决这一问题，操作系统会逐步提高这些线程的优先级。</li>
+</ol>
+<h2 id="线程安全"><a href="#线程安全" class="headerlink" title="线程安全"></a>线程安全</h2><p>Q : 为什么会有线程安全问题？</p>
+<p>A : 如上所述，线程间有共享的数据：全局变量、堆上的数据、函数内的静态变量、代码等。两个线程同时修改一个全局变量，会导致修改后的结果不确定。如，两个线程同时对一个变量 <code>i</code> 执行 <code>i++</code>，线程A和线程B都各自拥有自己的寄存器，对<code>i++</code>这种操作，线程A先将<code>i</code>的值存放在线程的寄存器中，执行计算后再赋值回去给<code>i</code>这个变量，中间如果线程B在A赋值之前先获取到<code>i</code>的值，那么最后赋值的结果肯定不正确。这就是线程不安全。</p>
+<p>Q : 怎么保证线程安全？</p>
+<p>A : 保证数据或代码段在一段时间内只有一个线程在访问，方法有：原子操作、同步。</p>
+<ul>
+<li>原子操作（Atomic）<br>原子操作，简单点来说就是单条指令的执行。但仅适用于特定的场合，在复杂的场合下，比如我们要保证一个复杂的数据结构更改的原子性，原子操作指令就力不从心了。</li>
+<li>同步与锁<br>同步也是一种保证线程安全的方式，是指在一个线程访问数据未结束的时候，其他线程不能对同一个数据进行访问。同步常见的有锁、信号量、临界区等。</li>
+</ul>
+<h3 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h3><p>同步最常见的操作就是锁，线程再访问数据之前视图获取锁，访问结束后释放锁。在获取锁时，如果锁被占用了，则线程会等待，直到锁重新可用。</p>
+<p>最简单的（关于锁的详细内容，不在本文的讨论范围内）：</p>
+<pre><code class="objc">NSLock *theLock = [[NSLock alloc] init];
+if ([theLock lock]) {
+   // 需要同步的代码
+   [theLock unlock];
+}
+</code></pre>
+<h3 id="信号量"><a href="#信号量" class="headerlink" title="信号量"></a>信号量</h3><p>信号量也可以用在同步方面，但是这里所说的是二元信号量，即只表示占用与非占用。例如GCD中：</p>
+<pre><code class="objc">// 创建一个二元信号量，dispatch_semaphore_create的入参为0
+dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+// 使用wait让semaphore减1
+dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+// 使用signal让semaphore加1
+dispatch_semaphore_signal(semaphore);
+</code></pre>
+<p>当信号量<code>semaphore</code>小于0时，线程会暂停执行，直到<code>semaphore</code>重新变成0。</p>
+<h3 id="临界区"><a href="#临界区" class="headerlink" title="临界区"></a>临界区</h3><p>临界区更多的是指一个访问共用资源的代码块，而这些共用资源又无法同时被多个线程访问的特性。</p>
+<p>信号量，我们知道，在本线程创建，可以在其他线程被获取到并调用<code>signal</code>或<code>wait</code>来操作信号量。相对来说，临界区显得更加严格。本线程进入临界区，只有当退出临界区了，其他线程才能访问临界区的代码块。如下代码，相信大家肯定不陌生：</p>
+<pre><code class="objc">@synchronized(self) {
+    // 临界区代码
+}
+</code></pre>
+<h3 id="可重入-Reentrant"><a href="#可重入-Reentrant" class="headerlink" title="可重入(Reentrant)"></a>可重入(Reentrant)</h3><p>可重入的概念，适用于函数。</p>
+<p>首先了解一下什么是<em>函数被重入</em>：一个函数被重入，表示这个函数没有执行完成，由于外部因素（多线程同时调用）或内部调用（递归函数），又一次进入了该函数。</p>
+<p>可重入函数也保证线程安全，因为该种函数被重入之后不会产生任何不良的后果，比如：</p>
+<pre><code class="objc">- (int)sqr:(int) x {
+    return x * x;
+}
+</code></pre>
+<p>保证可重入，需要保证以下几个方面：</p>
+<ul>
+<li>不使用静态或全局非const的变量</li>
+<li>不返还静态或全局非const变量的指针</li>
+<li>仅依赖入参</li>
+<li>不调用不可重入的函数</li>
+</ul>
+<h2 id="线程和队列的关系"><a href="#线程和队列的关系" class="headerlink" title="线程和队列的关系"></a>线程和队列的关系</h2><p>线程和队列的关系，一直都纠缠不清。</p>
+<p>在开发中，我们会接触到两种队列，串行队列和并行队列，二者的区别是：串行队列中的任务是有序被执行的，并行队列中的任务是利用多线程并发执行，不能保证执行顺序。</p>
+<p>举个可能不太恰当的例子：线程是消费者，队列是传输纽带，任务是面包，线程执行任务，比作将面包吃掉。对于面包呢，我（当前线程）可以自己享用，也可以通过传输带给其他消费者享用（任务可以自己完成，也可以交由其他线程去完成）。</p>
+<p>串行队列：它是有序的传输带，编号是SQ，我的面包吃不完，所以我往上面放了一个面包，给其他人享用，此时有消费者A拿了，并开始吃。同时消费者B也想分享他的面包，他也把面包放到SQ上，那就要等待A吃完面包了，B分享的面包才会被消费。此时传输带SQ就被暂停了。</p>
+<p>并行队列：任务的执行时无需等待前面的任务执行完，编号是CQ，同样，我的面包吃不完，放到CQ上，A正在享用，此时B也将面包放在CQ上，但是A无法享用（因为正在享用我的），因此CQ就发出警鸣，叫来了消费者C来将B的面包吃掉，以维持CQ的继续运转，当A吃完后，还可以继续享用其他人分享的面包。所以，并行队列并不是一定会产生新的线程，如果有空闲的线程还是会被继续叫来执行任务，只是平时线程执行完就被销毁，所以队列在需要执行新任务的时候就给我们造成一个创建新线程的假象。</p>
+<h2 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h2><p>首先，概念：</p>
+<blockquote>
+<p><em>死锁</em> 是指两个或两个以上的线程在执行过程中，由于竞争资源或者由于彼此通信而造成的一种阻塞的现象。  </p>
+</blockquote>
+<p>死锁不需要多说，相信学过计算机理论的同学都知道。多线程改善了系统资源的利用率和提高了系统的处理能力，多线程并发执行很有可能造成死锁，无外力作用的情况下，整个进程就无法继续推进。用户对程序内部的运作不知情，但看到界面毫无响应，怎么点击都没用，此时就会责怪应用的不完善。</p>
+<p>上述关于<em>死锁</em> 的概念来自百科，有一点我觉得要更正的是，死锁也有可能是由单一线程造成。作为一个iOS应用开发者，我使用GCD来说明一下：</p>
+<pre><code class="objc">// 主线程中调用
+dispatch_sync(dispatch_get_main_queue(), ^{
+    // do something
+})
+</code></pre>
+<p>上述代码必将造成死锁，但是此例只涉及一个线程，那就是iOS App的主线程（亦称UI线程）。我们知道，在iOS中，<code>main queue</code>是串行队列，其任务只能由主线程去完成。而<code>dispatch_sync</code>会阻塞当前线程，因此，当上述代码用在主线程中调用时，主线程被会阻塞，然后将<code>block</code>放在<code>main queue</code>中，等主线程执行完<code>block</code>中的代码后才释放主线程，然而主线程已被阻塞，无法执行<code>main queue</code>中的<code>block</code>，所以造成死锁。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文对线程做了一个简单的描述，在每个App都涉及多线程开发的现在，需要注意线程安全的问题，通过原子操作、同步等方式可以保证。还讲述了串行队列和并行队列，最后浅浅地点了一下死锁的概念，算是一篇写给线程小白看的入门级iOS文章，如有写得不好的地方，请各位斧正。</p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> Thread </tag>
             
         </tags>
         
@@ -627,9 +881,9 @@ end
 <p>所以，Congratulations~😄😄😄🎉🎉🎉~</p>
 <h2 id="写在后面"><a href="#写在后面" class="headerlink" title="写在后面"></a>写在后面</h2><p>博客是在hollow主题的<a href="https://github.com/zchen9/hexo-theme-hollow" target="_blank" rel="external">创作家</a>的基础上进行修改的，表示真挚的感谢。</p>
 <p>如果要自己写主题，<a href="https://hexo.io/zh-cn/docs/writing.html" target="_blank" rel="external">Hexo文档</a>记得多看看。</p>
-<p>对于域名购买和Cloudflare、腾讯云的使用，Google可以搜到许多精彩且详细的文章，此处就不在赘述了。</p>
+<p>对于域名购买和Cloudflare、腾讯云的使用，Google可以搜到许多精彩且详细的文章，此处就不再赘述了。</p>
 <h3 id="对于这次实践的总结："><a href="#对于这次实践的总结：" class="headerlink" title="对于这次实践的总结："></a>对于这次实践的总结：</h3><ul>
-<li>虽然Node.js小白都可以弄出来，因为一行nodejs的代码都没写到</li>
+<li>虽然是Node.js小白，但勉强做得出来，因为一行nodejs的代码都没写到</li>
 <li>HTML、CSS、JS可以做很多事情</li>
 <li>需要学习下ejs、stylus，都不是很难</li>
 <li>多看看别人的代码，很受启发</li>
@@ -1233,136 +1487,6 @@ CGFloat topViewWidth = kUIScreen.size.width - kMargin * 2;
         <tags>
             
             <tag> UIView </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[iOS下重要的多线程GCD]]></title>
-      <url>/2016/03/13/iOS%E4%B8%8B%E9%87%8D%E8%A6%81%E7%9A%84%E5%A4%9A%E7%BA%BF%E7%A8%8BGCD/</url>
-      <content type="html"><![CDATA[<p><strong>多线程</strong>是每个系统都必须具备的功能，带给用户更多的便利，伴随着友好度的提升，APP的被使用率和被使用频率也会更加高。<br>此篇笔记参考了网络上一些好文，学习到了很多。在Ray Wenderlich上摘录了一些队列的常用情景，希望自己得到提高的同时分享给大家。</p>
-<a id="more"></a>
-<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/cjuwz.png" alt="Concurrency_vs_Parallelism"></p>
-<h2 id="一些概念"><a href="#一些概念" class="headerlink" title="一些概念"></a>一些概念</h2><h3 id="串行（Serial）与-并发（Concurrent）"><a href="#串行（Serial）与-并发（Concurrent）" class="headerlink" title="串行（Serial）与 并发（Concurrent）"></a>串行（Serial）与 并发（Concurrent）</h3><ul>
-<li>任务串行，意味着在同一时间，有且只有一个任务被执行，即一个任务执行完毕之后再执行下一个任务。</li>
-<li>任务并发，意味着对于用户体验，在同一时间，有多个任务被执行。</li>
-</ul>
-<h3 id="同步（Synchronous）与-异步-（Asynchronous）"><a href="#同步（Synchronous）与-异步-（Asynchronous）" class="headerlink" title="同步（Synchronous）与 异步 （Asynchronous）"></a>同步（Synchronous）与 异步 （Asynchronous）</h3><ul>
-<li>同步派发(sync)会尽可能地在当前线程派发任务。但如果在其他队列往主队列同步派发，任务会在主线程执行。 </li>
-<li>异步派发(async)也不绝对会另开线程。例如在主线程异步派发到主线程，派发依旧是异步的，任务也会在主线程执行。</li>
-</ul>
-<p>同步异步的重要区别在于派发方法是否需要等待 block 完成后才能返回。</p>
-<h3 id="临界区（Critical-Section）"><a href="#临界区（Critical-Section）" class="headerlink" title="临界区（Critical Section）"></a>临界区（Critical Section）</h3><p>一段代码不能被并发执行，也就是，两个线程不能同时执行这段代码。这很常见，因为代码去操作一个共享资源，例如一个变量若能被并发进程访问，那么它很可能会变质（它的值不再可信）。</p>
-<h3 id="死锁（Deadlock）"><a href="#死锁（Deadlock）" class="headerlink" title="死锁（Deadlock）"></a>死锁（Deadlock）</h3><p>停止等待事情的线程会导致多个线程相互维持等待，即死锁。<br>两个（或更多）线程卡住了，等待对方完成或执行其它操作。第一个不能完成是因为它在等待第二个的完成。但第二个也不能完成，因为它在等待第一个的完成。</p>
-<h3 id="线程安全（Thread-Safe）"><a href="#线程安全（Thread-Safe）" class="headerlink" title="线程安全（Thread Safe）"></a>线程安全（Thread Safe）</h3><p>线程安全的代码能在多线程或并发任务中被安全的调用，而不会导致任何问题（数据损坏，崩溃等）。线程不安全的代码在某个时刻只能在一个上下文中运行。一个线程安全代码的例子是NSDictionary。你可以在同一时间在多个线程中使用它而不会有问题。另一方面，NSMutableDictionary就不是线程安全的，应该保证一次只能有一个线程访问它。更多请看：<a href="https://developer.apple.com/library/mac/documentation/cocoa/conceptual/multithreading/ThreadSafetySummary/ThreadSafetySummary.html" target="_blank" rel="external">helpful and somewhat chilling list</a></p>
-<h3 id="上下文切换（Context-Switch）"><a href="#上下文切换（Context-Switch）" class="headerlink" title="上下文切换（Context Switch）"></a>上下文切换（Context Switch）</h3><p>一个上下文切换指当你在单个进程里切换执行不同的线程时存储与恢复执行状态的过程。这个过程在编写多任务应用时很普遍，但会带来一些额外的开销。</p>
-<h3 id="并发（Concurrency）与-并行-（Parallelism）"><a href="#并发（Concurrency）与-并行-（Parallelism）" class="headerlink" title="并发（Concurrency）与 并行 （Parallelism）"></a>并发（Concurrency）与 并行 （Parallelism）</h3><p>并行要求并发，但并发不能保证并行，就计算机操作系统来说，开启线程是很耗性能的，也就是说，事实上，在某次并发处理任务中，开启的线程是有上限的，如果上限为2，即每次开启的新线程为2，那么是有可能出现并发却不并行的情况。<br>并发代码的不同部分可以“同步”执行。然而，该怎样发生或是否发生都取决于系统。多核设备通过并行来同时执行多个线程；然而，为了使单核设备也能实现这一点，它们必须先运行一个线程，执行一个上下文切换，然后运行另一个线程或进程。这通常发生地足够快以致给我们并发执行地错觉，如下图所示：<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/cjuwz.png" alt="Concurrency_vs_Parallelism"></p>
-<h2 id="队列（queue）"><a href="#队列（queue）" class="headerlink" title="队列（queue）"></a>队列（queue）</h2><table>
-<thead>
-<tr>
-<th style="text-align:center">队列</th>
-<th style="text-align:center">线程</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">串行</td>
-<td style="text-align:center">当前线程运行</td>
-</tr>
-<tr>
-<td style="text-align:center">并发</td>
-<td style="text-align:center">另开线程运行</td>
-</tr>
-</tbody>
-</table>
-<h3 id="串行队列（Serial-Queues）"><a href="#串行队列（Serial-Queues）" class="headerlink" title="串行队列（Serial Queues）"></a>串行队列（Serial Queues）</h3><hr>
-<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/26uxx.png" alt="Serial-Queue"><br><code>dispatch_queue_create(&quot;com.selander.GooglyPuff.photoQueue&quot;,DISPATCH_QUEUE_SERIAL);</code><br>串行队列最典型的是<strong>main queue</strong>：主线程所对应的queue，主要用于更新UI。</p>
-<h3 id="并发队列（Concurrent-Queues）"><a href="#并发队列（Concurrent-Queues）" class="headerlink" title="并发队列（Concurrent Queues）"></a>并发队列（Concurrent Queues）</h3><hr>
-<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/ggsfu.png" alt="Concurrent-Queue"><br><code>dispatch_queue_create(&quot;com.selander.GooglyPuff.photoQueue&quot;,DISPATCH_QUEUE_CONCURRENT);</code><br>除了通过DISPATCH_QUEUE_CONCURRENT创建的queue外，系统提供了Global Dispatch Queues：分别有四种优先级（background, low, default, high）<br><code>dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)</code></p>
-<h2 id="GCD语法和适用范围"><a href="#GCD语法和适用范围" class="headerlink" title="GCD语法和适用范围"></a>GCD语法和适用范围</h2><h3 id="dispatch-sync"><a href="#dispatch-sync" class="headerlink" title="dispatch_sync"></a>dispatch_sync</h3><p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/wx3ao.gif" alt="dispatch_sync_in_action"></p>
-<ul>
-<li>串行队列：Caution！！需要注意不能往本队列派发任务，否则会造成死锁。    </li>
-<li>并发队列：√</li>
-</ul>
-<h3 id="dispatch-async"><a href="#dispatch-async" class="headerlink" title="dispatch_async"></a>dispatch_async</h3><p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/zst1c.gif" alt="dispatch_async_in_action">    </p>
-<ul>
-<li>串行队列：√    </li>
-<li>并发队列：√</li>
-</ul>
-<h3 id="dispatch-barriers"><a href="#dispatch-barriers" class="headerlink" title="dispatch barriers"></a>dispatch barriers</h3><p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/b3668.png" alt="Dispatch-Barrier"><br>正如上图所示：使用dispatch_barriers_sync或dispatch_barries_async会在你创建的队列中插入Barrier Block，而这个Block被执行时确保当前仅有一个任务在执行中。这就很好地在并发队列中保持一段暂时串行的任务执行顺序。这很适合于：如对某一个数组或存储结构添加数据时，就可以将该任务作为Barrier Block插入到队列中，即保证了该数组的原子性，防止脏数据的产生。    </p>
-<ul>
-<li>串行队列：完全没必要….</li>
-<li>并发队列：√</li>
-</ul>
-<h4 id="read-and-write-读写问题"><a href="#read-and-write-读写问题" class="headerlink" title="read and write 读写问题"></a>read and write 读写问题</h4><pre><code>- (void)addPhoto:(Photo *)photo 
-{ 
-if (photo) { // 1 
-dispatch_barrier_async(self.concurrentPhotoQueue, ^{ // 2 
-[_photosArray addObject:photo]; // 3 
-dispatch_async(dispatch_get_main_queue(), ^{ // 4 
-[self postContentAddedNotification]; 
-}); 
-}); 
-} 
-}
-</code></pre><pre><code>- (NSArray *)photos 
-{ 
-__block NSArray *array; // 1 
-dispatch_sync(self.concurrentPhotoQueue, ^{ // 2 
-array = [NSArray arrayWithArray:_photosArray]; // 3 
-}); 
-return array; 
-}
-</code></pre><h3 id="dispatch-after"><a href="#dispatch-after" class="headerlink" title="dispatch_after"></a>dispatch_after</h3><p>dispatch_after有一个非常使用的情景：当你需要在APP启动时让启动图片再显示就一些，让APP有更充足的时间准备一些初始化的工作时，就使用dispatch_after.而且正如下文将说到的：dispatch_after最好只在main queue中使用。</p>
-<pre><code>double delayInSeconds = 1.0; 
-dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC)); // 1 
-dispatch_after(popTime, dispatch_get_main_queue(), ^(void){ // 2 
-if (!count) { 
-[self.navigationItem setPrompt:@&quot;Add photos with faces to Googlyify them!&quot;]; 
-} else { 
-[self.navigationItem setPrompt:nil]; 
-} 
-});
-</code></pre><p><strong>只能用于Main Queue！！！！！！！！！！！！！！</strong></p>
-<h3 id="dispatch-once"><a href="#dispatch-once" class="headerlink" title="dispatch_once"></a>dispatch_once</h3><pre><code>static PhotoManager *sharedPhotoManager = nil; 
-static dispatch_once_t onceToken; 
-dispatch_once(&amp;onceToken, ^{ 
-sharedPhotoManager = [[PhotoManager alloc] init]; 
-sharedPhotoManager-&gt;_photosArray = [NSMutableArray array]; 
-}); 
-return sharedPhotoManager;
-</code></pre><h3 id="dispatch-groups"><a href="#dispatch-groups" class="headerlink" title="dispatch_groups"></a>dispatch_groups</h3><pre><code>dispatch_group_t downloadGroup = dispatch_group_create(); 
-//任务开始之前要执行下面的enter函数 
-dispatch_group_enter(downloadGroup); 
-//在任务结束的时候要执行下面的leave函数 
-dispatch_group_leave(downloadGroup); 
-dispatch_group_wait(downloadGroup, DISPATCH_TIME_FOREVER);//阻塞进程等待所有任务结束 
-// or 交给group通知 
-dispatch_group_notify(downloadGroup, dispatch_get_main_queue(), ^{ // 4 
-if (completionBlock) { 
-completionBlock(error); 
-} 
-});
-</code></pre><p>group中的任务不一定在同一个queue里面。串行队列和并发队列都可用。</p>
-<ul>
-<li>串行队列：√    </li>
-<li>并发队列：√</li>
-</ul>
-<h3 id="dispatch-apply"><a href="#dispatch-apply" class="headerlink" title="dispatch_apply"></a>dispatch_apply</h3><pre><code>dispatch_apply(3, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^(size_t i) { 
-}//就像for循环一样
-</code></pre><ul>
-<li>串行队列：没什么必要….串行队列使用跟普通的循环没有区别。</li>
-<li>并发队列：√</li>
-</ul>
-<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a href="https://www.raywenderlich.com/60749/grand-central-dispatch-in-depth-part-1" target="_blank" rel="external">Grand Central Dispatch In-Depth: Part 1/2</a></p>
-<p><a href="https://www.raywenderlich.com/63338/grand-central-dispatch-in-depth-part-2" target="_blank" rel="external">Grand Central Dispatch In-Depth: Part 2/2</a></p>
-]]></content>
-      
-        
-        <tags>
-            
-            <tag> iOSThread </tag>
             
         </tags>
         
