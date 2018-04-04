@@ -17,7 +17,7 @@
   transition all 300ms linear
   z-index 9
 
-  cursor pointer
+  cursor url(/images/pointer.cur),pointer
 
   i
     color #CCC
@@ -27,9 +27,12 @@
     position absolute
     top 12px
     left 11.5px
+    &:hover
+      cursor url(/images/pointer.cur),pointer
 
   &:hover
     border 1px solid red
+    cursor url(/images/pointer.cur),pointer
     i
       color red
 
@@ -44,6 +47,7 @@
   cursor default
   &:hover
     border 1px solid #CCC
+    cursor url(/images/pointer.cur),pointer
     i
       color #CCC
 

@@ -1,12 +1,15 @@
 @import "variables.styl"
 @import "mixins.styl"
 
+*
+  cursor url(/images/default.cur),default
+
 body,
 html
   width 100%
   font-size 18px
   font-weight 300
-  color gray-dark
+  color #606060
   @extend .sans-serif
 
 p
@@ -51,6 +54,16 @@ ul
 li
   margin 10px 0
 
+th
+  border-style solid
+  border-width 2px
+  padding 0 10px
+
+td
+  padding 5px 10px
+  border-style solid
+  border-width 2px
+
 a
   color red
   &:hover, &:focus
@@ -82,7 +95,10 @@ a.nav-back
     position absolute
     top 12px
     left 12px
+    &:hover
+      cursor url(/images/pointer.cur),pointer
   &:hover, &:focus
+    cursor url(/images/pointer.cur),pointer
     border 1px solid red
     color red
   

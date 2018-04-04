@@ -1,10 +1,10 @@
 ---
 title: iOS Touch Event传递和响应链
 date: 2017-02-27 18:54:59
-mddl: /iOS-Event传递和响应链.md
-thumbnail: http://7xs4ed.com1.z0.glb.clouddn.com/TouchEvent_WechatIMG3.jpeg
+id: 8539A86063B11E16
 tags: 
 - UIView 
+typora-copy-images-to: ipic
 ---
 
 本来不想重复造轮子，因为网上已经很多关于iOS触碰事件传递响应链的文章，而且苹果官方文档也已经解释得很清楚。但是上周和朋友吃饭的时候聊到却不能很好地将想法表达出来，所以感觉还是写一写，加深印象吧～
@@ -35,7 +35,7 @@ tags:
 
 - 若返回`NO`,则直接返回nil，且所有的SubView都不会响应当前事件。所以，敲重点啦，对于`clipsToBounds`设置为`NO`，允许SubView向外延伸的View，需要重载`pointInside:withEvent:`，例如：
 
-  ![](http://7xs4ed.com1.z0.glb.clouddn.com/TouchEvent_WechatIMG3.jpeg)
+  ![TouchEvent_WechatIMG3](https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/rkb9k.jpg)
 
   ```objective-c
   - (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event{
@@ -50,7 +50,7 @@ tags:
 
 - 若返回`YES`，则调用所有SubView的`hitTest:withEvent:`，继续寻找HitTest View。在视图层级树(这样翻译?! view hierarchy)中**最后添加的叶结点**且**包含触碰点**的View就会光荣地成为**HitTest View**(如下图最后一个UIView)，首先接受事件，并做下一步操作——寻找响应对象。
 
-  ![](http://7xs4ed.com1.z0.glb.clouddn.com/TouchEvent_WechatIMG1.jpeg)
+  ![TouchEvent_WechatIMG1](https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/zedzb.jpg)
 
 
 
@@ -63,13 +63,9 @@ tags:
 }
 ```
 
-
-
-
-
 ## 从上往下——寻找响应对象
 
-![这张图已经看了不止一千遍了](https://upload-images.jianshu.io/upload_images/1387344-cd500e5bd93d9606.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700)
+![1387344-cd500e5bd93d9606](https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/2fznc.png)
 
 这张图相信在其他地方已经看了一千遍了，但是有图还是容易理解，从上往下的意思是：
 
@@ -98,9 +94,11 @@ iOS10的UIResponder中定义了两个新的Property：
 
 再分门别类地回答～
 
-
-
 以上
 
-最后奉上教条：[Event Handling Guide for iOS](https://developer.apple.com/library/content/documentation/EventHandling/Conceptual/EventHandlingiPhoneOS/event_delivery_responder_chain/event_delivery_responder_chain.html#//apple_ref/doc/uid/TP40009541-CH4-SW1)
+
+
+## 参考文献
+
+[Event Handling Guide for iOS](https://developer.apple.com/library/content/documentation/EventHandling/Conceptual/EventHandlingiPhoneOS/event_delivery_responder_chain/event_delivery_responder_chain.html#//apple_ref/doc/uid/TP40009541-CH4-SW1)
 

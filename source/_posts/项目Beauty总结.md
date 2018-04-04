@@ -1,19 +1,17 @@
 ---
-title: 外包项目《Beauty》札记
+title: 《Beauty》项目小总结
 date: 2017-07-17 20:48:15
+id: FCDAE83256354451
 tags: 
 - Summary
+typora-copy-images-to: ipic
 ---
 
 三月底开始了自己的第一个外包项目“Beauty”，App的名字是“CHARMER”，是一个促进美容技师和客户之间达成服务协议的App，搭建供求双方沟通和交易的桥梁和平台。在做完第一版之后，几乎每晚都需要修改功能修复Bug，现在突然间一段时间没有了消息，应该算是完结了。    
 
-2017-10-12 更: 项目运营烂尾，终于停止上线...
-
 <!--more-->
 
-
-
-​         
+2017-10-12 更: 项目运营烂尾，最后好像没有上架，难过ing… :(
 
 ## 所做的事情
 
@@ -37,8 +35,6 @@ tags:
 
   8. 提供其他用户和技师的电话联系方式
 
-     ​
-
 - 技师端：
 
   1. 竞标用户的公共订单    
@@ -61,7 +57,7 @@ tags:
 
 ### 项目文件结构
 
-![](http://7xs4ed.com1.z0.glb.clouddn.com/Beauty_%E9%A1%B9%E7%9B%AE%E5%A4%A7%E8%87%B4%E7%BB%93%E6%9E%84.png)
+![Beauty_项目大致结构](https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/yjc6f.png)
 
 　　因为App是用户与技师统一客户端，所以，对于每个Module，都分成Charmer和User分别对应技师和用户，再在其下分为Model、View、Controller，很常见的MVC架构。    
 
@@ -73,7 +69,7 @@ tags:
 
 ### 地图
 
-![](http://7xs4ed.com1.z0.glb.clouddn.com/Beauty_Google%E5%9C%B0%E5%9B%BE_%E5%B0%8F.jpg)
+![Beauty_Google地图_小](https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/m8ev4.jpg)
 
 　　因为App即将在香港上线，自然地使用Google地图。第一次用Google地图做开发，感觉跟百度、高德没有太大的区别， 有一点就是：文档基本只有官方文档，遇到问题要Google，基本都是讲百度或高德。关于Google地图，后面再重新写篇文章介绍，包括使用，自定义Marker（地图上紫色的标志），PopView（点击Marker弹出的View）     
 
@@ -81,7 +77,7 @@ tags:
 
 ### 左侧滑动菜单
 
-![](http://7xs4ed.com1.z0.glb.clouddn.com/Beauty_%E5%B7%A6%E8%BE%B9%E6%A0%8F.jpg)
+![Beauty_左边栏](https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/1h42p.jpg)
 
 　　图片好像压缩得有点过分了....
 
@@ -175,9 +171,7 @@ tags:
 
 ### CHARMER PROFILE
 
-![](http://7xs4ed.com1.z0.glb.clouddn.com/Beauty_CollectionView.jpg)
-
-
+![Beauty_CollectionView](https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/f7cwa.jpg)
 
 　　技师Profile页面，为什么会拿出来写？！是因为Conllection Viewz在日常开发中非常非常非常常见。基本每个App都会用到（TableView是特殊的Conllection View）。这个Collection View分为三部分：
 
@@ -219,15 +213,13 @@ end
 
 - 好的方面：
 
-  1. 一位好Partner，一位一起奋斗的好朋友
+  1. 一位好Partner，一位一起奋斗的好朋友。
 
-  2. 很多UI控件和底层实现都接触到了，加深了印象
+  2. 很多UI控件和底层实现都接触到了，加深了印象。
 
-  3. 真正接触并使用到优秀的第三方框架，以后在开发过程中如果遇到适用的情况就不会因为无知而重复造轮子（可能还造不好....）
+  3. 真正接触并使用到优秀的第三方框架，以后在开发过程中如果遇到适用的情况就不会因为无知而重复造轮子（可能还造不好….）。
 
-  4. 积累了经验，这个App算是自己一个比较完整开发的App。整个开发流程虽然没有公司项目那么正规，但是一些相关的文档、说明还是不缺的
-
-     ​
+  4. 积累了经验，这个App算是自己一个比较完整开发的App。整个开发流程虽然没有公司项目那么正规，但是一些相关的文档、说明还是不缺的。
 
 - 不好的方面：
 

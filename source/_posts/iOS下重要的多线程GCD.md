@@ -1,16 +1,16 @@
 ---
 title: iOS下重要的多线程GCD
-date: 2016-03-13 12:15:06
+date: 2017-03-23 12:15:06
 tags: 
-- iOSThread
- 
+- Thread
+typora-copy-images-to: ipic
 ---
 
 **多线程**是每个系统都必须具备的功能，带给用户更多的便利，伴随着友好度的提升，APP的被使用率和被使用频率也会更加高。    
 此篇笔记参考了网络上一些好文，学习到了很多。在Ray Wenderlich上摘录了一些队列的常用情景，希望自己得到提高的同时分享给大家。
 
 <!--more-->
-![](https://koenig-media.raywenderlich.com/uploads/2014/01/Concurrency_vs_Parallelism.png)
+![Concurrency_vs_Parallelism](https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/cjuwz.png)
 
 ## 一些概念
 
@@ -40,7 +40,7 @@ tags:
 ### 并发（Concurrency）与 并行 （Parallelism）
 并行要求并发，但并发不能保证并行，就计算机操作系统来说，开启线程是很耗性能的，也就是说，事实上，在某次并发处理任务中，开启的线程是有上限的，如果上限为2，即每次开启的新线程为2，那么是有可能出现并发却不并行的情况。
 并发代码的不同部分可以“同步”执行。然而，该怎样发生或是否发生都取决于系统。多核设备通过并行来同时执行多个线程；然而，为了使单核设备也能实现这一点，它们必须先运行一个线程，执行一个上下文切换，然后运行另一个线程或进程。这通常发生地足够快以致给我们并发执行地错觉，如下图所示： 
-![](https://koenig-media.raywenderlich.com/uploads/2014/01/Concurrency_vs_Parallelism.png)
+![Concurrency_vs_Parallelism](https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/cjuwz.png)
 
 
 ## 队列（queue）
@@ -52,14 +52,14 @@ tags:
 
 ### 串行队列（Serial Queues）
 ---
-![](https://koenig-media.raywenderlich.com/uploads/2014/01/Serial-Queue.png)
+![Serial-Queue](https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/26uxx.png)
 `dispatch_queue_create("com.selander.GooglyPuff.photoQueue",DISPATCH_QUEUE_SERIAL);`    
 串行队列最典型的是**main queue**：主线程所对应的queue，主要用于更新UI。
 
 
 ### 并发队列（Concurrent Queues）
 ---
-![](https://koenig-media.raywenderlich.com/uploads/2014/01/Concurrent-Queue.png)
+![Concurrent-Queue](https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/ggsfu.png)
 `dispatch_queue_create("com.selander.GooglyPuff.photoQueue",DISPATCH_QUEUE_CONCURRENT);`    
 除了通过DISPATCH_QUEUE_CONCURRENT创建的queue外，系统提供了Global Dispatch Queues：分别有四种优先级（background, low, default, high）    
 `dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)`
@@ -69,21 +69,21 @@ tags:
 
 ### dispatch_sync
 
-![](https://koenig-media.raywenderlich.com/uploads/2014/01/dispatch_sync_in_action.gif)    
+![dispatch_sync_in_action](https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/wx3ao.gif)
 - 串行队列：Caution！！需要注意不能往本队列派发任务，否则会造成死锁。    
 - 并发队列：√
 
 
 ### dispatch_async
 
-![](https://koenig-media.raywenderlich.com/uploads/2014/01/dispatch_async_in_action.gif)    
+![dispatch_async_in_action](https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/zst1c.gif)    
 - 串行队列：√    
 - 并发队列：√
 
 
 ### dispatch barriers
 
-![](https://koenig-media.raywenderlich.com/uploads/2014/01/Dispatch-Barrier.png)    
+![Dispatch-Barrier](https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/b3668.png)    
 正如上图所示：使用dispatch\_barriers\_sync或dispatch\_barries\_async会在你创建的队列中插入Barrier Block，而这个Block被执行时确保当前仅有一个任务在执行中。这就很好地在并发队列中保持一段暂时串行的任务执行顺序。这很适合于：如对某一个数组或存储结构添加数据时，就可以将该任务作为Barrier Block插入到队列中，即保证了该数组的原子性，防止脏数据的产生。    
 - 串行队列：完全没必要....
 - 并发队列：√
@@ -172,8 +172,7 @@ dispatch_apply(3, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^(
 - 并发队列：√
 
 
----
-参考文献：
+## 参考文献
 
 [Grand Central Dispatch In-Depth: Part 1/2](https://www.raywenderlich.com/60749/grand-central-dispatch-in-depth-part-1)
 

@@ -1,11 +1,9 @@
 ---
 title: 类方法的Block不会内存泄漏....吗？！
-
 date: 2016-7-17 19:57:39
-
 tags: 
 - Block
-
+typora-copy-images-to: ipic
 ---
 
 Block在很多时候会引起循环引用，已经是老生常谈了。很多文章在讲述Block的时候都会谈及这个问题：    
@@ -45,15 +43,15 @@ Block在很多时候会引起循环引用，已经是老生常谈了。很多文
 　　我们通过Instruments来看看是否真的有内存泄漏(例子中EZScanNetGrid是我自定义的View,View中有执行动画的代码，见上方代码块，QRCodeScanner是对应的Controller)：    
 
 1. 多次创建QRCodeScanner并销毁：
-   ![self](http://7xs4ed.com1.z0.glb.clouddn.com/block_self.jpg)    
+   ![block_self](https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/g3gqy.jpg)    
    QRCodeScanner被销毁后：
-   ![self](http://7xs4ed.com1.z0.glb.clouddn.com/block_self2.jpg)     
+   ![block_self2](https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/97ewo.jpg)     
 
 
 2. 将上述代码的self改成weakSelf，再来看看Instruments：
-   ![weakSelf](http://7xs4ed.com1.z0.glb.clouddn.com/block_weakSelf.jpg)     
+   ![block_weakSelf](https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/jnbwl.jpg)     
    QRCodeScanner被销毁后：
-   ![weakSelf](http://7xs4ed.com1.z0.glb.clouddn.com/block_weakSelf2.jpg)     
+   ![block_weakSelf2](https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/p1pae.jpg)     
 
 
 　　结果很明显，若是使用self，EZScanNetGrid这个View一直存在于内存中没有被释放，因为UIView Animation对其的强引用使其一直存在于内存中，直至Block里面的代码执行完毕。但是这段代码里可以看到，completion中又继续调用了`[self startAnimation];`因此，系统会继续保留对EZScanNetGrid的引用，从而即使EZScanNetGrid的SuperView被销毁了，EZScanNetGrid还是没有被销毁，无限地循环调用着动画，占据内存的同时也耗费着CPU。:(

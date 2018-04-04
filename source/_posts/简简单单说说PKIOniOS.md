@@ -3,7 +3,7 @@ title: 简简单单说说PKI On iOS
 date: 2016-04-09 20:16:05
 tags: 
 - Security
-
+typora-copy-images-to: ipic
 ---
 
 
@@ -11,7 +11,7 @@ Hacker,问你惊未Σ( ° △ °|||)︴
 
 <!--more-->
 
-![神探夏洛克](http://7xs4ed.com1.z0.glb.clouddn.com/Crypto_Sherlock.jpg) 
+![Crypto_Sherlock](https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/sijuh.jpg) 
 
 
 看了很多侦探片之后，逐渐发现加解密的神奇所在。能够在别人无法察觉的情况下传递信息（我很喜欢看这些片子，哈哈哈）。无论是Morse Code还是对着某本书根据页码行数字数来确定表达信息，都能让我看到前人的智慧。说真的，我特别钟意神探夏洛克，就算英文渣渣也会在更新的时候到Youtube上看看，等翻译完再翻看一次。记得中国剧场那一集最后根据伦敦地图破解了藏在苏州码子里的暗号，So Sexy~··   
@@ -23,11 +23,11 @@ Hacker,问你惊未Σ( ° △ °|||)︴
 
 阿澤君是个大四🐶，最近在烦毕业论文的事情。辛辛苦苦撸了二十个年(xiao)头(shi)的论文，肯定要第一时间交到老师手里，让他看看，好舒缓阿澤君难产的心情。阿澤君知道有个Hacker君一直在觊觎阿澤君的论文，想拿过来一抄了之。而且Hacker君是一流的网络黑客，盗线偷取别人的信息是最在行的了。因此怎么发给千里之外的老师可难为阿澤君了。。。    
 
-![沉思...](http://7xs4ed.com1.z0.glb.clouddn.com/common/focusOnCom.jpg)    
+![focusOnCom](https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/r6p4c.jpg)    
 
 很快，阿澤君想到用加密的方法，利用对称加密的方法给论文加密后发送给老师。
 
-![开心](http://7xs4ed.com1.z0.glb.clouddn.com/common/bucuowo.jpg)
+![bucuowo](https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/i66ud.jpg)
 
 
 # 对称加密    
@@ -37,9 +37,7 @@ Hacker,问你惊未Σ( ° △ °|||)︴
 ## DES
 DES 使用一个 56 位的密钥以及附加的 8 位奇偶校验位，产生最大 64 位的分组大小。这是一个迭代的分组密码，使用称为 Feistel 的技术，其中将加密的文本块分成两半。使用子密钥对其中一半应用循环功能，然后将输出与另一半进行“异或”运算；接着交换这两半，这一过程会继续下去，但最后一个循环不交换。DES 使用 16 个循环，使用异或，置换，代换，移位操作四种基本运算。    
 
-![DES](http://7xs4ed.com1.z0.glb.clouddn.com/Crypto_DES.jpg)    
-
-图片是度娘找的，将就看看哈~
+![Crypto_DES](https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/7o3yv.jpg)
 
 ### 3DES
 
@@ -49,7 +47,7 @@ DES 使用一个 56 位的密钥以及附加的 8 位奇偶校验位，产生最
 若**Ek1 == Ek2 == Ek3**，就是简单的DES了。
 
 ## AES
-![AES](http://7xs4ed.com1.z0.glb.clouddn.com/Crypto_AES.png)    
+![Crypto_AES](https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/1lfh4.png)    
 图片来自网络，若有侵犯到权利之处，请告知，谢谢~    
 
 AES加密过程涉及到4种操作：字节替代（SubBytes）、行移位（ShiftRows）、列混淆（MixColumns）和轮密钥加（AddRoundKey）。解密过程分别为对应的逆操作。由于每一步操作都是可逆的，按照相反的顺序进行解密即可恢复明文。加解密中每轮的密钥分别由初始密钥扩展得到。算法中16字节的明文、密文和轮密钥都以一个4x4的矩阵表示。    
@@ -293,7 +291,7 @@ CCCryptorStatus CCCrypt(
 　　果然，采用加密算法加密后的论文顺利发到老师那里，问题是解密用密钥还在阿澤君手上，老师还是无法看到论文内容，密钥不能通过网络传输给老师，因为Hacker君还在监听着阿澤君和老师的通讯。难道要阿澤君不惧千里（其实不是很远，哈哈哈。我就夸张那么一点点~）去到老师那边，那为何不直接将论文交给老师呢？！！！    
 　　What the ****！！！💔💔阿澤君此时心里千万只草泥马在奔腾。        
 
-![掀桌子](http://7xs4ed.com1.z0.glb.clouddn.com/common/desk.jpg)    
+![desk](https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/9hwet.jpg)    
 
 　　但是阿澤君不会这样轻易地狗带，因为还可以通过非对称加密来解决...
 
@@ -311,7 +309,7 @@ CCCryptorStatus CCCrypt(
 　　同样，如果乙要回复加密信息给甲，那么需要甲先公布甲的公钥给乙用于加密，甲自己保存甲的私钥用于解密。
 　　说到非对称加密，不得不说RSA（其实是阿澤君只接触过这个。。。）
 
-![](http://7xs4ed.com1.z0.glb.clouddn.com/common/yaoMing.png)
+![yaoMing](https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/6tgz2.png)
 
 ## RSA
 
@@ -484,7 +482,7 @@ OSStatus SecKeyEncrypt(
 **Hacker君，问你惊未，哈哈哈哈哈。**    
 非对称加密对阿澤君来说完全解决了问题(づ￣ 3￣)づ，使用老师的公钥加密论文后发送回给他。Hacker君就算截取到也无济于事，因为Hacker君没有老师的私钥，无法获取到其中的内容。老师获取到阿澤君发送的论文后自然可以解密查看。    
 
-![哈哈哈哈](http://7xs4ed.com1.z0.glb.clouddn.com/common/hahahahaha.jpg)    
+![hahahahaha](https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/pivxc.jpg)    
 从中阿澤君也学到了很多，所以分享给大家❤️。故事有(fei)点(chang)弱智，希望大家不要在意，关注加解密算法就好了~
 　　
 

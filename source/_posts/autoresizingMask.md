@@ -3,7 +3,7 @@ title: Autoresizing Mask
 date: 2016-03-19 23:41:26
 tags: 
 - UIView
-
+typora-copy-images-to: ipic
 ---
 
 不知道大家在开发的时候会不会使用到UIView的autoresizingMask属性。我自己的话自从开始出现autoLayout就没再用过了。前几天翻看一些较老的书籍，发现了它静静躺在角落。不知不觉还真的有些忘记了，于是温故知新，再学习了一下。
@@ -28,10 +28,10 @@ enum {
 不设置自动调整，默认值
 ### UIViewAutoresizingFlexibleRightMargin 
 这里就只讲UIViewAutoresizingFlexibleRightMargin,因为上下左右四个方位是一致的原理
-![UIViewAutoresizingFlexibleRightMargin](http://7xs4ed.com1.z0.glb.clouddn.com/autoresizingMask_FlexibleRightMargin.jpg)
+![autoresizingMask_FlexibleRightMargin](https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/skwhi.jpg)
 ### UIViewAutoresizingFlexibleWidth
 UIViewAutoresizingFlexibleWidth和UIViewAutoresizingFlexibleHeight也是同样的原理
-![UIViewAutoresizingFlexibleWidth](http://7xs4ed.com1.z0.glb.clouddn.com/autoresizingMask_FlexibleWidthCompare.jpg)
+![autoresizingMask_FlexibleWidthCompare](https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/wrxva.jpg)
 
 ### 组合起来
 枚举中的值是允许使用|组合起来的，同时拥有多个值的功能，like this：
@@ -71,10 +71,10 @@ CGFloat topViewWidth = kUIScreen.size.width - kMargin * 2;
 ```
 
 上面的代码中尺寸宽度被限定为iPhone4s的320。没有设置子View（蓝色的View）的autoresizingMask属性的话运行结果如下：
-![](http://7xs4ed.com1.z0.glb.clouddn.com/autoresizingMask_4s.jpg)
+![autoresizingMask_4s](https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/pmjrs.jpg)
 
 设置了子View（蓝色的View）autoresizingMask后，再修改父View的宽度，可以看到随着赋值的不同，有不同的效果：
 设置了UIViewAutoresizingFlexibleLeftMargin
-![UIViewAutoresizingFlexibleLeftMargin](http://7xs4ed.com1.z0.glb.clouddn.com/autoresizingMask_FlexibleLeftMargin.jpg)
+![autoresizingMask_FlexibleLeftMargin](https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/m2hgw.jpg)
 
 还有的其他值对应的效果图在上文已经摆出来了，请参阅哈~~
