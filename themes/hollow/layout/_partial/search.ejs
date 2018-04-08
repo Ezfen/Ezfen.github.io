@@ -1,4 +1,4 @@
-<div class="search-wrapper">
+<div class="search-wrapper morph-button morph-button-overlay morph-button-fixed">
 	<div class="input-holder">
 		<input type="text" class="search-input" id="local-search-input" placeholder="Type to search." />
 	</div>
@@ -6,5 +6,37 @@
 			<i class="fa fa-search" id="search-icon"></i>
 	</button>
 	<span class="close" onclick="searchToggle(this, event);"></span>
+	<div class="morph-content">
+		<div>
+			<a class="icon-close nav-back">
+				<span class="close"></span>
+			</a>
+			<header class="intro-header">
+			    <div class="container">
+			        <div class="row">
+			            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+			                <div class="post-heading" id="local-search-title">
+			                    <h1>为你找到的可能契合的零件.</h1>
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+			</header>
+
+			<!-- Post Content -->
+			<article>
+			    <div class="container">
+			        <div class="row">
+			            <!-- Post Main Content -->
+			            <div class="post-content col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+			            	<div id="local-search-result">
+			                    
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+			</article>
+		</div>
+	</div>
 </div>
 
