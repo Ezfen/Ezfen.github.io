@@ -29,6 +29,8 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/content.css">
+    <link rel="stylesheet" href="/css/component.css">
     <link rel="stylesheet" href="/css/search.css">
 
     <!-- Custom Fonts -->
@@ -80,9 +82,9 @@
 <a id="more"></a>
 <h2 id="开始捣鼓"><a href="#开始捣鼓" class="headerlink" title="开始捣鼓"></a>开始捣鼓</h2><p>不是前端er要自己写个主题出来还真不是简单的事情。所以借鉴了hollow主题，并在其上进行修改。</p>
 <h3 id="主页"><a href="#主页" class="headerlink" title="主页"></a>主页</h3><p>主页大致上没有做太多的修改，因为一开始就是看上这种简简单单的，没有太多复杂成分的排版。厌倦了yilia，第一是：不想要左右版式的页面，显得左侧的菜单栏有点喧宾夺主。第二是：总把人脸留在左边显眼的位置，纯粹的不喜欢。</p>
-<p>hollow主题只是包含了主页，也就是现实文章序列和文章详情。其他的都没有。</p>
-<h3 id="Tags"><a href="#Tags" class="headerlink" title="Tags"></a>Tags</h3><p>进入分类页面在主页右上角的钻石按钮，分类页面是显示所有博文的分类。</p>
-<p>因为暂时不支持站内搜索，如果要找某一篇文章需要一页页地翻，感觉会很繁琐。所以建立了个分类页面。</p>
+<p>hollow主题只是包含了主页，也就是显示文章序列和文章详情。其他的都没有。</p>
+<h3 id="Tags"><a href="#Tags" class="headerlink" title="Tags"></a>Tags</h3><p>进入标签页面在主页右上角的 <em>井号</em> 按钮，标签页面是显示所有标签。</p>
+<p>因为暂时不支持站内搜索（还在构思中…），如果要找某一篇文章需要一页页地翻，感觉会很繁琐。所以建立了个标签页面。</p>
 <p>我是通过修改page.ejs来达到目的。</p>
 <pre><code class="html">&lt;section class=&quot;article-container&quot;&gt;
 &lt;!-- Back Home --&gt;
@@ -119,7 +121,7 @@
 &lt;%- partial(&#39;_partial/backtop&#39;) %&gt;
 </code></pre>
 <p>修改完page.ejs后，执行<code>hexo new page &quot;tags&quot;</code>就可以创建tags页了。然后调整格式就可以了。</p>
-<h3 id="About"><a href="#About" class="headerlink" title="About"></a>About</h3><p>这个页面是自己添加的。</p>
+<h3 id="About（最近修改中…）"><a href="#About（最近修改中…）" class="headerlink" title="About（最近修改中…）"></a>About（最近修改中…）</h3><p>这个页面是自己添加的。</p>
 <p>这个页面是最复杂的。首先Hexo只支持<code>index</code>,<code>page</code>,<code>post</code>,<code>layout</code>,<code>archive</code>这几种自定义页面，所以修改了<code>page</code>后作为category页面之后就不能通过修改项目页面模板来添加新的自定义页面了。</p>
 <p>但是好在Hexo还是比较人性化的。</p>
 <p>除了修改Hexo的模板，有两种方法可以实现自定义页面</p>
@@ -129,7 +131,7 @@
 </ol>
 <h3 id="评论"><a href="#评论" class="headerlink" title="评论"></a>评论</h3><p>评论就不加啦，毕竟清清爽爽还是最爱啊。</p>
 <p>而且好像也没有很多人来过这个博客，等以后有需要再加上评论吧。</p>
-<p>厌倦了多说等评论管理平台的话，推荐一个 <a href="https://github.com/imsun/gitment" target="_blank" rel="external">Gitment</a>，观望了很久还是觉得这个比较清爽，它是将评论放在Github的issue里面，很适合托管在第三方服务器空间的博客使用。</p>
+<p>厌倦了多说等评论管理平台的话，推荐一个 <a href="https://github.com/imsun/gitment" target="_blank" rel="external">Gitment</a>，观望了很久还是觉得这个比较简洁，不需要依赖其他第三方平台，它是将评论放在Github的issue里面，很适合托管在第三方服务器空间的博客使用。</p>
 <p>有问题在微博等社交平台联系吧。</p>
 <h3 id="域名和全站HTTPS"><a href="#域名和全站HTTPS" class="headerlink" title="域名和全站HTTPS"></a>域名和全站HTTPS</h3><p>域名在万网上购买，实名认证，解析到github page。都是很简单的操作。</p>
 <p>在实现全站HTTPS的时候走了不少弯路。主要想实现的有如下几点：</p>
@@ -152,7 +154,8 @@
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/dw1rg.png" alt=""></p>
 <p>访问时就有『并非完成安全』的提示，这涉及一个小问题，就是图床，我的图片资源是托管在七牛云上的，之前七牛云还提供<code>https</code>的二级域名，但现在已经关闭，要使用<code>https</code>需要自定义域名，这又回到上面所说的备案问题。纠结之余，将七牛云迁移到腾讯云COS上，腾讯云COS就有支持SSL的图床测试域名，且提供CDN服务，同样是每月免费空间，免费流量，对于我这个小站来说，足够了。</p>
 <p>所以，Congratulations~😄😄😄🎉🎉🎉~</p>
-<h2 id="写在后面"><a href="#写在后面" class="headerlink" title="写在后面"></a>写在后面</h2><p>博客是在hollow主题的<a href="https://github.com/zchen9/hexo-theme-hollow" target="_blank" rel="external">创作家</a>的基础上进行修改的，表示真挚的感谢。</p>
+<h2 id="写在后面"><a href="#写在后面" class="headerlink" title="写在后面"></a>写在后面</h2><p>总有一些奇思妙想，所以本文仍在不断更新…</p>
+<p>博客是在hollow主题的<a href="https://github.com/zchen9/hexo-theme-hollow" target="_blank" rel="external">创作家</a>的基础上进行修改的，对此表示最真挚的感谢，开源万岁。</p>
 <p>如果要自己写主题，<a href="https://hexo.io/zh-cn/docs/writing.html" target="_blank" rel="external">Hexo文档</a>记得多看看。</p>
 <p>对于域名购买和Cloudflare、腾讯云的使用，Google可以搜到许多精彩且详细的文章，此处就不再赘述了。</p>
 <h3 id="对于这次实践的总结："><a href="#对于这次实践的总结：" class="headerlink" title="对于这次实践的总结："></a>对于这次实践的总结：</h3><ul>
@@ -224,12 +227,13 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
 <script type="text/javascript">hljs.initHighlightingOnLoad();</script>
 
+<script src="/js/backtop.js"></script>
+
 <script type="text/javascript">
-	console.log('Chris Cheung © 2015-' + (new Date()).getFullYear());
+	console.log('Chris Cheung ❤ 2016 - ' + (new Date()).getFullYear());
 </script>
 
-<script src="/js/backtop.js"></script>
-<script src="/js/search.js"></script>
+
     <!-- Google Analytics -->
     
 

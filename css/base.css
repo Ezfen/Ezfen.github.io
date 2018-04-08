@@ -208,7 +208,7 @@ a.nav-back {
   border-radius: 4px;
   border: 1px solid #ccc;
   color: #ccc;
-  z-index: 99;
+  z-index: 4;
 }
 a.nav-back .fa {
   position: absolute;

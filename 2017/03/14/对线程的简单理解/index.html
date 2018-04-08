@@ -29,6 +29,8 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/content.css">
+    <link rel="stylesheet" href="/css/component.css">
     <link rel="stylesheet" href="/css/search.css">
 
     <!-- Custom Fonts -->
@@ -82,11 +84,10 @@
 </blockquote>
 <p>有两点需要注意：</p>
 <ol>
-<li><p>线程有私有的数据单元：仅仅可以让当前线程访问的寄存器和栈</p>
-</li>
-<li><p>共享进程的内存空间：多个线程同时访问一个数据段或同时执行一块代码，就会有线程安全的问题出现。<br>数据是否私有，如下表所示</p>
-</li>
+<li>线程有私有的数据单元：仅仅可以让当前线程访问的寄存器和栈</li>
+<li>共享进程的内存空间：多个线程同时访问一个数据段或同时执行一块代码，就会有线程安全的问题出现。</li>
 </ol>
+<p>数据是否私有，如下表所示</p>
 <table>
 <thead>
 <tr>
@@ -113,17 +114,16 @@
 </ul>
 <p>三者的状态切换如下图所示：<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/eltyq.jpg" alt=""><br>线程有状态了，需要等待调度的发生，自然就涉及到轮换调度和优先级。</p>
 <p>轮换调度让各个线程轮流执行一小段时间后进入就绪状态或等待状态，而优先级则决定了CPU让处于就绪状态的哪个线程先执行。优先级改变有以下三种方式：</p>
-<ol>
-<li><p>在我们的编程中，我们可以手动设置优先级，最常见的，如iOS中GDC的<code>global queue</code>:</p>
+<ul>
+<li>在我们的编程中，我们可以手动设置优先级，最常见的，如iOS中GDC的<code>global queue</code>:</li>
+</ul>
 <pre><code class="Objc">// 创建一个优先级为HIGH的全局队列
 dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
 </code></pre>
-</li>
-</ol>
-<ol>
+<ul>
 <li>操作系统也是会根据场景来适当提高线程的优先级，让更多的线程可以执行。通常情况下，频繁等待的线程（<strong>IO密集型线程</strong>）通常只占用很少的时间，这种线程比用完时间片的线程（<strong>CPU密集型线程</strong>）更受欢迎，在操作系统的调度中优先级更容易被提高。</li>
 <li>在调度过程中，还存在<em>线程饿死(Starvation)</em> 的现象，就是优先级很低的线程一直得不到时间片。为了解决这一问题，操作系统会逐步提高这些线程的优先级。</li>
-</ol>
+</ul>
 <h2 id="线程安全"><a href="#线程安全" class="headerlink" title="线程安全"></a>线程安全</h2><p>Q : 为什么会有线程安全问题？</p>
 <p>A : 如上所述，线程间有共享的数据：全局变量、堆上的数据、函数内的静态变量、代码等。两个线程同时修改一个全局变量，会导致修改后的结果不确定。如，两个线程同时对一个变量 <code>i</code> 执行 <code>i++</code>，线程A和线程B都各自拥有自己的寄存器，对<code>i++</code>这种操作，线程A先将<code>i</code>的值存放在线程的寄存器中，执行计算后再赋值回去给<code>i</code>这个变量，中间如果线程B在A赋值之前先获取到<code>i</code>的值，那么最后赋值的结果肯定不正确。这就是线程不安全。</p>
 <p>Q : 怎么保证线程安全？</p>
@@ -250,12 +250,13 @@ dispatch_sync(dispatch_get_main_queue(), ^{
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
 <script type="text/javascript">hljs.initHighlightingOnLoad();</script>
 
+<script src="/js/backtop.js"></script>
+
 <script type="text/javascript">
-	console.log('Chris Cheung © 2015-' + (new Date()).getFullYear());
+	console.log('Chris Cheung ❤ 2016 - ' + (new Date()).getFullYear());
 </script>
 
-<script src="/js/backtop.js"></script>
-<script src="/js/search.js"></script>
+
     <!-- Google Analytics -->
     
 

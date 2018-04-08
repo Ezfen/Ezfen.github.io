@@ -1,0 +1,73 @@
+/* Icons */
+.icon-close .close {
+	left: 7px !important;
+}
+
+.icon-close:hover .close:before,
+.icon-close:hover .close:after {
+	background: #cc543a;
+}
+
+/* Styles for dummy content */
+
+/* Style for overlay */
+
+.content-style-overlay {
+	padding: 100px 50px;
+	text-align: center;
+}
+
+.content-style-overlay h2 {
+	margin: 0 0 1em 0;
+	padding: 0;
+	font-weight: 300;
+	font-size: 3em;
+}
+
+.content-style-overlay p {
+	margin: 0 auto;
+	padding: 10px 0;
+	max-width: 700px;
+	text-align: justify;
+	font-weight: 300;
+	font-size: 1.5em;
+}
+
+.content-style-overlay .icon-close {
+	border: 2px solid #f9e1c9;
+	border-radius: 50%;
+	line-height: 2.8;
+}
+
+.content-style-overlay .icon-close:hover {
+	border-color: #a50a05;	
+}
+
+
+@media screen and (max-width: 770px) {
+	.content-style-overlay {
+		font-size: 75%;
+	}
+
+	.content-style-overlay .icon-close {
+		top: 5px;
+		right: 5px;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

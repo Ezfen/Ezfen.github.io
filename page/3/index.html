@@ -29,6 +29,8 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/content.css">
+    <link rel="stylesheet" href="/css/component.css">
     <link rel="stylesheet" href="/css/search.css">
 
     <!-- Custom Fonts -->
@@ -52,14 +54,46 @@
     <a class="nav-back" href="/about">
     <i class="fa fa-user-circle"></i>
 </a>
-<div class="search-wrapper">
+<div class="search-wrapper morph-button morph-button-overlay morph-button-fixed">
 	<div class="input-holder">
-		<input type="text" class="search-input" id="local-search-input" placeholder="Searchhhhh..." />
+		<input type="text" class="search-input" id="local-search-input" placeholder="Type to search." />
 	</div>
 	<button class="search-icon" onclick="searchToggle(this, event);">
 			<i class="fa fa-search" id="search-icon"></i>
 	</button>
 	<span class="close" onclick="searchToggle(this, event);"></span>
+	<div class="morph-content">
+		<div>
+			<a class="icon-close nav-back">
+				<span class="close"></span>
+			</a>
+			<header class="intro-header">
+			    <div class="container">
+			        <div class="row">
+			            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+			                <div class="post-heading" id="local-search-title">
+			                    <h1>为你找到的可能契合的零件.</h1>
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+			</header>
+
+			<!-- Post Content -->
+			<article>
+			    <div class="container">
+			        <div class="row">
+			            <!-- Post Main Content -->
+			            <div class="post-content col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+			            	<div id="local-search-result">
+			                    
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+			</article>
+		</div>
+	</div>
 </div>
 
 
@@ -107,6 +141,11 @@
 <a id="returnTop">
   <i class="fa fa-rocket"></i>
 </a>
+<!-- Search -->
+<script src="/js/modernizr.custom.js"></script>
+<script src="/js/classie.js"></script>
+<script src="/js/uiMorphingButton_fixed.js"></script>
+<script src="/js/search.js"></script>
 
     <!-- Scripts -->
     <!-- jQuery -->
@@ -117,12 +156,13 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
 <script type="text/javascript">hljs.initHighlightingOnLoad();</script>
 
+<script src="/js/backtop.js"></script>
+
 <script type="text/javascript">
-	console.log('Chris Cheung © 2015-' + (new Date()).getFullYear());
+	console.log('Chris Cheung ❤ 2016 - ' + (new Date()).getFullYear());
 </script>
 
-<script src="/js/backtop.js"></script>
-<script src="/js/search.js"></script>
+
     <!-- Google Analytics -->
     
 

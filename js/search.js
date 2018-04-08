@@ -1,3 +1,4 @@
+var layer;
 function searchToggle(obj, evt){
 	var container = $(obj).closest('.search-wrapper');
 
@@ -19,17 +20,13 @@ function searchToggle(obj, evt){
 }
 
 function submitFn(obj, evt){
-	var search_path = "<%= config.search.path %>";
-     if (search_path.length == 0) {
-     	search_path = "search.xml";
-     }
-    var path = "<%= config.root %>" + search_path;
-    searchFunc(path, 'local-search-input', 'local-search-result');
-
-	evt.preventDefault();
+    var path = "/search.xml";
+    searchFunc(path);
+    layer.toggle();
+    evt.preventDefault();
 }
 
-var searchFunc = function(path, search_id, content_id) {
+var searchFunc = function(path) {
     'use strict';
     $.ajax({
         url: path,
@@ -43,74 +40,125 @@ var searchFunc = function(path, search_id, content_id) {
                     url: $( "url" , this).text()
                 };
             }).get();
-            var $input = document.getElementById(search_id);
-            var $resultContent = document.getElementById(content_id);
-            $input.addEventListener('input', function(){
-                var str='<ul class=\"search-result-list\">';                
-                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
-                $resultContent.innerHTML = "";
-                if (this.value.trim().length <= 0) {
-                    return;
-                }
-                // perform local searching
-                datas.forEach(function(data) {
-                    var isMatch = true;
-                    var content_index = [];
-                    var data_title = data.title.trim().toLowerCase();
-                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
-                    var data_url = data.url;
-                    var index_title = -1;
-                    var index_content = -1;
-                    var first_occur = -1;
-                    // only match artiles with not empty titles and contents
-                    if(data_title != '' && data_content != '') {
-                        keywords.forEach(function(keyword, i) {
-                            index_title = data_title.indexOf(keyword);
-                            index_content = data_content.indexOf(keyword);
-                            if( index_title < 0 && index_content < 0 ){
-                                isMatch = false;
-                            } else {
-                                if (index_content < 0) {
-                                    index_content = 0;
-                                }
-                                if (i == 0) {
-                                    first_occur = index_content;
-                                }
+            var $input = document.getElementById("local-search-input");
+            var $resultTitle = document.getElementById("local-search-title");
+            var $resultContent = document.getElementById("local-search-result");
+            var str = "";          
+            var keywords = $input.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if ($input.value.trim().length <= 0) {
+                // 没有键入搜索内容
+                str = "<h1>不告诉我点东西，我还真找不到合你胃口的零件:[ </h1>";
+                $resultTitle.innerHTML = str;
+                return;
+            }
+            // perform local searching
+            datas.forEach(function(data) {
+                var isMatch = true;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = data.url;
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '' && data_content != '') {
+                    keywords.forEach(function(keyword, i) {
+                        index_title = data_title.indexOf(keyword);
+                        index_content = data_content.indexOf(keyword);
+                        if( index_title < 0 && index_content < 0 ){
+                            isMatch = false;
+                        } else {
+                            if (index_content < 0) {
+                                index_content = 0;
                             }
-                        });
-                    }
-                    // show search results
-                    if (isMatch) {
-                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
-                        var content = data.content.trim().replace(/<[^>]+>/g,"");
-                        if (first_occur >= 0) {
-                            // cut out 100 characters
-                            var start = first_occur - 20;
-                            var end = first_occur + 80;
-                            if(start < 0){
-                                start = 0;
+                            if (i == 0) {
+                                first_occur = index_content;
                             }
-                            if(start == 0){
-                                end = 100;
-                            }
-                            if(end > content.length){
-                                end = content.length;
-                            }
-                            var match_content = content.substr(start, end); 
-                            // highlight all keywords
-                            keywords.forEach(function(keyword){
-                                var regS = new RegExp(keyword, "gi");
-                                match_content = match_content.replace(regS, "<em class=\"search-keyword\">"+keyword+"</em>");
-                            });
-                            
-                            str += "<p class=\"search-result\">" + match_content +"...</p>"
                         }
-                        str += "</li>";
-                    }
-                });
-                str += "</ul>";
-                $resultContent.innerHTML = str;
+                    });
+                }
+                // show search results
+                if (isMatch) {
+                    str += "<a class='category' href="+ data_url +">"+ data_title +"</a>"
+                }
             });
+            if (str === "") {
+                str = "<h1>Oops,我想大概零件还在生产中吧...</h1>";
+                $resultTitle.innerHTML = str;
+            } else {
+                $resultTitle.innerHTML = "<h1>为你找到的可能契合的零件.</h1>";
+                $resultContent.innerHTML = str;
+            }
         }
     });
 }
+
+function setupLayer() {   
+    var docElem = window.document.documentElement, didScroll, scrollPosition;
+
+    // trick to prevent scrolling when opening/closing button
+    function noScrollFn() {
+        window.scrollTo( scrollPosition ? scrollPosition.x : 0, scrollPosition ? scrollPosition.y : 0 );
+    }
+
+    function noScroll() {
+        window.removeEventListener( 'scroll', scrollHandler );
+        window.addEventListener( 'scroll', noScrollFn );
+    }
+
+    function scrollFn() {
+        window.addEventListener( 'scroll', scrollHandler );
+    }
+
+    function canScroll() {
+        window.removeEventListener( 'scroll', noScrollFn );
+        scrollFn();
+    }
+
+    function scrollHandler() {
+        if( !didScroll ) {
+            didScroll = true;
+            setTimeout( function() { scrollPage(); }, 60 );
+        }
+    };
+
+    function scrollPage() {
+        scrollPosition = { x : window.pageXOffset || docElem.scrollLeft, y : window.pageYOffset || docElem.scrollTop };
+        didScroll = false;
+    };
+
+    scrollFn();
+    
+    var el = document.querySelector( '.morph-button' );
+    
+    layer = new UIMorphingButton( el, {
+        closeEl : '.icon-close',
+        onBeforeOpen : function() {
+            // don't allow to scroll
+            noScroll();
+        },
+        onAfterOpen : function() {
+            // can scroll again
+            canScroll();
+            // add class "noscroll" to body
+            classie.addClass( document.body, 'noscroll' );
+            // add scroll class to main el
+            classie.addClass( el, 'scroll' );
+        },
+        onBeforeClose : function() {
+            // remove class "noscroll" to body
+            classie.removeClass( document.body, 'noscroll' );
+            // remove scroll class from main el
+            classie.removeClass( el, 'scroll' );
+            // don't allow to scroll
+            noScroll();
+        },
+        onAfterClose : function() {
+            // can scroll again
+            canScroll();
+        }
+    } );
+}
+setupLayer();

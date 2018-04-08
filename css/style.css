@@ -210,7 +210,7 @@ a.nav-back {
   border-radius: 4px;
   border: 1px solid #ccc;
   color: #ccc;
-  z-index: 99;
+  z-index: 4;
 }
 a.nav-back .fa {
   position: absolute;
@@ -842,7 +842,7 @@ pre .deletion {
   background-repeat: no-repeat;
   padding: 20px;
   transition: all 300ms linear;
-  z-index: 9;
+  z-index: 4;
   cursor: url("/images/pointer.cur"), pointer;
 }
 .allcategory i {
