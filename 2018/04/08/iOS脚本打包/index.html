@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="Chris Cheung’s blog | iOS | Design | Mood">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="阿澤">
+    
+
+    <!-- Title -->
+    
+    <title>iOS脚本打包 - xcodebuild | CHILDHOOD</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Highlight Code-->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/atom-one-light.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/content.css">
+    <link rel="stylesheet" href="/css/component.css">
+    <link rel="stylesheet" href="/css/search.css">
+
+    <!-- Custom Fonts -->
+    <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+    <!-- Content -->
+    <section class="article-container">
+<!-- Back Home -->
+<a class="nav-back" href="/">
+    <i class="fa fa-home"></i>
+</a>
+
+<!-- Page Header -->
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>iOS脚本打包 - xcodebuild</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Main Content -->
+            <div class="post-content col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <p>xcodebuild和xcrun是Xcode为开发者提供的一套构建打包的命令。使用它们编写脚本，可以实现通过脚本自动化打包的功能。本文基于Xcode9，xcrun的打包工具被移除，因此笔者主要使用xcodebuild来完成打包工作。</p>
+<a id="more"></a>
+<p>在日常开发中，无论是提交给测试部测试还是最终打包上线，都需要将工程打包成ipa文件，通常我们是选定Scheme，然后在Xcode中点击『Project - Archive』，当整个工程 archive 后，在自动弹出的 『Organizer』 中点击『Export』，选择Ad Hoc或App Store，选择证书或自动签名，等待圈圈转完，导出到指定位置，才能得到里面的ipa文件。虽然Xcode完美地帮我们完成这一项工作，但其中我们还是需要点击5~6次。而使用脚本来构建打包，就只需要一个命令运行脚本，在等待脚本运行结束的时候，我们可以同时进行其他的工作。</p>
+<blockquote>
+<p>注：本文基于Xcode9</p>
+</blockquote>
+<h2 id="xcodebuild"><a href="#xcodebuild" class="headerlink" title="xcodebuild"></a>xcodebuild</h2><blockquote>
+<p>xcodebuild builds one or more targets contained in an Xcode project, or builds a scheme contained in an Xcode workspace or Xcode project.</p>
+</blockquote>
+<p><code>xcodebuild</code>是构建工具，可以将工程中的target或scheme编译、链接成.app文件。要使用<code>xcodebuild</code>，需要在<code>.xcodeproj</code>存放的文件夹中执行。</p>
+<p>可以使用<code>man</code>来查看<code>xcodebuild</code>，可以看到该命令提供了一些常用概要( <em>SYNOPSIS</em> )：</p>
+<pre><code class="shell">xcodebuild [-project name.xcodeproj]
+           [[-target targetname] ... | -alltargets]
+           [-configuration configurationname]
+           [-sdk [sdkfullpath | sdkname]] [action ...]
+           [buildsetting=value ...] [-userdefault=value ...]
+
+xcodebuild [-project name.xcodeproj] -scheme schemename
+           [[-destination destinationspecifier] ...]
+           [-destination-timeout value]
+           [-configuration configurationname]
+           [-sdk [sdkfullpath | sdkname]] [action ...]
+           [buildsetting=value ...] [-userdefault=value ...]
+
+xcodebuild -workspace name.xcworkspace -scheme schemename
+           [[-destination destinationspecifier] ...]
+           [-destination-timeout value]
+           [-configuration configurationname]
+           [-sdk [sdkfullpath | sdkname]] [action ...]
+           [buildsetting=value ...] [-userdefault=value ...]
+
+xcodebuild -version [-sdk [sdkfullpath | sdkname]] [infoitem]
+
+xcodebuild -showsdks
+
+xcodebuild -showBuildSettings
+           [-project name.xcodeproj | [-workspace name.xcworkspace -scheme schemename]]
+
+xcodebuild -list [-project name.xcodeproj | -workspace name.xcworkspace]
+
+xcodebuild -exportArchive -archivePath xcarchivepath -exportPath
+                destinationpath -exportOptionsPlist path
+
+xcodebuild -exportLocalizations -project name.xcodeproj -localizationPath path [[-exportLanguage language] ...]
+
+xcodebuild -importLocalizations -project name.xcodeproj -localizationPath path
+</code></pre>
+<p>前三条指令是比较常用的，其中涉及很多参数：</p>
+<ul>
+<li>-project：指定要构建的project，当文件夹中有多个<code>.xcodeproj</code>文件时需要指定。</li>
+<li>-target：指定构建哪一个target。默认地，若不指定此参数，xcodebuild构建工程中的第一个target。</li>
+<li>-alltargets：构建所有target。</li>
+<li>-workspace：如果要构建一个workspace（例如使用cocoapods管理第三方依赖文件），则需要指定workspace，当然后缀就是<code>.xcworkspace</code>。</li>
+<li>-scheme：构建workspace，还必须指定scheme，使用此参数。</li>
+<li>-destination：指定设备，如：<code>&#39;platform=OS X,arch=x86_64&#39;</code>指代当前Mac或<code>generic/platform=iOS</code>指定Generic iOS device。</li>
+<li>-destination-timeout：搜索指定设备超时时间，默认30S。</li>
+<li>-configuration：如果工程中没有添加其他配置，默认就是Debug和Release这两个版本。没有指定此参数和scheme参数，则默认为Release版本。</li>
+<li>-arch：指定架构armv7、armv7s、arm64等。</li>
+<li>-sdk：指定构建使用的sdk，后跟sdk的绝对路径或sdk名称，可通过<code>xcodebuild -showsdks</code>查看。</li>
+<li>-list：查看工程的target、configuration、scheme。</li>
+</ul>
+<p>我们常用<code>xcodebuild</code>来构建项目，得到.app文件，但其实，<code>xcodebuild</code>也能打包出我们需要的.ipa文件，这就需要了解多以下几个比较重要的参数：</p>
+<ul>
+<li>-exportArchive：archive后导出，需要-exportFormat，-archivePath和-exportPath三个参数</li>
+<li>-exportFormat：指定格式为pkg（macOS）或ipa（iOS）的一种</li>
+<li>-archivePath：指定archive文件的地址，将此<code>.xcarchive</code>打包成ipa</li>
+<li>-exportPath：最后输出文件ipa所在的<strong>文件夹</strong>、<strong>文件夹</strong>、<strong>文件夹</strong>。（重要的事情说三遍）</li>
+<li>-exportOptionsPlist：plist文件，其中定义了将<code>.xcarchive</code>导出成ipa所需要的配置参数。后面会说到。</li>
+</ul>
+<p><code>xcodebuild</code>还能进行各种操作，挑选一些常用的来讲：</p>
+<ul>
+<li>build：构建，默认操作。如果没有指定，则默认为build，将会在<code>SYMROOT</code>中生成文件夹<code>[configuration]-iphones</code>的文件夹（configuration见上述参数介绍）。其中有项目用到的第三方库的framework、<code>.app</code>文件、<code>.dSYM</code>文件。</li>
+<li>archive：对应Xcode中的Archive，在build的基础上还将生成<code>.xcarchive</code>文件。</li>
+<li>clean：对应Xcode中的clean，删除上次构建过程产生的中间文件。</li>
+</ul>
+<h2 id="xcrun"><a href="#xcrun" class="headerlink" title="xcrun"></a>xcrun</h2><pre><code class="shell">xcrun -sdk iphoneos PackageApplication &quot;./Release-iphoneos/${APP_NAME}.app&quot; -o ~/&quot;${IPANAME}&quot;
+</code></pre>
+<p>xcrun更多地用来将app文件打包到ipa中，得以安装在用户的设备上。其中使用到 <em>PackageApplication</em> 这个工具，命令也相对简单，就不多说了。</p>
+<p>需要注意的是：从Xcode8.3开始，<em>PackageApplication</em> 从开发工具中被移除，因此我们用来将.app打包成ipa最常用的<code>xcrun</code>指令也变得不好用了。当然可以从旧版本的Xcode中将 <em>PackageApplication</em> 拷贝一份放在新的Xcode中，让 <em>PackageApplication</em> 继续发光发热。请见<a href="https://stackoverflow.com/questions/43068608/xcrun-error-unable-to-find-utility-packageapplication-not-a-developer-tool" target="_blank" rel="external">stackoverflow</a>。</p>
+<p>不过使用<code>xcrun</code>还可能存在一些问题：当解压ipa后，你会发现，在app文件中，<code>Payload</code>文件夹存在，但是<code>BCSymbolMaps</code>、<code>SwiftSupport</code> 和<code>Symbols</code>却找不到了，这有可能会在提交到App Store的时候出现问题。</p>
+<p>但是从Xcode中Export xcarchive则不会出现这样的问题，说明单纯使用xcrun的打包旧命令已经不被建议使用了。</p>
+<h2 id="Demonstration🌰"><a href="#Demonstration🌰" class="headerlink" title="Demonstration🌰"></a>Demonstration🌰</h2><p>笔者在使用脚本打包的时候舍弃了xcrun，直接用xcodebuild来完成工作，提供一个示例：</p>
+<pre><code class="shell"># 工程名
+APP_NAME=&quot;KeyX_iOS&quot;
+# info.plist路径
+PROJECT_INFOPLIST_PATH=&quot;./${APP_NAME}/Supporting Files/Info.plist&quot;
+# exportOptions.plist路径
+EXPORT_PLIST=&quot;./KeyXExportOptions.plist&quot;
+echo &quot;==============some message==============&quot;
+echo &quot;info.plist路径 = ${PROJECT_INFOPLIST_PATH}&quot;
+# 取版本号
+BUNDLE_SHORT_VERSION=$(/usr/libexec/PlistBuddy -c &quot;print CFBundleShortVersionString&quot; &quot;${PROJECT_INFOPLIST_PATH}&quot;)
+echo &quot;版本号 = ${BUNDLE_SHORT_VERSION}&quot;
+# 取build值
+BUNDLE_VERSION=$(/usr/libexec/PlistBuddy -c &quot;print CFBundleVersion&quot; &quot;${PROJECT_INFOPLIST_PATH}&quot;)
+echo &quot;开发版本 = ${BUNDLE_VERSION}&quot;
+DATE=&quot;$(date +%Y%m%d)&quot;
+IPA_NAME=&quot;${APP_NAME}_V${BUNDLE_SHORT_VERSION}.${BUNDLE_VERSION}_${DATE}.ipa&quot;
+# ipa文件路径，保存起来以便后面使用
+IPA_PATH=&quot;$PWD/${IPA_NAME}&quot;
+echo &quot;要上传的ipa文件路径 = ${IPA_PATH}&quot;
+echo &quot;${IPA_PATH}&quot;&gt;&gt; ipa_path
+# 下面3行是集成有Cocopods的用法
+echo &quot;=============pod install===============&quot;
+pod install
+
+echo &quot;================clean==================&quot;
+xcodebuild \
+    -workspace &quot;${APP_NAME}.xcworkspace&quot; \
+    -scheme &quot;${APP_NAME}&quot;  \
+    -configuration &#39;Release&#39; \
+    clean
+
+echo &quot;===============archive=================&quot;
+xcodebuild \
+    -workspace &quot;${APP_NAME}.xcworkspace&quot; \
+    -scheme &quot;${APP_NAME}&quot; \
+    -sdk iphoneos \
+    -configuration &#39;Release&#39; \
+    -archivePath &quot;${APP_NAME}.xcarchive&quot; \
+    PROVISIONING_PROFILE_SPECIFIER=&quot;PROVISIONING_PROFILE_NAME_OR_ID&quot; \
+    DEVELOPMENT_TEAM=&quot;TEAMID&quot; \
+    -allowProvisioningUpdates \
+    SYMROOT=&#39;$PWD&#39; \
+    archive
+
+# 将app打包成ipa
+echo &quot;================export=================&quot;
+xcodebuild \
+    -exportArchive \
+    -archivePath &quot;${APP_NAME}.xcarchive&quot; \
+    -exportOptionsPlist &quot;${EXPORT_PLIST}&quot; \
+    -exportPath &quot;$PWD&quot;
+
+# 将ipa的名称修改成我们自定义的名称 IPA_NAME
+mv &quot;${APP_NAME}.ipa&quot; &quot;${IPA_NAME}&quot;
+</code></pre>
+<p>需要注意几点：</p>
+<ol>
+<li>archive前clean是一个比较好的习惯，清除上次构建形成的中间文件。</li>
+<li>archive时配置了<code>PROVISIONING_PROFILE_SPECIFIER</code>和<code>DEVELOPMENT_TEAM</code>，用于指定archive的签名使用的证书，需要使用development用的pp文件，不可以用app store或ad-hoc的。</li>
+<li>第2点中那两个配置，如果去掉，则默认为automatic自动签名。此时需要在Xcode的<code>Target-&gt;Signing-&gt;Automaticall manage signing</code>打勾并确保配置无误。</li>
+<li>还是第2点的配置，在命令中可以配置的命令请见<a href="https://help.apple.com/xcode/mac/current/#/itcaec37c2a6?sub=dev186481df2" target="_blank" rel="external">这里</a></li>
+<li><code>allowProvisioningUpdates</code>是Xcode9才引入的，允许xcodebuild自动更新Provisioning profile等。</li>
+</ol>
+<h3 id="exportOptionsPlist"><a href="#exportOptionsPlist" class="headerlink" title="exportOptionsPlist"></a>exportOptionsPlist</h3><p>ExportOptions.plist存在很久了，只是一直没有被拿来使用。在xcodebuild打包的时候，这个参数指定ExportOptions.plist的位置，用来告诉xcodebuild怎么将xcarchive文件打包。</p>
+<p>下面是笔者所使用的plist文件：</p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/gq8g9.png" alt=""></p>
+<p>provisioningProfiles中，key是bundleid，value是对应的provisioningProfile的名称或ID。</p>
+<p>有哪些键可以通过<code>xcodebuild -help</code>，然后拉到最下面查看。</p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/l89oh.png" alt=""></p>
+<p>如果还是觉得创建麻烦，可以先在Xcode中手动打包一遍，在Export后的文件夹中找到<code>ExportOptions.plist</code>，这就是适用于项目的plist文件了。</p>
+<h2 id="Problem-Shotting"><a href="#Problem-Shotting" class="headerlink" title="Problem Shotting"></a>Problem Shotting</h2><p>编写此章节，是为了记录打包时出现的错误，长期更新：</p>
+<h3 id="1-ipatool-json-filepath-XXXXXX-“No-value”"><a href="#1-ipatool-json-filepath-XXXXXX-“No-value”" class="headerlink" title="1.ipatool-json-filepath-XXXXXX “No value”."></a>1.ipatool-json-filepath-XXXXXX “No value”.</h3><p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/m5j01.png" alt=""></p>
+<p>笔者遇到此问题的时候，是因为archive失败，但是路径中还是出现了<code>.xcarchive</code>文件，继续往下export的时候就报错了，此时不妨尝试一下，只是archive是否有问题？具体原因笔者尚未发现。</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://developer.apple.com/library/content/technotes/tn2339/_index.html" target="_blank" rel="external">1.Building from the Command Line with Xcode FAQ</a></p>
+<p><a href="http://subathrathanabalan.com/2016/01/07/building-ipa-export-archive/" target="_blank" rel="external">2.Using -exportArchive instead of Package Application to export an IPA</a></p>
+<p><a href="https://encyclopediaofdaniel.com/blog/xcarchive-to-ipa/" target="_blank" rel="external">3.XCArchive to ipa</a></p>
+<p><a href="https://help.apple.com/xcode/mac/current/#/dev3a05256b8" target="_blank" rel="external">4.Xcode Help</a></p>
+
+ 
+                <!-- Meta -->
+                <div class="post-meta">
+                    <hr>
+                    <br>
+                    
+                    <div class="post-tags">
+                        
+                            
+
+<a href="/tags/Distribution/">#Distribution</a>
+
+
+                        
+                    </div>
+                    <div class="post-date">
+                        2018 年 04 月 08 日
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comments -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <!--<div id="container"></div>
+
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+//var gitment = new Gitment({
+//   id: '',
+//   owner: 'objchris',
+//   repo: 'testGitment',
+//   oauth: {
+//     client_id: 'f0f51ce99c6a9e1537f5',
+//     client_secret: 'a8e1135e9756220826b2290f670bb269f43566d3',
+//   },
+// })
+// gitment.render('container')
+</script>
+-->
+            </div>
+        </div>
+    </div>
+</article>
+</section>
+<!-- Back to top -->
+<a id="returnTop">
+  <i class="fa fa-rocket"></i>
+</a>
+
+
+
+    <!-- Scripts -->
+    <!-- jQuery -->
+<script src="//cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script>
+<!-- Bootstrap -->
+<script src="//cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+<script type="text/javascript">hljs.initHighlightingOnLoad();</script>
+
+<script src="/js/backtop.js"></script>
+
+<script type="text/javascript">
+	console.log('Chris Cheung ❤ 2016 - ' + (new Date()).getFullYear());
+</script>
+
+
+    <!-- Google Analytics -->
+    
+
+</body>
+
+</html>
