@@ -79,9 +79,7 @@
                 <p>xcodebuild和xcrun是Xcode为开发者提供的一套构建打包的命令。使用它们编写脚本，可以实现通过脚本自动化打包的功能。本文基于Xcode9，xcrun的打包工具被移除，因此笔者主要使用xcodebuild来完成打包工作。</p>
 <a id="more"></a>
 <p>在日常开发中，无论是提交给测试部测试还是最终打包上线，都需要将工程打包成ipa文件，通常我们是选定Scheme，然后在Xcode中点击『Project - Archive』，当整个工程 archive 后，在自动弹出的 『Organizer』 中点击『Export』，选择Ad Hoc或App Store，选择证书或自动签名，等待圈圈转完，导出到指定位置，才能得到里面的ipa文件。虽然Xcode完美地帮我们完成这一项工作，但其中我们还是需要点击5~6次。而使用脚本来构建打包，就只需要一个命令运行脚本，在等待脚本运行结束的时候，我们可以同时进行其他的工作。</p>
-<blockquote>
-<p>注：本文基于Xcode9</p>
-</blockquote>
+<p>同时，使用构建脚本也能更好地集成CI。</p>
 <h2 id="xcodebuild"><a href="#xcodebuild" class="headerlink" title="xcodebuild"></a>xcodebuild</h2><blockquote>
 <p>xcodebuild builds one or more targets contained in an Xcode project, or builds a scheme contained in an Xcode workspace or Xcode project.</p>
 </blockquote>
@@ -142,7 +140,7 @@ xcodebuild -importLocalizations -project name.xcodeproj -localizationPath path
 <li>-exportArchive：archive后导出，需要-exportFormat，-archivePath和-exportPath三个参数</li>
 <li>-exportFormat：指定格式为pkg（macOS）或ipa（iOS）的一种</li>
 <li>-archivePath：指定archive文件的地址，将此<code>.xcarchive</code>打包成ipa</li>
-<li>-exportPath：最后输出文件ipa所在的<strong>文件夹</strong>、<strong>文件夹</strong>、<strong>文件夹</strong>。（重要的事情说三遍）</li>
+<li>-exportPath：最后输出文件ipa所在的<strong>文件夹</strong>。</li>
 <li>-exportOptionsPlist：plist文件，其中定义了将<code>.xcarchive</code>导出成ipa所需要的配置参数。后面会说到。</li>
 </ul>
 <p><code>xcodebuild</code>还能进行各种操作，挑选一些常用的来讲：</p>
@@ -216,19 +214,19 @@ mv &quot;${APP_NAME}.ipa&quot; &quot;${IPA_NAME}&quot;
 <p>需要注意几点：</p>
 <ol>
 <li>archive前clean是一个比较好的习惯，清除上次构建形成的中间文件。</li>
-<li>archive时配置了<code>PROVISIONING_PROFILE_SPECIFIER</code>和<code>DEVELOPMENT_TEAM</code>，用于指定archive的签名使用的证书，需要使用development用的pp文件，不可以用app store或ad-hoc的。</li>
-<li>第2点中那两个配置，如果去掉，则默认为automatic自动签名。此时需要在Xcode的<code>Target-&gt;Signing-&gt;Automaticall manage signing</code>打勾并确保配置无误。</li>
-<li>还是第2点的配置，在命令中可以配置的命令请见<a href="https://help.apple.com/xcode/mac/current/#/itcaec37c2a6?sub=dev186481df2" target="_blank" rel="external">这里</a></li>
-<li><code>allowProvisioningUpdates</code>是Xcode9才引入的，允许xcodebuild自动更新Provisioning profile等。</li>
+<li>archive时配置了<code>PROVISIONING_PROFILE_SPECIFIER</code>和<code>DEVELOPMENT_TEAM</code>，用于指定archive的签名使用的证书，需要使用development用的Provisioning Profile，不可以用app store或ad-hoc的。</li>
+<li>第2点中那两个配置，如果去掉，则默认读取xcodeproj中的配置。此时可以在Xcode的<code>Target-&gt;Signing-&gt;Automaticall manage signing</code>打勾由Xcode设置开发证书，或自己设置开发用的Provisioning Profiles并确保配置无误（manual signing）。</li>
+<li>还是第2点的配置，在命令中可以配置的命令请见<a href="https://help.apple.com/xcode/mac/current/#/itcaec37c2a6?sub=dev186481df2" target="_blank" rel="external">这里</a>。</li>
+<li><code>allowProvisioningUpdates</code>是Xcode9才引入的，允许<code>xcodebuild</code>自动更新Provisioning profile等。</li>
 </ol>
-<h3 id="exportOptionsPlist"><a href="#exportOptionsPlist" class="headerlink" title="exportOptionsPlist"></a>exportOptionsPlist</h3><p>ExportOptions.plist存在很久了，只是一直没有被拿来使用。在xcodebuild打包的时候，这个参数指定ExportOptions.plist的位置，用来告诉xcodebuild怎么将xcarchive文件打包。</p>
+<h3 id="exportOptionsPlist参数"><a href="#exportOptionsPlist参数" class="headerlink" title="-exportOptionsPlist参数"></a>-exportOptionsPlist参数</h3><p>ExportOptions.plist存在很久了，只是一直没有被拿来使用。在xcodebuild打包的时候，这个参数指定ExportOptions.plist的位置，用来告诉<code>xcodebuild</code>怎么将<code>.xcarchive</code>文件打包。</p>
 <p>下面是笔者所使用的plist文件：</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/gq8g9.png" alt=""></p>
 <p>provisioningProfiles中，key是bundleid，value是对应的provisioningProfile的名称或ID。</p>
 <p>有哪些键可以通过<code>xcodebuild -help</code>，然后拉到最下面查看。</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/l89oh.png" alt=""></p>
 <p>如果还是觉得创建麻烦，可以先在Xcode中手动打包一遍，在Export后的文件夹中找到<code>ExportOptions.plist</code>，这就是适用于项目的plist文件了。</p>
-<h2 id="Problem-Shotting"><a href="#Problem-Shotting" class="headerlink" title="Problem Shotting"></a>Problem Shotting</h2><p>编写此章节，是为了记录打包时出现的错误，长期更新：</p>
+<h2 id="Troubleshotting"><a href="#Troubleshotting" class="headerlink" title="Troubleshotting"></a>Troubleshotting</h2><p>编写此章节，是为了记录打包时出现的错误，长期更新：</p>
 <h3 id="1-ipatool-json-filepath-XXXXXX-“No-value”"><a href="#1-ipatool-json-filepath-XXXXXX-“No-value”" class="headerlink" title="1.ipatool-json-filepath-XXXXXX “No value”."></a>1.ipatool-json-filepath-XXXXXX “No value”.</h3><p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/m5j01.png" alt=""></p>
 <p>笔者遇到此问题的时候，是因为archive失败，但是路径中还是出现了<code>.xcarchive</code>文件，继续往下export的时候就报错了，此时不妨尝试一下，只是archive是否有问题？具体原因笔者尚未发现。</p>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://developer.apple.com/library/content/technotes/tn2339/_index.html" target="_blank" rel="external">1.Building from the Command Line with Xcode FAQ</a></p>
@@ -252,7 +250,7 @@ mv &quot;${APP_NAME}.ipa&quot; &quot;${IPA_NAME}&quot;
                         
                     </div>
                     <div class="post-date">
-                        2018 年 04 月 08 日
+                        2018 年 04 月 02 日
                     </div>
                 </div>
             </div>
