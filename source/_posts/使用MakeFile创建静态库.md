@@ -1,19 +1,18 @@
 ---
 title: 使用makefile创建静态库
-thumbnail: http://7xs4ed.com1.z0.glb.clouddn.com/Dubai_paohui.jpg
 date: 2017-08-08 22:17:57
 id: 42F1A99632F0B88D
 tags: 
 - Library
 ---
 
-最近工作上需要将Win上的一个C库移植到iOS上以支持业务的开展，修改代码后需要编译成静态库供iOS使用，为了使用Windows或Linux的同事在修改完代码后也能编译出静态库而无需再搬到Mac上操作，学习了一下makefile。    
+最近工作上需要将 Win 上的一个 C 库移植到 iOS 上以支持业务的开展，修改代码后需要编译成静态库供 iOS 使用，不想每次别人修改完在 Mac 上编译时还要打开 Xcode ，学习了一下makefile ，直接执行 make 命令就可以了。    
 
 <!--more-->
 
-说来惭愧，自己的C/C++水平还没有到达很高的水平，最开始想到的最简单的方式就是创建`Cocoa Touch Static Library`项目，然后直接将所需要的代码文件无脑添加到项目里面，编译，合成。    
+说来惭愧，自己的 C/C++ 水平还没有到达很高的水平，最开始想到的最简单的方式就是创建`Cocoa Touch Static Library`项目，然后直接将所需要的代码文件无脑添加到项目里面，编译，合成。    
 
-但是为了让其他同事更快捷地完成工作，学习了如何使用makefile来编译静态库。
+但是为了让其他同事更快捷地完成工作，学习了如何使用 makefile 来编译静态库。
 
 本文只是皮毛，主要是在此次工作中的一些历程。     
 
@@ -28,15 +27,15 @@ tags:
 
 ## makefile
 
-makefile本身只是一个文件，用来辅助make命令执行时，告诉make命令怎么去编译和链接程序。    
+makefile 本身只是一个文件，用来辅助 make 命令执行时，告诉 make 命令怎么去编译和链接程序。    
 
 那编译和链接的规则是：
 
-> - 如果这个工程没有编译过，那么我们的所有C文件都要编译并被链接。
-> - 如果这个工程的某几个C文件被修改，那么我们只编译被修改的C文件，并链接目标程序。
-> - 如果这个工程的头文件被改变了，那么我们需要编译引用了这几个头文件的C文件，并链接目标程序。
+> - 如果这个工程没有编译过，那么我们的所有 C 文件都要编译并被链接。
+> - 如果这个工程的某几个 C 文件被修改，那么我们只编译被修改的 C 文件，并链接目标程序。
+> - 如果这个工程的头文件被改变了，那么我们需要编译引用了这几个头文件的 C 文件，并链接目标程序。
 
-Google可以搜索到很多makefile的好文章，这里简略介绍一下：
+Google 可以搜索到很多 makefile 的好文章，这里简略介绍一下：
 
 ### 基本语句
 
@@ -45,9 +44,9 @@ target : prerequisites
 	command
 ```
 
-- target : 编译或链接最终得到的目标文件，例如.o结尾的中间文件、由.o文件链接而成的Win下的可执行文件，.o文件打包而成的静态库文件
-- prerequisites : 依赖，也就是编译成.o的.c、.cpp、.m和.h，链接成动态库、静态库、可执行文件的.o
-- command : 命令，即如何将上述的依赖编译或链接成我们要的target，需要注意的是，command前必须要有一个制表符(tab)，不能是一连串的空格，也不能缺失。
+- target : 编译或链接最终得到的目标文件，例如 .o 结尾的中间文件、由 .o 文件链接而成的 Win 下的可执行文件， .o 文件打包而成的静态库文件
+- prerequisites : 依赖，也就是编译成 .o 的 .c 、.cpp、.m 和 .h ，链接成动态库、静态库、可执行文件的 .o
+- command : 命令，即如何将上述的依赖编译或链接成我们要的 target ，需要注意的是， command 前必须要有一个制表符 ( tab ) ，不能是一连串的空格，也不能缺失。
 
 
 
@@ -57,9 +56,9 @@ target : prerequisites
 
 PHONY 目标并非实际的文件名：只是在显式请求时执行命令的名字。    
 
-像平常我们需要自己编译第三方库的时候，在执行完链接后需要清楚产生的中间文件或其他配置等，需要执行`make clean`，这里的clean就是makefile中被定义的Phony Target。下面例子会说到。    
+像平常我们需要自己编译第三方库的时候，在执行完链接后需要清楚产生的中间文件或其他配置等，需要执行`make clean`，这里的 clean 就是 makefile 中被定义的 Phony Target 。下面例子会说到。    
 
-一个makefile只能有一个总的Target(编译链接得到我们最终需要的文件)，如果需要多个Target，可以使用Phony Target来实现。当然，上述说到的除编译链接之外的操作用Phony Target也是很好的选择。
+一个 makefile 只能有一个总的 Target (编译链接得到我们最终需要的文件)，如果需要多个 Target ，可以使用 Phony Target 来实现。当然，上述说到的除编译链接之外的操作用 Phony Target 也是很好的选择。
 
 
 
@@ -76,9 +75,9 @@ DEV_PATH=/Applications/Xcode.app/Contents/Developer/Platforms/iPhone${DEVICE}.pl
 
 ### 文件名及使用
 
-当然，既然叫makefile，文件名最好就叫makefile啦，Makefile也是可以的，但是是在makefile不存在的时候，make命令才会去使用。
+当然，既然叫 makefile ，文件名最好就叫 makefile 啦， Makefile 也是可以的，但是是在 makefile 不存在的时候， make 命令才会去使用。
 
-如果再不喜欢，文件名写成`chris`也可以，只是make的时候加上-f和文件名就好了~
+如果再不喜欢，文件名写成 chris 也可以，只是 make 的时候加上`-f`和文件名就好了~
 
 `make -f chris`
 
@@ -88,7 +87,7 @@ DEV_PATH=/Applications/Xcode.app/Contents/Developer/Platforms/iPhone${DEVICE}.pl
 
 好啦，说起来简单，但是实际操作却需要些许耐心~
 
-以下是我写的一个简单的makefile，用于编译资源文件和打包成静态库，还有一个脚本，结合makefile，打包armv7,armv7s,arm64,i386,x86_64这五个平台的静态库，并使用lipo合成为"Fat Library"。
+以下是我写的一个简单的 makefile ，用于编译资源文件和打包成静态库，还有一个脚本，结合 makefile ，打包 armv7, armv7s , arm64 , i386 , x86_64 这五个平台的静态库，并使用 lipo 合成为 " Fat Library " 。
 
 ### makefile
 
@@ -97,7 +96,7 @@ OUT_D=out
 ARCH_D=${OUT_D}/${ARCH}
 OBJ_D=tmp
 # DEVICE 和 ARCH 是外部传入的值，用于区分是OS还是SIMULATOR，平台是哪种
-# 由于C代码中使用到了CoreFoundation和跨平台编译使用到__APPLE__、TARGET_OS_IPHONE等宏，所以需要引入iOS的SDK
+# 如果C代码中使用到了CoreFoundation和跨平台编译使用到__APPLE__、TARGET_OS_IPHONE等宏，所以需要引入iOS的SDK
 DEV_PATH=/Applications/Xcode.app/Contents/Developer/Platforms/iPhone${DEVICE}.platform/Developer
 SDK_PATH=${DEV_PATH}/SDKs/iPhone${DEVICE}10.3.sdk
 
@@ -116,92 +115,14 @@ RM=rm
 MKDIR=mkdir
 
 # OBJECTS变量，后文会通过${OBJECTS}来使用
-OBJECTS=${OBJ_D}/string.o \
-	${OBJ_D}/lock.o \
-    ${OBJ_D}/time.o \
-    ${OBJ_D}/NETCA_Alloc.o \
-    ${OBJ_D}/NETCA_ArrayList.o \
-    ${OBJ_D}/NETCA_BigInteger.o \
-    ${OBJ_D}/NETCA_BitSet.o \
-    ${OBJ_D}/NETCA_Error.o \
-    ${OBJ_D}/NETCA_Stream.o \
-	${OBJ_D}/NETCA_Stream_Base64.o \
-    ${OBJ_D}/NETCA_Stream_File.o \
-    ${OBJ_D}/NETCA_Stream_Hex.o \
-    ${OBJ_D}/NETCA_Stream_HMAC.o \
-    ${OBJ_D}/NETCA_Stream_MD.o \
-    ${OBJ_D}/NETCA_Stream_Mem.o \
-    ${OBJ_D}/NETCA_Stream_Null.o \
-    ${OBJ_D}/NETCA_Time.o \
-    ${OBJ_D}/NETCA_UString.o \
-    ${OBJ_D}/NETCA_Util.o \
-	${OBJ_D}/NETCA_JSON.o
+OBJECTS=${OBJ_D}/string.o 
 	
 # 最终target，make解析makefile的时候会将第一个遇到的target作为最终target来执行本次操作
-all:${ARCH_D}/libnetca_util.2.5.1.a
+all:${ARCH_D}/libutil.a
 
 #下面是对资源文件的编译，生成.o中间文件        
 ${OBJ_D}/string.o:unix/string.c
 	${CC} ${CFLAG} -c unix/string.c -o ${OBJ_D}/string.o
-
-${OBJ_D}/time.o:unix/time.c
-	${CC} ${CFLAG} -c unix/time.c -o ${OBJ_D}/time.o
-
-${OBJ_D}/lock.o:unix/lock.c
-	${CC} -D_GNU_SOURCE ${CFLAG} -c unix/lock.c -o ${OBJ_D}/lock.o
-
-${OBJ_D}/NETCA_Alloc.o:NETCA_Alloc.c
-	${CC} ${CFLAG} -c NETCA_Alloc.c -o ${OBJ_D}/NETCA_Alloc.o
-
-${OBJ_D}/NETCA_ArrayList.o:NETCA_ArrayList.c
-	${CC} ${CFLAG} -c NETCA_ArrayList.c -o ${OBJ_D}/NETCA_ArrayList.o
-	
-${OBJ_D}/NETCA_BigInteger.o:NETCA_BigInteger_Openssl.c
-	${CC} ${CFLAG} -Wno-deprecated-declarations -c NETCA_BigInteger_Openssl.c -o ${OBJ_D}/NETCA_BigInteger.o
-
-${OBJ_D}/NETCA_BitSet.o:NETCA_BitSet.c
-	${CC} ${CFLAG} -c NETCA_BitSet.c -o ${OBJ_D}/NETCA_BitSet.o
-
-${OBJ_D}/NETCA_Error.o:NETCA_Error.c
-	${CC} ${CFLAG} -c NETCA_Error.c -o ${OBJ_D}/NETCA_Error.o
-
-${OBJ_D}/NETCA_Stream.o:NETCA_Stream.c
-	${CC} ${CFLAG} -c NETCA_Stream.c -o ${OBJ_D}/NETCA_Stream.o
-
-${OBJ_D}/NETCA_Stream_Base64.o:NETCA_Stream_Base64.c
-	${CC} ${CFLAG} -c NETCA_Stream_Base64.c -o ${OBJ_D}/NETCA_Stream_Base64.o
-
-${OBJ_D}/NETCA_Stream_File.o:NETCA_Stream_File.c
-	${CC} ${CFLAG} -c NETCA_Stream_File.c -o ${OBJ_D}/NETCA_Stream_File.o
-
-${OBJ_D}/NETCA_Stream_Hex.o:NETCA_Stream_Hex.c
-	${CC} ${CFLAG} -c NETCA_Stream_Hex.c -o ${OBJ_D}/NETCA_Stream_Hex.o
-
-${OBJ_D}/NETCA_Stream_HMAC.o:NETCA_Stream_HMAC.c
-	${CC} ${CFLAG} -c NETCA_Stream_HMAC.c -o ${OBJ_D}/NETCA_Stream_HMAC.o
-
-${OBJ_D}/NETCA_Stream_MD.o:NETCA_Stream_MD.c
-	${CC} ${CFLAG} -c NETCA_Stream_MD.c -o ${OBJ_D}/NETCA_Stream_MD.o
-
-${OBJ_D}/NETCA_Stream_Mem.o:NETCA_Stream_Mem.c
-	${CC} ${CFLAG} -c NETCA_Stream_Mem.c -o ${OBJ_D}/NETCA_Stream_Mem.o
-
-${OBJ_D}/NETCA_Stream_Null.o:NETCA_Stream_Null.c
-	${CC} ${CFLAG} -c NETCA_Stream_Null.c -o ${OBJ_D}/NETCA_Stream_Null.o
-
-${OBJ_D}/NETCA_Time.o:NETCA_Time.c
-	${CC} ${CFLAG} -std=c99 -c NETCA_Time.c -o ${OBJ_D}/NETCA_Time.o
-
-${OBJ_D}/NETCA_UString.o:NETCA_UString.c NETCA_UString_Unicode_Data.c
-	${CC} ${CFLAG} -c NETCA_UString.c -o ${OBJ_D}/NETCA_UString.o
-
-
-${OBJ_D}/NETCA_Util.o:NETCA_Util.c
-	${CC} ${CFLAG} -c NETCA_Util.c -o ${OBJ_D}/NETCA_Util.o
-
-${OBJ_D}/NETCA_JSON.o:NETCA_JSON.c
-	${CC} ${CFLAG} -c NETCA_JSON.c -o ${OBJ_D}/NETCA_JSON.o
-
 
 $(OBJ_D):
 	${MKDIR} ${OBJ_D}
@@ -213,8 +134,8 @@ $(ARCH_D):
 	${MKDIR} ${ARCH_D}
 
 # 对应于上面的all，依赖项是${OUT_D} ${ARCH_D} ${OBJ_D}对应的文件夹的创建和${OBJECTS} 对应的资源文件的编译
-${ARCH_D}/libnetca_util.2.5.1.a: ${OUT_D} ${ARCH_D} ${OBJ_D} ${OBJECTS} 
-	libtool -static ${IOS_LINK_FLAG} -o ${ARCH_D}/libnetca_util.2.5.1.a ${OBJECTS} #此处其实也可以使用Linux的 ar 命令
+${ARCH_D}/libutil.a: ${OUT_D} ${ARCH_D} ${OBJ_D} ${OBJECTS} 
+	libtool -static ${IOS_LINK_FLAG} -o ${ARCH_D}/libutil.a ${OBJECTS} #此处其实也可以使用Linux的 ar 命令
 	
 # Phony Target: realclean 依赖于clean的执行，调用make realclean会先调用make clean清除编译过程中的中间文件，再清除目标文件(为了多平台)
 realclean: clean
@@ -227,9 +148,9 @@ clean:
 ### Shell
 
 ```shell
-LIB_NAME=libnetca_util.2.5.1.a
-LIB_OS_NAME=libnetca_util.2.5.1_os.a
-LIB_SIMULATOR_NAME=libnetca_util.2.5.1_simulator.a
+LIB_NAME=libutil.a
+LIB_OS_NAME=libutil_os.a
+LIB_SIMULATOR_NAME=libutil_simulator.a
 
 OUT_D=out
 HEADER_D=${OUT_D}/include
@@ -266,7 +187,7 @@ done
 
 #HEADER FILE 头文件提取出来
 mkdir ${HEADER_D}
-cp NETCA_*.h ${HEADER_D}/
+cp *.h ${HEADER_D}/
 
 #LIPO 合成为"Fat Library"
 cd ${OUT_D}
@@ -278,9 +199,9 @@ lipo -create ${LIB_SIM_PATHS[@]} -output ${LIB_SIMULATOR_NAME}
 
 ## 总结
 
-1. 感觉makefile还是有必要学会，因为编译和链接可以由自己掌握。
-2. 此次编写makefile的工作不是很难，因为这只是要移植部分里面最简单最小的一个库。
-3. makefile在iOS上的使用方面，最主要的困难还是如何指定SDK，毕竟移植到iOS的时候，Win上或Linux上的代码并不是都可用，像这次就需要用到iOS的SDK里CoreFoundation的内容去替换一些已有的实现。
+1. 感觉 makefile 还是有必要学会，因为编译和链接可以由自己掌握。
+2. 此次编写 makefile 的工作不是很难，因为这只是要移植部分里面最简单最小的一个库。
+3.  makefile 在 iOS 上的使用方面，最主要的困难还是如何指定 SDK ，毕竟移植到 iOS 的时候，Win 上或 Linux 上的代码并不是都可用，像这次就需要用到 iOS 的 SDK 里 CoreFoundation 的内容去替换一些已有的实现。
 
 
 

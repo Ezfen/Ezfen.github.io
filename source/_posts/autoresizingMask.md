@@ -6,12 +6,12 @@ tags:
 typora-copy-images-to: ipic
 ---
 
-不知道大家在开发的时候会不会使用到UIView的autoresizingMask属性。我自己的话自从开始出现autoLayout就没再用过了。前几天翻看一些较老的书籍，发现了它静静躺在角落。不知不觉还真的有些忘记了，于是温故知新，再学习了一下。
+不知道大家在开发的时候会不会使用到 UIView 的 autoresizingMask 属性。我自己的话自从开始出现 autoLayout 就没再用过了。前几天翻看一些较老的书籍，发现了它静静躺在角落。不知不觉还真的有些忘记了，于是温故知新，再学习了一下。
 
 <!--more-->
 
 # autoresizingMask
-它对应着一个枚举，属性是自动调整SubView和SuperView之间的位置和宽高。
+它对应着一个枚举，属性是自动调整 SubView 和 SuperView 之间的位置和宽高。
 ```
 enum {
    UIViewAutoresizingNone                 = 0,
@@ -27,10 +27,11 @@ enum {
 ### UIViewAutoresizingNone
 不设置自动调整，默认值
 ### UIViewAutoresizingFlexibleRightMargin 
-这里就只讲UIViewAutoresizingFlexibleRightMargin,因为上下左右四个方位是一致的原理
+这里就只讲 UIViewAutoresizingFlexibleRightMargin ，因为上下左右四个方位是一致的原理
 ![autoresizingMask_FlexibleRightMargin](https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/skwhi.jpg)
+
 ### UIViewAutoresizingFlexibleWidth
-UIViewAutoresizingFlexibleWidth和UIViewAutoresizingFlexibleHeight也是同样的原理
+UIViewAutoresizingFlexibleWidth 和 UIViewAutoresizingFlexibleHeight 也是同样的原理
 ![autoresizingMask_FlexibleWidthCompare](https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/wrxva.jpg)
 
 ### 组合起来
@@ -70,11 +71,11 @@ CGFloat topViewWidth = kUIScreen.size.width - kMargin * 2;
 [topView setFrame:CGRectMake(kMargin, kTopSpace, topViewWidth, kTopViewHeight)];
 ```
 
-上面的代码中尺寸宽度被限定为iPhone4s的320。没有设置子View（蓝色的View）的autoresizingMask属性的话运行结果如下：
+上面的代码中尺寸宽度被限定为 iPhone4s 的 320 。没有设置子 View（蓝色的 View ）的 autoresizingMask 属性的话运行结果如下：
 ![autoresizingMask_4s](https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/pmjrs.jpg)
 
-设置了子View（蓝色的View）autoresizingMask后，再修改父View的宽度，可以看到随着赋值的不同，有不同的效果：
-设置了UIViewAutoresizingFlexibleLeftMargin
+设置了子 View（蓝色的 View ）autoresizingMask 后，再修改父 View 的宽度，可以看到随着赋值的不同，有不同的效果：
+设置了 UIViewAutoresizingFlexibleLeftMargin
 ![autoresizingMask_FlexibleLeftMargin](https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/m2hgw.jpg)
 
 还有的其他值对应的效果图在上文已经摆出来了，请参阅哈~~

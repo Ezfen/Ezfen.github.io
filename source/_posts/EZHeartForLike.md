@@ -6,7 +6,7 @@ tags:
 typora-copy-images-to: ipic
 ---
 
-最近没事看看Instagram的时候，对于双击点赞的功能感觉蛮Like。所以就想自己仿照做一个。但是嘞，直接仿造感觉不是很好玩，所以就自己想添加点新东西，因此就有了EZHeartForLike。:)
+最近没事看看 Instagram 的时候，对于双击点赞的功能感觉蛮 Like 。所以就想自己仿照做一个。但是嘞，直接仿造感觉不是很好玩，所以就自己想添加点新东西，因此就有了EZHeartForLike。:)
 
 <!--more-->
 
@@ -14,27 +14,28 @@ typora-copy-images-to: ipic
 效果图(第一张是双击图片触发，第二张是单击按钮)：
 ![](https://raw.githubusercontent.com/Ezfen/EZHeartForLike/master/double.gif)       ![](https://raw.githubusercontent.com/Ezfen/EZHeartForLike/master/single.gif)    
 先说说这是个什么东西。    
-一开始我是在Instagram的基础上开始做的。双击点击图片可以弹出一个桃心，随即下面的小桃心点亮。完成点赞的操作。like this(专门截了我❤️GEM❤️过来，Instagram的心挡住她的脸了。。。)：
+一开始我是在 Instagram 的基础上开始做的。双击点击图片可以弹出一个桃心，随即下面的小桃心点亮。完成点赞的操作。就像这样：
 ![EZHeartForLike_gem](https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/37lsw.jpg)    
-好吧，尺寸是是用我又爱又恨的4S的 320 x 480    
+好吧，尺寸是是用我又爱又恨的 4S 的 320 x 480    
 紧接着就想，能不能实现大桃心一边移动一边缩小，最后到大小桃心的位置并替换它？！就像上面最终效果一样
 ![aixin](https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/4p80z.jpg)
-很快我遇到问题：如果两个桃心都在同一个View中，话甘易啦！！！但是现在的情况是两个桃心并不在同一个View中（现实中很多情况都不会），**位置不明确**是一个Super巨大的问题。因此跨View的动画是EZHeartForLike是这次的主要话题。当然动画是使用UIView来实现的~~    
+很快我遇到问题：如果两个桃心都在同一个 View 中，话甘易啦！！！但是现在的情况是两个桃心并不在同一个 View 中（现实中很多情况都不会），**位置不明确**是一个巨大的问题。因此跨View的动画是 EZHeartForLike 是这次的主要话题。当然动画是使用 UIView 来实现的~~    
 那么，讲讲我的思路历程吧：    
-首先，我想了下能不能在一个EZHeartForLikeView中分别放入下列三个View，已实现我的想法：    
-* ContentView ：用于让用户将自己的View放入其中。类似iOS8里面的UIVisualEffectView的contentView一样。    
-* SmallHeart ：被当做按钮的小桃心，是Public的，提供给用户改造它的样式、大小、位置等。 
-* BigHeart ：出现在图片(ImageView)中的大桃心
+首先，我想了下能不能在一个 EZHeartForLikeView 中分别放入下列三个 View ，已实现我的想法：    
+
+* ContentView ：用于让用户将自己的 View 放入其中。类似 iOS8 里面的UIVisualEffectView 的 contentView 一样。    
+* SmallHeart ：被当做按钮的小桃心，是 Public 的，提供给用户改造它的样式、大小、位置等。 
+* BigHeart ：出现在图片( ImageView )中的大桃心
 
 在我自己涂涂画画后是这样的：    
 ![EZHeartForLike_begin](https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/r0ov5.jpg)
 
-一开始觉得可能能行，因为两个桃心都在同一个View中(EZHeartForLikeView)，要实现动画应该是没什么问题，但是后来想到，既然我把小桃心作为Public对外提供，那么用户就可以将它放入自己的View中。因此这个想法很快被否了。。。
+一开始觉得可能能行，因为两个桃心都在同一个View中( EZHeartForLikeView )，要实现动画应该是没什么问题，但是后来想到，既然我把小桃心作为 Public 对外提供，那么用户就可以将它放入自己的 View 中。因此这个想法很快被否了。。。
 
-这个问题让我便秘了两天，哈哈哈哈。后来在洗澡时想到一个或许能解决问题的方法，虽然大小桃心的位置都不清楚，但是他们至少有同一个SuperView，或许加以利用就能实现这个想法。谁知道嘞，试一下吧：    
-简单一句话就是：**找到相同的SuperView，映射坐标，在SuperView上完成动画的实现**    
+这个问题让我便秘了两天，哈哈哈哈。后来在洗澡时想到一个或许能解决问题的方法，虽然大小桃心的位置都不清楚，但是他们至少有同一个 SuperView ，或许加以利用就能实现这个想法。谁知道嘞，试一下吧：    
+简单一句话就是：**找到相同的 SuperView ，映射坐标，在 SuperView 上完成动画的实现**    
 ![EZHeartForLike_findview](https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/1c4s3.jpg)
-具体怎么找到相同的SuperView嘞，那就要扯到另外一个算法了，那就是判断两条链表是否相交，且交点是哪一个的问题。    
+具体怎么找到相同的 SuperView 嘞，那就要扯到另外一个算法了，那就是判断两条链表是否相交，且交点是哪一个的问题。    
 这里我又要祭出我的灵魂画风了
 ![EZHeartForLike_lianbiao](https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/e0q6r.jpg)    
 实现起来其实不是能难，且看代码：
@@ -102,4 +103,4 @@ typora-copy-images-to: ipic
 ```
 
 既然得到两个桃心的坐标了，实现动画就自然变得简单啦，就不赘述了:)    
-有兴趣的同学可以查看我的[Github](https://github.com/objchris/EZHeartForLike)，可以下载在项目中，顺便给我个Like吧![hahaha](https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/pivxc.jpg)
+有兴趣的同学可以查看我的 [Github](https://github.com/objchris/EZHeartForLike) ，可以下载在项目中，顺便给我个 Like 吧![hahaha](https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/pivxc.jpg)
