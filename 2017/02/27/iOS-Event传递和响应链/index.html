@@ -36,6 +36,7 @@
     <!-- Custom Fonts -->
     <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href='//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
     <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
 
     <link rel="shortcut icon" href="/favicon.png">
@@ -76,23 +77,23 @@
         <div class="row">
             <!-- Post Main Content -->
             <div class="post-content col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <p>本来不想重复造轮子，因为网上已经很多关于iOS触碰事件传递响应链的文章，而且苹果官方文档也已经解释得很清楚。但是上周和朋友吃饭的时候聊到却不能很好地将想法表达出来，所以感觉还是写一写，加深印象吧～</p>
+                <p>本来不想重复造轮子，因为网上已经很多关于 iOS 触碰事件传递响应链的文章，而且苹果官方文档也已经解释得很清楚。但是上周和朋友吃饭的时候聊到却不能很好地将想法表达出来，所以感觉还是写一写，加深印象吧～</p>
 <a id="more"></a>
-<p>毋庸置疑地，在论及事件传递的时候我们都会很顺口地使用用上下方向来表达事件传递(Event Delivery)，从UIApplication到响应事件的UIView是「从下往上」，反过来自然就是「从上往下」了。</p>
-<h2 id="从下往上——寻找HitTest-View"><a href="#从下往上——寻找HitTest-View" class="headerlink" title="从下往上——寻找HitTest View"></a>从下往上——寻找HitTest View</h2><p>当一个用户产生的事件发生并被系统捕获到后，UIKit会创建一个事件对象(Event Object)，携带着一些处理信息，eg:点击位置、事件类型等，然后将这个对象存放在UIApplication的事件队列中，等待处理。</p>
-<p>我们开发中使用的最多的是触碰事件(Touch Event)，也只有触碰事件才需要iOS为我们寻找<strong>HitTest View</strong>，即<strong>寻找响应该事件的View</strong>，这一过程，官方文档里称为<strong><em>Hit-Testing</em></strong>。</p>
-<p>了解这一过程，先了解UIView的两个可重载的方法：</p>
+<p>毋庸置疑地，在论及事件传递的时候我们都会很顺口地使用用上下方向来表达事件传递( Event Delivery )，从 UIApplication 到响应事件的 UIView 是「从下往上」，反过来自然就是「从上往下」了。</p>
+<h2 id="从下往上——寻找-HitTest-View"><a href="#从下往上——寻找-HitTest-View" class="headerlink" title="从下往上——寻找 HitTest View"></a>从下往上——寻找 HitTest View</h2><p>当一个用户产生的事件发生并被系统捕获到后，UIKit会创建一个事件对象( Event Object )，携带着一些处理信息，eg: 点击位置、事件类型等，然后将这个对象存放在 UIApplication 的事件队列中，等待处理。</p>
+<p>我们开发中使用的最多的是触碰事件( Touch Event )，也只有触碰事件才需要 iOS 为我们寻找 <strong>HitTest View</strong> ，即<strong>寻找响应该事件的 View </strong>，这一过程，官方文档里称为 <strong><em>Hit-Testing</em></strong> 。</p>
+<p>了解这一过程，先了解 UIView 的两个可重载的方法：</p>
 <ol>
 <li><p><code>- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event</code></p>
-<p>传入的参数类型是<code>CGPoint point</code>和<code>UIEvent *event</code> ，分别表示拥护触碰事件的<strong>触碰点</strong>和对应的<strong>事件</strong>，event可为nil，返回的是<code>Boolean</code>表示point是否在当前View的Bounds中。</p>
+<p>传入的参数类型是<code>CGPoint point</code>和<code>UIEvent *event</code> ，分别表示拥护触碰事件的<strong>触碰点</strong>和对应的<strong>事件</strong>，event 可为<code>nil</code>，返回的是<code>Boolean</code>表示 point 是否在当前 View 的Bounds中。</p>
 </li>
 <li><p><code>- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event</code></p>
-<p>同样，传入的参数类型是<code>CGPoint point</code>和<code>UIEvent *event</code> ，event可为nil(我们本次讨论的是触碰事件的Hit-Testing，自然此参数不会为空)，此方法返回的是point所在的View。</p>
+<p>同样，传入的参数类型是<code>CGPoint point</code>和<code>UIEvent *event</code> ，event 可为<code>nil</code>(我们本次讨论的是触碰事件的 Hit-Testing ，自然此参数不会为空)，此方法返回的是 point 所在的 View 。</p>
 </li>
 </ol>
 <p><code>hitTest:withEvent:</code>内部会先调用<code>pointInside:withEvent:</code>，来检测触碰点是否在当前View中</p>
 <ul>
-<li><p>若返回<code>NO</code>,则直接返回nil，且所有的SubView都不会响应当前事件。所以，敲重点啦，对于<code>clipsToBounds</code>设置为<code>NO</code>，允许SubView向外延伸的View，需要重载<code>pointInside:withEvent:</code>，例如：</p>
+<li><p>若返回<code>NO</code>,则直接返回<code>nil</code>，且所有的 SubView 都不会响应当前事件。所以，敲重点啦，对于<code>clipsToBounds</code>设置为<code>NO</code>，允许 SubView 向外延伸的 View ，需要重载<code>pointInside:withEvent:</code>，例如：</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/rkb9k.jpg" alt="TouchEvent_WechatIMG3"></p>
 <pre><code class="objective-c">- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event{
       //以下是伪代码  
@@ -100,15 +101,15 @@
       else return false;
 }
 </code></pre>
-<p>如果没有重载<code>pointInside:withEvent:</code>，那么用户点击上图触碰点，SubView将不响应事件。</p>
+<p>如果没有重载<code>pointInside:withEvent:</code>，那么用户点击上图触碰点，SubView 将不响应事件。</p>
 </li>
 </ul>
 <ul>
-<li><p>若返回<code>YES</code>，则调用所有SubView的<code>hitTest:withEvent:</code>，继续寻找HitTest View。在视图层级树(这样翻译?! view hierarchy)中<strong>最后添加的叶结点</strong>且<strong>包含触碰点</strong>的View就会光荣地成为<strong>HitTest View</strong>(如下图最后一个UIView)，首先接受事件，并做下一步操作——寻找响应对象。</p>
+<li><p>若返回<code>YES</code>，则调用所有 SubView 的<code>hitTest:withEvent:</code>，继续寻找 HitTest View 。在视图层级树(这样翻译?!  view hierarchy )中<strong>最后添加的叶结点</strong>且<strong>包含触碰点</strong>的 View 就会光荣地成为 <strong>HitTest View</strong> (如下图最后一个 UIView )，首先接受事件，并做下一步操作——寻找响应对象。</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/zedzb.jpg" alt="TouchEvent_WechatIMG1"></p>
 </li>
 </ul>
-<p>我们也可以在中途截断系统的Hit-Testing，如果你想让某个View的所有SubView都不响应事件，最简单的就是重载该View的<code>hitTest:withEvent:</code>，返回View（自己响应点击事件）或者nil（都不响应）。</p>
+<p>我们也可以在中途截断系统的 Hit-Testing ，如果你想让某个 View 的所有 SubView 都不响应事件，最简单的就是重载该 View 的<code>hitTest:withEvent:</code>，返回 View （自己响应点击事件）或者<code>nil</code>（都不响应）。</p>
 <pre><code class="objective-c">-(UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
     //return nil; 本View和SubView都不成为HitTest View，都不响应事件
       return self;    // 自己成为HitTest View
@@ -116,21 +117,21 @@
 </code></pre>
 <h2 id="从上往下——寻找响应对象"><a href="#从上往下——寻找响应对象" class="headerlink" title="从上往下——寻找响应对象"></a>从上往下——寻找响应对象</h2><p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/2fznc.png" alt="1387344-cd500e5bd93d9606"></p>
 <p>这张图相信在其他地方已经看了一千遍了，但是有图还是容易理解，从上往下的意思是：</p>
-<p>当上一步找到的HitTest View没能响应事件时(eg:userInteractionEnabled为NO或者没有定义响应事件的方法)，那么事件就会被传递到SuperView或着Controller。直至Applicaion都不能处理该事件则忽略。</p>
-<p>需要注意的是：这里的传递只会给SuperView或着Controller，并不会传递给与自己相同级别的View，除非你自己控制。</p>
-<p>iOS10的UIResponder中定义了两个新的Property：</p>
+<p>当上一步找到的 HitTest View 没能响应事件时( eg: userInteractionEnabled 为 NO 或者没有定义响应事件的方法)，那么事件就会被传递到 SuperView 或着 Controller 。直至 Applicaion 都不能处理该事件则忽略。</p>
+<p>需要注意的是：这里的传递只会给 SuperView 或着 Controller ，并不会传递给与自己相同级别的 View ，除非你自己控制。</p>
+<p>iOS10的 UIResponder 中定义了两个新的 Property ：</p>
 <ol>
-<li><code>nextResponder(Swift是next)</code>：这个比较蛋疼，因为UIResponder中它默认返回的是nil，所以如果我们想让特定的Responder响应事件，我们需要在我们的类中重载Get方法，返回自己想要的下一个Responder。</li>
-<li><code>isFirstResponder</code>：判断当前View或Controller是否为即将响应事件的Responder。不能明白？！那么想想这两个方法：<code>becomeFirstResponder</code>和<code>resignFirstResponder</code>：）</li>
+<li><code>nextResponder(Swift是next)</code>：这个比较蛋疼，因为 UIResponder 中它默认返回的是nil，所以如果我们想让特定的 Responder 响应事件，我们需要在我们的类中重载 Get 方法，返回自己想要的下一个 Responder 。</li>
+<li><code>isFirstResponder</code>：判断当前View或 Controller 是否为即将响应事件的 Responder 。不能明白？！那么想想这两个方法：<code>becomeFirstResponder</code>和<code>resignFirstResponder</code>：）</li>
 </ol>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>废话了这么多，三点：</p>
 <ol>
-<li>iOS的Touch Event先「从下往上」寻找HitTest View(FirstResponder)，再「从上往下」寻找真正响应该事件的Responder。</li>
-<li>可以通过重载<code>hitTest:withEvent:</code>，决定HitTest View，即最开始<strong>接收（敲重点，只是接收）</strong>事件的Responder。</li>
-<li>Responder不一定会响应事件，看有没有响应事件的方法。</li>
+<li>iOS 的 Touch Event 先「从下往上」寻找 HitTest View ( FirstResponder )，再「从上往下」寻找真正响应该事件的 Responder 。</li>
+<li>可以通过重载<code>hitTest:withEvent:</code>，决定 HitTest View ，即最开始<strong>接收（敲重点，只是接收）</strong>事件的 Responder 。</li>
+<li>Responder 不一定会响应事件，看有没有响应事件的方法。</li>
 </ol>
-<p>所以，以后如果有人问你：两个View重叠在一起，在上面的View将下面的View完全覆盖，且上面的View不能响应事件，下面的View会响应吗？</p>
-<p>你不如先反问一句，两个View是否为SuperView和SubView的关系？！</p>
+<p>所以，以后如果有人问你：两个View重叠在一起，在上面的 View 将下面的 View 完全覆盖，且上面的 View 不能响应事件，下面的 View 会响应吗？</p>
+<p>你不如先反问一句，两个 View 是否为 SuperView 和 SubView 的关系？！</p>
 <p>再分门别类地回答～</p>
 <p>以上</p>
 <h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a href="https://developer.apple.com/library/content/documentation/EventHandling/Conceptual/EventHandlingiPhoneOS/event_delivery_responder_chain/event_delivery_responder_chain.html#//apple_ref/doc/uid/TP40009541-CH4-SW1" target="_blank" rel="external">Event Handling Guide for iOS</a></p>

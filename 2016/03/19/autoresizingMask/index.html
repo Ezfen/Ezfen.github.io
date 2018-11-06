@@ -36,6 +36,7 @@
     <!-- Custom Fonts -->
     <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href='//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
     <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
 
     <link rel="shortcut icon" href="/favicon.png">
@@ -76,9 +77,9 @@
         <div class="row">
             <!-- Post Main Content -->
             <div class="post-content col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <p>不知道大家在开发的时候会不会使用到UIView的autoresizingMask属性。我自己的话自从开始出现autoLayout就没再用过了。前几天翻看一些较老的书籍，发现了它静静躺在角落。不知不觉还真的有些忘记了，于是温故知新，再学习了一下。</p>
+                <p>不知道大家在开发的时候会不会使用到 UIView 的 autoresizingMask 属性。我自己的话自从开始出现 autoLayout 就没再用过了。前几天翻看一些较老的书籍，发现了它静静躺在角落。不知不觉还真的有些忘记了，于是温故知新，再学习了一下。</p>
 <a id="more"></a>
-<h1 id="autoresizingMask"><a href="#autoresizingMask" class="headerlink" title="autoresizingMask"></a>autoresizingMask</h1><p>它对应着一个枚举，属性是自动调整SubView和SuperView之间的位置和宽高。</p>
+<h1 id="autoresizingMask"><a href="#autoresizingMask" class="headerlink" title="autoresizingMask"></a>autoresizingMask</h1><p>它对应着一个枚举，属性是自动调整 SubView 和 SuperView 之间的位置和宽高。</p>
 <pre><code>enum {
    UIViewAutoresizingNone                 = 0,
    UIViewAutoresizingFlexibleLeftMargin   = 1 &lt;&lt; 0,
@@ -89,8 +90,8 @@
    UIViewAutoresizingFlexibleBottomMargin = 1 &lt;&lt; 5
 };
 </code></pre><h2 id="简单介绍"><a href="#简单介绍" class="headerlink" title="简单介绍"></a>简单介绍</h2><h3 id="UIViewAutoresizingNone"><a href="#UIViewAutoresizingNone" class="headerlink" title="UIViewAutoresizingNone"></a>UIViewAutoresizingNone</h3><p>不设置自动调整，默认值</p>
-<h3 id="UIViewAutoresizingFlexibleRightMargin"><a href="#UIViewAutoresizingFlexibleRightMargin" class="headerlink" title="UIViewAutoresizingFlexibleRightMargin"></a>UIViewAutoresizingFlexibleRightMargin</h3><p>这里就只讲UIViewAutoresizingFlexibleRightMargin,因为上下左右四个方位是一致的原理<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/skwhi.jpg" alt="autoresizingMask_FlexibleRightMargin"></p>
-<h3 id="UIViewAutoresizingFlexibleWidth"><a href="#UIViewAutoresizingFlexibleWidth" class="headerlink" title="UIViewAutoresizingFlexibleWidth"></a>UIViewAutoresizingFlexibleWidth</h3><p>UIViewAutoresizingFlexibleWidth和UIViewAutoresizingFlexibleHeight也是同样的原理<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/wrxva.jpg" alt="autoresizingMask_FlexibleWidthCompare"></p>
+<h3 id="UIViewAutoresizingFlexibleRightMargin"><a href="#UIViewAutoresizingFlexibleRightMargin" class="headerlink" title="UIViewAutoresizingFlexibleRightMargin"></a>UIViewAutoresizingFlexibleRightMargin</h3><p>这里就只讲 UIViewAutoresizingFlexibleRightMargin ，因为上下左右四个方位是一致的原理<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/skwhi.jpg" alt="autoresizingMask_FlexibleRightMargin"></p>
+<h3 id="UIViewAutoresizingFlexibleWidth"><a href="#UIViewAutoresizingFlexibleWidth" class="headerlink" title="UIViewAutoresizingFlexibleWidth"></a>UIViewAutoresizingFlexibleWidth</h3><p>UIViewAutoresizingFlexibleWidth 和 UIViewAutoresizingFlexibleHeight 也是同样的原理<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/wrxva.jpg" alt="autoresizingMask_FlexibleWidthCompare"></p>
 <h3 id="组合起来"><a href="#组合起来" class="headerlink" title="组合起来"></a>组合起来</h3><p>枚举中的值是允许使用|组合起来的，同时拥有多个值的功能，like this：</p>
 <pre><code class="objc">UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRIGHTMargin
 </code></pre>
@@ -122,8 +123,8 @@ UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(textLabelTop, tex
 CGFloat topViewWidth = kUIScreen.size.width - kMargin * 2;
 [topView setFrame:CGRectMake(kMargin, kTopSpace, topViewWidth, kTopViewHeight)];
 </code></pre>
-<p>上面的代码中尺寸宽度被限定为iPhone4s的320。没有设置子View（蓝色的View）的autoresizingMask属性的话运行结果如下：<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/pmjrs.jpg" alt="autoresizingMask_4s"></p>
-<p>设置了子View（蓝色的View）autoresizingMask后，再修改父View的宽度，可以看到随着赋值的不同，有不同的效果：<br>设置了UIViewAutoresizingFlexibleLeftMargin<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/m2hgw.jpg" alt="autoresizingMask_FlexibleLeftMargin"></p>
+<p>上面的代码中尺寸宽度被限定为 iPhone4s 的 320 。没有设置子 View（蓝色的 View ）的 autoresizingMask 属性的话运行结果如下：<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/pmjrs.jpg" alt="autoresizingMask_4s"></p>
+<p>设置了子 View（蓝色的 View ）autoresizingMask 后，再修改父 View 的宽度，可以看到随着赋值的不同，有不同的效果：<br>设置了 UIViewAutoresizingFlexibleLeftMargin<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/m2hgw.jpg" alt="autoresizingMask_FlexibleLeftMargin"></p>
 <p>还有的其他值对应的效果图在上文已经摆出来了，请参阅哈~~</p>
 
  

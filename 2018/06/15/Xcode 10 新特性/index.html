@@ -36,6 +36,7 @@
     <!-- Custom Fonts -->
     <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href='//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
     <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
 
     <link rel="shortcut icon" href="/favicon.png">
@@ -76,11 +77,11 @@
         <div class="row">
             <!-- Post Main Content -->
             <div class="post-content col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <p>Xcode 在每年的 <a href="https://developer.apple.com/videos/wwdc2018/" target="_blank" rel="external">WWDC</a> 都会有所改进，今年也不例外，如约而至降临于六月五号。同样是先发布 <a href="https://developer.apple.com/download/" target="_blank" rel="external">beta</a> 版，正式版将在秋季发布于新的 App Store 上（新版的 App Store 还挺好看的，欢心荡漾中 :] ）</p>
+                <p>要让开发效率提高，写更多的 <del>bug</del> ，呸，更多改变世界的代码，我们就需要先了解每个苹果系列开发者必须使用的工具，就是今天要讲的主角 —— Xcode 10</p>
 <a id="more"></a>
-<p>要让开发效率提高，写更多的 <del>bug</del> ，呸，更多改变世界的代码，我们就需要先了解每个苹果系列开发者必须使用的工具，就是今天要讲的主角 —— Xcode 10</p>
+<p>Xcode 在每年的 <a href="https://developer.apple.com/videos/wwdc2018/" target="_blank" rel="external">WWDC</a> 都会有所改进，今年也不例外，如约而至降临于六月五号。同样是先发布 <a href="https://developer.apple.com/download/" target="_blank" rel="external">beta</a> 版，正式版将在秋季发布于新的 App Store 上（新版的 App Store 还挺好看的，欢心荡漾中 :] ）</p>
 <h2 id="关于-Xcode-10"><a href="#关于-Xcode-10" class="headerlink" title="关于 Xcode 10"></a>关于 Xcode 10</h2><h3 id="平台限制"><a href="#平台限制" class="headerlink" title="平台限制"></a>平台限制</h3><p>Xcode 10 现在只有 beta 版，只能安装在 mac 10.13.4 及以上的版本，如果升级了最新的 beta 版系统 Mojave 还可以尝试一下黑夜模式，下面会说到。</p>
-<h3 id="SDK"><a href="#SDK" class="headerlink" title="SDK"></a>SDK</h3><p>beta 版包含了新发布的 iOS 12, watchOS 5, macOS 10.14 以及 tvOS 12 的SDK开发工具包。</p>
+<h3 id="SDK"><a href="#SDK" class="headerlink" title="SDK"></a>SDK</h3><p>beta 版包含了新发布的 iOS 12, watchOS 5, macOS 10.14 以及 tvOS 12 的 SDK 开发工具包。</p>
 <h3 id="下载安装"><a href="#下载安装" class="headerlink" title="下载安装"></a>下载安装</h3><p>首先下载 <a href="https://download.developer.apple.com/Developer_Tools/Xcode_10_Beta/Xcode_10_Beta.xip" target="_blank" rel="external">.xip 安装包</a>，解压放到 Applications 文件夹就可以了。使用 beta 版的 command line tools ，在 iTerm 或自带的 Terminals 中执行命令：</p>
 <pre><code class="Shell">xcode-select -s &lt;path to Xcode&gt;
 </code></pre>
@@ -150,7 +151,7 @@
 <h4 id="可变的测试集"><a href="#可变的测试集" class="headerlink" title="可变的测试集"></a>可变的测试集</h4><p>新建的测试默认状态是 enabled 的，这样我们在 Test navigator 中可以通过点击测试类或测试方法右边的运行按钮进行测试。</p>
 <p>然而，如果想固定当前的测试集，排除新建的测试类或方法时，可以取消勾选 Automatically include new tests ，见上图。此时测试方法的状态是 disabled ，将无法在 Test navigator 中进行测试，但可以在类中该方法的左侧点击运行按钮进行测试。</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/4jdy0.png" alt=""></p>
-<p>假设过了一段时间，想把 disabled 状态的测试类或方法变成 enabled ，在 Edit Scheme 中可以将修改其状态。这样我们可以控制每次测试所运行的测试集，不必浪费时间去做一些不需要做的测试。</p>
+<p>假设过了一段时间，想把 disabled 状态的测试类或方法变成 enabled ，在 Edit Scheme 中可以修改其状态。这样我们可以控制每次测试所运行的测试集，不必浪费时间去做一些不需要做的测试。</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/p99x5.png" alt=""></p>
 <h3 id="IB"><a href="#IB" class="headerlink" title="IB"></a>IB</h3><ul>
 <li>画布的渲染也并行了，scenes 的放大缩小和组件的修改，据说性能都得到提升。</li>
@@ -164,7 +165,7 @@
 <ul>
 <li>打开 Xcode 5 的 .nib 或 .xib 文件，会提示格式问题并自动更新到当前版本所使用的格式。</li>
 <li>Attributes Inspector 的字体支持 iOS 11 发布的 Large Title ，且自定义字体可以看到样式预览，这个还挺不错的。</li>
-<li>同样是 Attributes Inspector 中，named color 和 图片右侧有个小按钮可以连接到Assets，在这个小按钮上 ⌥+Click 可以在 Assistant Editor 中打开。</li>
+<li>同样是 Attributes Inspector 中，named color 和 图片右侧有个小按钮可以连接到 Assets ，在这个小按钮上 ⌥+Click 可以在 Assistant Editor 中打开。</li>
 </ul>
 <h3 id="Asset-Catalog"><a href="#Asset-Catalog" class="headerlink" title="Asset Catalog"></a>Asset Catalog</h3><p>macOS 10.14 有了 Dark Mode 之后，Assets 除了之前普通模式下单一的图片和 named color ，也支持 Light 和 Dark 。并且有个 High Contrast 的选项可以勾选，所以 macOS 开发如果要加入 Dark Mode ，要上传的图片和 named color 从原来的三张、一个颜色变成十三张图片、六个颜色，我的🐴🦆。</p>
 <p>不过感谢 Dark Mode 福泽，asset 的背景也可以切换成 Light , Dark , System Appearance(跟随系统) 。切换的按钮在 assets 的左下角。对了，View Debugger 也有这个切换背景的功能，也就是那个调试 UI 的界面。</p>
@@ -203,7 +204,7 @@
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/97fpw.png" alt=""></p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/a05lh.png" alt=""></p>
 <p>在上传的应用被认证后，你可以在 Organizer 中选择你的档案并点击 Show Status Log 按钮，这样就能查看应用的状态。当收到认证通过的通知后，就可以从 Organizer 中将 App Export 出来，保存下来的 App 包含一个附加的票据，就意味着可以发布了。</p>
-<h2 id="最后说一句"><a href="#最后说一句" class="headerlink" title="最后说一句"></a>最后说一句</h2><p>今年的 WWDC 没有专题讲述 Xcode 10 。很多都是穿插在各个 Session 中。理解一个工具并用好一个工具能提高我们开发的效率，每年 Xcode 都有很多新的功能和改进，虽然出 Bug 和闪退的问题依旧存在，依旧是开发者们诟病的一点，但是，苹果爸爸在改善开发者的工作环境和提高 Xcode 的友好度作出的努力，大家还是有目共睹的，至少黑夜模式照顾到了我们这群深夜加班<del>努力写 Bug</del> ，呸，努力写改变世界的代码的工程狮。</p>
+<h2 id="最后说一句"><a href="#最后说一句" class="headerlink" title="最后说一句"></a>最后说一句</h2><p>今年的 WWDC 没有专题讲述 Xcode 10 。很多都是穿插在各个 Session 中。理解并用好一个工具能提高我们开发的效率，每年 Xcode 都有很多新的功能和改进，虽然出 Bug 和闪退的问题依旧存在，依旧是开发者们诟病的一点，但是，苹果爸爸在改善开发者的工作环境和提高 Xcode 的友好度作出的努力，大家还是有目共睹的，至少黑夜模式照顾到了我们这群深夜加班<del>努力写 Bug</del> ，呸，努力写改变世界的代码的工程狮。</p>
 <p>本文是我一份小小的学习笔记，请各位批判性地看，肯定有写的不好或错误的地方，请斧正，我定虚心接受。</p>
 
  

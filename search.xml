@@ -5,11 +5,11 @@
     <entry>
       <title><![CDATA[What's new in Xcode 10]]></title>
       <url>/2018/06/15/Xcode%2010%20%E6%96%B0%E7%89%B9%E6%80%A7/</url>
-      <content type="html"><![CDATA[<p>Xcode 在每年的 <a href="https://developer.apple.com/videos/wwdc2018/" target="_blank" rel="external">WWDC</a> 都会有所改进，今年也不例外，如约而至降临于六月五号。同样是先发布 <a href="https://developer.apple.com/download/" target="_blank" rel="external">beta</a> 版，正式版将在秋季发布于新的 App Store 上（新版的 App Store 还挺好看的，欢心荡漾中 :] ）</p>
+      <content type="html"><![CDATA[<p>要让开发效率提高，写更多的 <del>bug</del> ，呸，更多改变世界的代码，我们就需要先了解每个苹果系列开发者必须使用的工具，就是今天要讲的主角 —— Xcode 10</p>
 <a id="more"></a>
-<p>要让开发效率提高，写更多的 <del>bug</del> ，呸，更多改变世界的代码，我们就需要先了解每个苹果系列开发者必须使用的工具，就是今天要讲的主角 —— Xcode 10</p>
+<p>Xcode 在每年的 <a href="https://developer.apple.com/videos/wwdc2018/" target="_blank" rel="external">WWDC</a> 都会有所改进，今年也不例外，如约而至降临于六月五号。同样是先发布 <a href="https://developer.apple.com/download/" target="_blank" rel="external">beta</a> 版，正式版将在秋季发布于新的 App Store 上（新版的 App Store 还挺好看的，欢心荡漾中 :] ）</p>
 <h2 id="关于-Xcode-10"><a href="#关于-Xcode-10" class="headerlink" title="关于 Xcode 10"></a>关于 Xcode 10</h2><h3 id="平台限制"><a href="#平台限制" class="headerlink" title="平台限制"></a>平台限制</h3><p>Xcode 10 现在只有 beta 版，只能安装在 mac 10.13.4 及以上的版本，如果升级了最新的 beta 版系统 Mojave 还可以尝试一下黑夜模式，下面会说到。</p>
-<h3 id="SDK"><a href="#SDK" class="headerlink" title="SDK"></a>SDK</h3><p>beta 版包含了新发布的 iOS 12, watchOS 5, macOS 10.14 以及 tvOS 12 的SDK开发工具包。</p>
+<h3 id="SDK"><a href="#SDK" class="headerlink" title="SDK"></a>SDK</h3><p>beta 版包含了新发布的 iOS 12, watchOS 5, macOS 10.14 以及 tvOS 12 的 SDK 开发工具包。</p>
 <h3 id="下载安装"><a href="#下载安装" class="headerlink" title="下载安装"></a>下载安装</h3><p>首先下载 <a href="https://download.developer.apple.com/Developer_Tools/Xcode_10_Beta/Xcode_10_Beta.xip" target="_blank" rel="external">.xip 安装包</a>，解压放到 Applications 文件夹就可以了。使用 beta 版的 command line tools ，在 iTerm 或自带的 Terminals 中执行命令：</p>
 <pre><code class="Shell">xcode-select -s &lt;path to Xcode&gt;
 </code></pre>
@@ -79,7 +79,7 @@
 <h4 id="可变的测试集"><a href="#可变的测试集" class="headerlink" title="可变的测试集"></a>可变的测试集</h4><p>新建的测试默认状态是 enabled 的，这样我们在 Test navigator 中可以通过点击测试类或测试方法右边的运行按钮进行测试。</p>
 <p>然而，如果想固定当前的测试集，排除新建的测试类或方法时，可以取消勾选 Automatically include new tests ，见上图。此时测试方法的状态是 disabled ，将无法在 Test navigator 中进行测试，但可以在类中该方法的左侧点击运行按钮进行测试。</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/4jdy0.png" alt=""></p>
-<p>假设过了一段时间，想把 disabled 状态的测试类或方法变成 enabled ，在 Edit Scheme 中可以将修改其状态。这样我们可以控制每次测试所运行的测试集，不必浪费时间去做一些不需要做的测试。</p>
+<p>假设过了一段时间，想把 disabled 状态的测试类或方法变成 enabled ，在 Edit Scheme 中可以修改其状态。这样我们可以控制每次测试所运行的测试集，不必浪费时间去做一些不需要做的测试。</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/p99x5.png" alt=""></p>
 <h3 id="IB"><a href="#IB" class="headerlink" title="IB"></a>IB</h3><ul>
 <li>画布的渲染也并行了，scenes 的放大缩小和组件的修改，据说性能都得到提升。</li>
@@ -93,7 +93,7 @@
 <ul>
 <li>打开 Xcode 5 的 .nib 或 .xib 文件，会提示格式问题并自动更新到当前版本所使用的格式。</li>
 <li>Attributes Inspector 的字体支持 iOS 11 发布的 Large Title ，且自定义字体可以看到样式预览，这个还挺不错的。</li>
-<li>同样是 Attributes Inspector 中，named color 和 图片右侧有个小按钮可以连接到Assets，在这个小按钮上 ⌥+Click 可以在 Assistant Editor 中打开。</li>
+<li>同样是 Attributes Inspector 中，named color 和 图片右侧有个小按钮可以连接到 Assets ，在这个小按钮上 ⌥+Click 可以在 Assistant Editor 中打开。</li>
 </ul>
 <h3 id="Asset-Catalog"><a href="#Asset-Catalog" class="headerlink" title="Asset Catalog"></a>Asset Catalog</h3><p>macOS 10.14 有了 Dark Mode 之后，Assets 除了之前普通模式下单一的图片和 named color ，也支持 Light 和 Dark 。并且有个 High Contrast 的选项可以勾选，所以 macOS 开发如果要加入 Dark Mode ，要上传的图片和 named color 从原来的三张、一个颜色变成十三张图片、六个颜色，我的🐴🦆。</p>
 <p>不过感谢 Dark Mode 福泽，asset 的背景也可以切换成 Light , Dark , System Appearance(跟随系统) 。切换的按钮在 assets 的左下角。对了，View Debugger 也有这个切换背景的功能，也就是那个调试 UI 的界面。</p>
@@ -132,7 +132,7 @@
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/97fpw.png" alt=""></p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/a05lh.png" alt=""></p>
 <p>在上传的应用被认证后，你可以在 Organizer 中选择你的档案并点击 Show Status Log 按钮，这样就能查看应用的状态。当收到认证通过的通知后，就可以从 Organizer 中将 App Export 出来，保存下来的 App 包含一个附加的票据，就意味着可以发布了。</p>
-<h2 id="最后说一句"><a href="#最后说一句" class="headerlink" title="最后说一句"></a>最后说一句</h2><p>今年的 WWDC 没有专题讲述 Xcode 10 。很多都是穿插在各个 Session 中。理解一个工具并用好一个工具能提高我们开发的效率，每年 Xcode 都有很多新的功能和改进，虽然出 Bug 和闪退的问题依旧存在，依旧是开发者们诟病的一点，但是，苹果爸爸在改善开发者的工作环境和提高 Xcode 的友好度作出的努力，大家还是有目共睹的，至少黑夜模式照顾到了我们这群深夜加班<del>努力写 Bug</del> ，呸，努力写改变世界的代码的工程狮。</p>
+<h2 id="最后说一句"><a href="#最后说一句" class="headerlink" title="最后说一句"></a>最后说一句</h2><p>今年的 WWDC 没有专题讲述 Xcode 10 。很多都是穿插在各个 Session 中。理解并用好一个工具能提高我们开发的效率，每年 Xcode 都有很多新的功能和改进，虽然出 Bug 和闪退的问题依旧存在，依旧是开发者们诟病的一点，但是，苹果爸爸在改善开发者的工作环境和提高 Xcode 的友好度作出的努力，大家还是有目共睹的，至少黑夜模式照顾到了我们这群深夜加班<del>努力写 Bug</del> ，呸，努力写改变世界的代码的工程狮。</p>
 <p>本文是我一份小小的学习笔记，请各位批判性地看，肯定有写的不好或错误的地方，请斧正，我定虚心接受。</p>
 ]]></content>
       
@@ -148,18 +148,18 @@
     <entry>
       <title><![CDATA[Jenkins密林探索]]></title>
       <url>/2018/04/27/Jenkins/</url>
-      <content type="html"><![CDATA[<p>说到iOS持续集成，Jenkins是用得比较多的。本文说明了我从安装到配置再到打包ipa文件，从手动打包到点击一下按钮自动生成ipa所做的事情。</p>
-<p>得益于Jenkins，让开发体验提升了不少。不多说，文内多图，来跟我一起密林探索吧 :]</p>
+      <content type="html"><![CDATA[<p>说到持续集成，Jenkins 是用得比较多的。本文说明了我从安装到配置再到打包 ipa 文件，从手动打包到点击一下按钮自动生成 ipa 所做的事情。</p>
+<p>得益于 Jenkins ，让开发体验提升了不少。不多说，文内多图，来跟我一起密林探索吧 :]</p>
 <a id="more"></a>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/aohum.png" alt="Jenkins"></p>
-<h2 id="Jenkins安装"><a href="#Jenkins安装" class="headerlink" title="Jenkins安装"></a>Jenkins安装</h2><p>本文以 <em>Jenkins</em> 当前时间<strong>2018.03.27</strong>的最近weekly版本 <em>2.113</em> 来说明，Jenkins是Java web项目，在使用上有Java环境的限制：<strong>jdk1.8以上</strong>。</p>
-<p>对于macOS10.9和10.10来说，系统中自带有jdk1.6，但这并不符合要求。而其他版本（macOS10.11以上）中貌似没有jdk，可以在命令行工具键入<code>java -version</code>来判断。</p>
-<p>若出现以下提示，则表示没有配置Java环境或系统中没有安装jdk：</p>
+<h2 id="Jenkins安装"><a href="#Jenkins安装" class="headerlink" title="Jenkins安装"></a>Jenkins安装</h2><p>本文以 <em>Jenkins</em> 当前时间 <strong>2018.03.27</strong> 的最近 weekly 版本 <em>2.113</em> 来说明， Jenkins 是 Java web 项目，在使用上有 Java 环境的限制：<strong>jdk1.8 以上</strong>。</p>
+<p>对于 macOS10.9 和 10.10 来说，系统中自带有 jdk1.6 ，但这并不符合要求。而其他版本（ macOS10.11 以上）中貌似没有 jdk ，可以在命令行工具键入<code>java -version</code>来判断。</p>
+<p>若出现以下提示，则表示没有配置 Java 环境或系统中没有安装 jdk ：</p>
 <pre><code class="Shell">No Java runtime present, requesting install.
 </code></pre>
 <p>若弹出安装对话框，点击 <strong>『好』</strong> 退出对话框。</p>
-<p>不然，定位到<code>/Library/Java/JavaVirtualMachines</code>中可查看是否存在jdk。</p>
-<p>如果都没有，或jdk版本不符，则需要重新安装。macOS的安装方式比较简单，在<a href="http://www.oracle.com/technetwork/java/javase/downloads/index-jsp-138363.html" target="_blank" rel="external">Oracle的jdk下载地址</a>上下载dmg安装包，直接安装jdk1.8到系统中。然后修改<code>~/.bashrc</code>文件配置一系列的系统变量，如果使用<code>zsh</code>，则修改<code>~/.zshrc</code>。在文件末尾添加：</p>
+<p>不然，定位到<code>/Library/Java/JavaVirtualMachines</code>中可查看是否存在 jdk 。</p>
+<p>如果都没有，或 jdk 版本不符，则需要重新安装。 macOS 的安装方式比较简单，在<a href="http://www.oracle.com/technetwork/java/javase/downloads/index-jsp-138363.html" target="_blank" rel="external">Oracle的jdk下载地址</a>上下载 dmg 安装包，直接安装 jdk1.8 到系统中。然后修改<code>~/.bashrc</code>文件配置一系列的系统变量，如果使用<code>zsh</code>，则修改<code>~/.zshrc</code>。在文件末尾添加：</p>
 <pre><code class="shell"># 通常通过dmg安装的jdk都是在/Library/Java/JavaVirtualMachines/下，需根据实际情况对JAVA_HOME进行配置
 export JAVA_HOME=&quot;/Library/Java/JavaVirtualMachines/jdk1.8.0_161.jdk/Content/Home&quot;
 export CLASS_HOME=&quot;$JAVA_HOME/lib&quot;
@@ -171,44 +171,44 @@ export PATH=&quot;.;$PATH:$JAVA_HOME/bin&quot;
 <p>或者（使用<code>zsh</code>）</p>
 <pre><code class="Shell">source ~/.zshrc
 </code></pre>
-<p>再次使用<code>java - version</code>验证是否安装成功（全文部分截图是我使用公司电脑安装Jenkins时截下来的）：</p>
+<p>再次使用<code>java - version</code>验证是否安装成功（全文部分截图是我使用公司电脑安装 Jenkins 时截下来的）：</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/ve0qh.png" alt="55B9E6EFD1C3099B8203D17D0089360C"></p>
-<p>好了，然后安装<strong>Jenkins</strong>。同样的，在<a href="https://jenkins.io/download/" target="_blank" rel="external">官网下载页面</a>上选择 <strong>Weekly — Mac OS X</strong> 下载 <em>pkg</em> 安装包。</p>
+<p>好了，然后安装 <strong>Jenkins </strong> 。同样的，在<a href="https://jenkins.io/download/" target="_blank" rel="external">官网下载页面</a>上选择 <strong>Weekly — Mac OS X</strong> 下载 <em>pkg</em> 安装包。</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/gz4yg.png" alt="Jenkins Website"></p>
-<p>以<strong>2.113</strong>为例，一步步安装。</p>
+<p>以 <strong>2.113</strong> 为例，一步步安装。</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/9ez6l.png" alt="Jenkins Install Begin"></p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/9dt4k.png" alt="Jenkins Install Step2"></p>
-<p>安装完成后，会自动打开浏览器，跳转到<code>localhost:8080</code>可以看到Jenkins正在准备中…</p>
-<p>如果提示打不开，使用Safari出现以下界面：</p>
+<p>安装完成后，会自动打开浏览器，跳转到<code>localhost:8080</code>可以看到 Jenkins 正在准备中…</p>
+<p>如果提示打不开，使用 Safari 出现以下界面：</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/gaawr.png" alt="Oops Jenkins Start Failed"></p>
-<p>则可能是jdk的配置出了问题，返回去看看前文关于jdk的配置，检查一遍是否正确。</p>
+<p>则可能是 jdk 的配置出了问题，返回去看看前文关于 jdk 的配置，检查一遍是否正确。</p>
 <blockquote>
-<p>注：如果此时重启系统，会发现多了一个名为『jenkins』的普通成员。</p>
+<p>注：如果此时重启系统，会发现多了一个名为『 jenkins 』的普通成员。</p>
 </blockquote>
-<p>在jenkins初始化工作完成后，会跳转到另一个<strong>解锁jenkins</strong>的界面，提示密码存放在<code>/Users/Shared/Jenkins/Home/secrets/initialAdminPassword</code>中，到其中查看，会发现<code>secret</code>文件夹被设置了权限，使用我们当前的用户无读写的权限。</p>
+<p>在 jenkins 初始化工作完成后，会跳转到另一个<strong>解锁  jenkins </strong> 的界面，提示密码存放在<code>/Users/Shared/Jenkins/Home/secrets/initialAdminPassword</code>中，到其中查看，会发现<code>secret</code>文件夹被设置了权限，使用我们当前的用户无读写的权限。</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/jc4l1.png" alt="解锁jenkins"></p>
-<p>此时使用命令行工具，键入如下命令，并输入电脑的管理员root密码（通常是我们自己的登录密码）后：</p>
+<p>此时使用命令行工具，键入如下命令，并输入电脑的管理员 root 密码（通常是我们自己的登录密码）后：</p>
 <pre><code class="shell">sudo cat /Users/Shared/Jenkins/Home/secrets/initialAdminPassword
 </code></pre>
-<p>可以看到jenkins的初始化密码：</p>
+<p>可以看到 jenkins 的初始化密码：</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/s09vt.png" alt="屏幕快照 2018-03-26 下午12.44.11"></p>
-<p>将该密码填入到网页中，完成解锁工作。<strong>此密码同时是登录jenkins的admin账户的密码，见下文。</strong></p>
+<p>将该密码填入到网页中，完成解锁工作。<strong>此密码同时是登录 jenkins 的 admin 账户的密码，见下文。</strong></p>
 <p>之后，安装社区推荐的插件即可：</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/lg2px.png" alt="屏幕快照 2018-03-26 下午12.45.24"></p>
-<p>然后创建第一个管理员用户，此处建议自行创建一个用户，当然也可以点击右下角的 <strong>『使用admin账户继续』</strong> ，密码是jenkins的解锁密码，也就是initialAdminPassword里面那个字符串。</p>
+<p>然后创建第一个管理员用户，此处建议自行创建一个用户，当然也可以点击右下角的 <strong>『使用 admin 账户继续』</strong> ，密码是 jenkins 的解锁密码，也就是 initialAdminPassword 里面那个字符串。</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/cio9r.png" alt="屏幕快照 2018-03-26 下午12.50.00"></p>
-<p>保存完成后，Congratulation~🎉🎉🎉 </p>
-<p>行李已经收拾好了，可以继续jenkins密林探索之旅了。</p>
-<h2 id="Jenkins配置"><a href="#Jenkins配置" class="headerlink" title="Jenkins配置"></a>Jenkins配置</h2><p>在安装完Jenkins后，就可以愉快地使用它来持续集成我们的项目了，如果对一些启动配置不感兴趣，不想看这一部分，可以愉快地略过，不修改配置也完全不影响使用。</p>
+<p>保存完成后，Congratulation~ 🎉🎉🎉 </p>
+<p>行李已经收拾好了，可以继续 jenkins 密林探索之旅了。</p>
+<h2 id="Jenkins配置"><a href="#Jenkins配置" class="headerlink" title="Jenkins配置"></a>Jenkins配置</h2><p>在安装完 Jenkins 后，就可以愉快地使用它来持续集成我们的项目了，如果对一些启动配置不感兴趣，不想看这一部分，可以愉快地略过，不修改配置也完全不影响使用。</p>
 <p>需要修改配置的情况如下（包括但不完全包括）：</p>
 <ol>
-<li>默认地，当jenkins安装在服务器上时，监听的是服务器的8080端口。而我们知道，在做Java Web开发时，应用服务器tomcat的默认端口也是8080，不修改配置的话，很容易造成冲突。</li>
-<li>我们在使用Jenkins会安装各种插件，同时运行很多个构建工作，都有可能造成内存溢出的问题。</li>
-<li>当我们需要配置HTTPS，证书等等。</li>
+<li>默认地，当 jenkins 安装在服务器上时，监听的是服务器的 8080 端口。而我们知道，在做 Java Web 开发时，应用服务器 tomcat 的默认端口也是 8080 ，不修改配置的话，很容易造成冲突。</li>
+<li>我们在使用 Jenkins 会安装各种插件，同时运行很多个构建工作，都有可能造成内存溢出的问题。</li>
+<li>当我们需要配置 HTTPS ，证书等等。</li>
 </ol>
-<h3 id="启动与关闭"><a href="#启动与关闭" class="headerlink" title="启动与关闭"></a>启动与关闭</h3><p>首先，针对使用 <strong>pkg</strong> 安装的方式（使用直接下载war，用<code>java -jar</code>运行不在本文的讨论范围内。），Jenkins作为一个后台驻留程序（<em>Daemon</em>），在Wins下我们习惯叫服务，自然有开关。</p>
-<p>一个后台驻留程序是运行在系统后台的，没有任何GUI的程序。在macOS下，一个后台驻留程序的配置保存在一个<code>plist</code>文件中，非系统驻留程序的<code>plist</code>文件都统一存放在<code>/Library/LaunchDaemons</code>之中。</p>
-<p>我们知道，<code>plist</code>本质是xml文件，其中存放的都是键值对，里面的键都是<a href="x-man-page://5/launchd.plist" target="_blank" rel="external">launch.plist</a>中定义的，这个<code>plist</code>用于告知<code>launch</code>去哪里运行脚本，以及运行过程中一些路径和用户、组的配置。</p>
+<h3 id="启动与关闭"><a href="#启动与关闭" class="headerlink" title="启动与关闭"></a>启动与关闭</h3><p>首先，针对使用 <strong>pkg</strong> 安装的方式（使用直接下载 war ，用<code>java -jar</code>运行不在本文的讨论范围内。），Jenkins 作为一个后台驻留程序（ <em>Daemon</em> ），在 Wins 下我们习惯叫服务，自然有开关。</p>
+<p>一个后台驻留程序是运行在系统后台的，没有任何GUI的程序。在 macOS 下，一个后台驻留程序的配置保存在一个<code>plist</code>文件中，非系统驻留程序的<code>plist</code>文件都统一存放在<code>/Library/LaunchDaemons</code>之中。</p>
+<p>我们知道，<code>plist</code>本质是 xml 文件，其中存放的都是键值对，里面的键都是 <a href="x-man-page://5/launchd.plist" target="_blank" rel="external">launch.plist</a> 中定义的，这个<code>plist</code>用于告知<code>launch</code>去哪里运行脚本，以及运行过程中一些路径和用户、组的配置。</p>
 <p>所以，启动和关闭的命令看起来比较少见：</p>
 <pre><code class="shell"># 开启Jenkins
 sudo launchctl load /Library/LaunchDaemons/org.jenkins-ci.plist
@@ -217,7 +217,7 @@ sudo launchctl unload /Library/LaunchDaemons/org.jenkins-ci.plist
 </code></pre>
 <p>打开<code>org.jenkins-ci.plist</code>，看到<code>ProgramArguments</code>，写着运行脚本的位置：</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/ntvgu.png" alt="019DE0A84C235007987FE3CF18813083"></p>
-<h3 id="JVM的配置"><a href="#JVM的配置" class="headerlink" title="JVM的配置"></a>JVM的配置</h3><p>接下来，我们来看看<code>jenkins-runner.sh</code>这个脚本中的内容。</p>
+<h3 id="JVM的配置"><a href="#JVM的配置" class="headerlink" title="JVM的配置"></a>JVM的配置</h3><p>接下来，我们来看看 <code>jenkins-runner.sh</code> 这个脚本中的内容。</p>
 <pre><code class="shell">#!/bin/bash
 #
 # Startup script used by Jenkins launchd job.
@@ -268,83 +268,83 @@ exec /usr/bin/java $javaArgs -jar &quot;$war&quot; $args
 <pre><code class="shell">defaults read /Library/Preferences/org.jenkins-ci SETTING
 </code></pre>
 <blockquote>
-<p>注：<code>defaults</code>命令可以用来读取其中的配置项<code>SETTING</code>的值。不写<code>SETTING</code>可以读取所有的配置。</p>
+<p>注：<code>defaults</code> 命令可以用来读取其中的配置项<code>SETTING</code>的值。不写<code>SETTING</code>可以读取所有的配置。</p>
 </blockquote>
-<p>其中，<code>/Library/Preferences/org.jenkins-ci</code>是Jenkins的配置文件所在的位置。</p>
-<p>然后，用<code>defaults</code>读取<code>org.jenkins-ci</code>文件中<code>war</code>、<code>minPermGen</code>、<code>permGen</code>等值，最后使用<code>java -jar</code>来启动Jenkins。</p>
-<p>Jenkins是Java程序，运行在JVM上。通过上述分析，我们知道，修改<code>org.jenkins-ci</code>这中的键值对，可以达到配置Jenkins的目的。</p>
-<p>下面介绍目前几个常用的配置项（当然如果你是一名Java Web程序开发者，对JVM比我更熟悉，应该可以按照<code>jenkins-runner.sh</code>脚本中的格式修改脚本添加一些自定义配置，这里只是抛砖引玉）：</p>
+<p>其中，<code>/Library/Preferences/org.jenkins-ci</code>是 Jenkins 的配置文件所在的位置。</p>
+<p>然后，用<code>defaults</code>读取<code>org.jenkins-ci</code>文件中<code>war</code>、<code>minPermGen</code>、<code>permGen</code>等值，最后使用<code>java -jar</code>来启动 Jenkins 。</p>
+<p>Jenkins 是 Java 程序，运行在 JVM 上。通过上述分析，我们知道，修改<code>org.jenkins-ci</code>这中的键值对，可以达到配置 Jenkins 的目的。</p>
+<p>下面介绍目前几个常用的配置项（当然如果你是一名 Java Web 程序开发者，对 JVM 比我更熟悉，应该可以按照<code>jenkins-runner.sh</code>脚本中的格式修改脚本添加一些自定义配置，这里只是抛砖引玉）：</p>
 <ul>
-<li>war : war包的指定位置，默认值：<code>/Applications/Jenkins/jenkins.war</code></li>
-<li>minPermGen : JVM的非堆内存空间，将赋值给<code>XX:PermSize</code></li>
-<li>permGen : JVM的最大非堆内存空间，将赋值给<code>XX:MaxPermSize</code></li>
-<li>minHeapSize : JVM的堆内存空间，将赋值给<code>Xms</code></li>
-<li>heapSize : JVM的最大堆内存空间，将赋值给<code>Xmx</code></li>
-<li>tmpdir : Jenkins运行的临时存放空间，此值会作为变量赋值给JVM的环境变量<code>java.io.tmpdir</code></li>
-<li>JENKINS_HOME : Jenkins目录，默认值：<code>/Users/Shared/Jenkins/Home</code>，保存着工作空间，war包解压后存放在此，插件，用户，节点，日志等等</li>
-<li>prefix : 访问页面的前缀。上述安装后打开的url是<code>localhost:8080</code>，当配置prefix之后，若配置为<code>/objchris</code>（不可以漏掉<code>/</code>），则访问路径变成<code>localhost:8080/objchris</code>。</li>
-<li>httpPort、httpsport : http、https端口</li>
-<li>httpListenAddress、httpsListenAddress : 接收请求IP，默认为0.0.0.0，即其他主机也可以访问到，接收任意IP发来的请求。若设置为127.0.0.1，则只能本机访问。</li>
+<li>war :  war 包的指定位置，默认值：<code>/Applications/Jenkins/jenkins.war</code></li>
+<li>minPermGen :  JVM 的非堆内存空间，将赋值给<code>XX:PermSize</code></li>
+<li>permGen :  JVM 的最大非堆内存空间，将赋值给<code>XX:MaxPermSize</code></li>
+<li>minHeapSize :  JVM 的堆内存空间，将赋值给<code>Xms</code></li>
+<li>heapSize :  JVM 的最大堆内存空间，将赋值给<code>Xmx</code></li>
+<li>tmpdir :  Jenkins 运行的临时存放空间，此值会作为变量赋值给 JVM 的环境变量<code>java.io.tmpdir</code></li>
+<li>JENKINS_HOME :  Jenkins 目录，默认值：<code>/Users/Shared/Jenkins/Home</code>，保存着工作空间， war 包解压后存放在此，插件，用户，节点，日志等等</li>
+<li>prefix : 访问页面的前缀。上述安装后打开的 url 是<code>localhost:8080</code>，当配置 prefix 之后，若配置为<code>/objchris</code>（不可以漏掉<code>/</code>），则访问路径变成<code>localhost:8080/objchris</code>。</li>
+<li>httpPort、httpsport :  http、https 端口</li>
+<li>httpListenAddress、httpsListenAddress : 接收请求 IP ，默认为 0.0.0.0 ，即其他主机也可以访问到，接收任意 IP 发来的请求。若设置为 127.0.0.1 ，则只能本机访问。</li>
 </ul>
 <p>对于配置项，有兴趣的同学可以参考<a href="https://wiki.jenkins.io/display/JENKINS/Starting+and+Accessing+Jenkins" target="_blank" rel="external">这里</a>，十分详细且有一些配置示例。</p>
 <p>修改配置，可以使用以下命令：</p>
 <pre><code class="shell">sudo defaults write /Library/Preferences/org.jenkins-ci SETTING VALUE
 </code></pre>
-<p>做错了也没关系，重新write一遍或<code>defaults</code>也支持删除：</p>
+<p>做错了也没关系，重新 write 一遍或<code>defaults</code>也支持删除：</p>
 <pre><code class="shell">sudo defaults delete /Library/Preferences/org.jenkins-ci SETTING
 </code></pre>
-<h2 id="卸载Jenkins"><a href="#卸载Jenkins" class="headerlink" title="卸载Jenkins"></a>卸载Jenkins</h2><p>要残忍舍弃Jenkins投奔其他CI工具的话：</p>
+<h2 id="卸载-Jenkins"><a href="#卸载-Jenkins" class="headerlink" title="卸载 Jenkins"></a>卸载 Jenkins</h2><p>要残忍舍弃 Jenkins 投奔其他 CI 工具的话：</p>
 <pre><code class="Shell">&#39;/Library/Application Support/Jenkins/Uninstall.command&#39;
 </code></pre>
 <p>同样针对使用 <strong>pkg</strong> 安装的方式。</p>
-<p>下载war包，直接停止服务删除war包就好了。</p>
-<p>使用homebrew，有homebrew自己的管理方式，不在此说明了。</p>
+<p>下载 war 包，直接停止服务删除 war 包就好了。</p>
+<p>使用 homebrew ，有 homebrew 自己的管理方式，不在此说明了。</p>
 <blockquote>
-<p>有时候，遇到一些玄学才能解释的问题（例如文件损坏无法启动Jenkins…），卸载重装或许也是一个好方法，嗯[正经脸]。</p>
+<p>有时候，遇到一些玄学才能解释的问题（例如文件损坏无法启动 Jenkins …），卸载重装或许也是一个好方法，嗯[正经脸]。</p>
 </blockquote>
-<h2 id="插件安装"><a href="#插件安装" class="headerlink" title="插件安装"></a>插件安装</h2><p>在密林探索开始以前，我们要带上一些工具，给Jenkins安装一些插件。</p>
-<p>插件安装在『系统管理 — 管理插件』，图标是一块绿色的小拼图。点击进去可以看到可更新、可选插件、已安装、高级。都是望名知意，不多做解释了。</p>
+<h2 id="插件安装"><a href="#插件安装" class="headerlink" title="插件安装"></a>插件安装</h2><p>在密林探索开始以前，我们要带上一些工具，给 Jenkins 安装一些插件。</p>
+<p>插件安装在『 系统管理 — 管理插件 』，图标是一块绿色的小拼图。点击进去可以看到可更新、可选插件、已安装、高级。都是望名知意，不多做解释了。</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/gru5l.png" alt=""></p>
-<p>选择 <em>可选插件</em> ，在过滤处输入想要安装的插件。对我们来说，版本管理工具Git或SVN用得最多，但是如果一开始安装Jenkins的时候已选择社区推荐插件的话，其实已经安装好了GitHub的相关插件<a href="http://wiki.jenkins-ci.org/display/JENKINS/Github+Plugin" target="_blank" rel="external">GitHub plugin</a>。SVN的话，我所使用的Jenkins 2.113版本在war包内部嵌入了SVN的插件<a href="https://wiki.jenkins.io/display/JENKINS/Subversion+Plugin" target="_blank" rel="external">Subversion Plug-in</a>。如果公司内部有Git服务器，通常是部署的开源GitLab，则需要安装<code>GitLab Plugin</code>用于管理源码和<code>Gitlab Hook Plugin</code>用于构建GitLab的触发器。</p>
-<p>我的主要目的是iOS项目构建，因此还需要选择<code>Xcode integration</code>安装Xcode插件，和管理签名证书私钥和PP文件的<code>Keychains and Provisioning Profiles Management</code>。</p>
+<p>选择 <em>可选插件</em> ，在过滤处输入想要安装的插件。对我们来说，版本管理工具 Git 或 SVN 用得最多，但是如果一开始安装 Jenkins 的时候已选择社区推荐插件的话，其实已经安装好了 GitHub 的相关插件 <a href="http://wiki.jenkins-ci.org/display/JENKINS/Github+Plugin" target="_blank" rel="external">GitHub plugin</a> 。 SVN 的话，我所使用的 Jenkins 2.113 版本在 war 包内部嵌入了 SVN 的插件 <a href="https://wiki.jenkins.io/display/JENKINS/Subversion+Plugin" target="_blank" rel="external">Subversion Plug-in</a> 。如果公司内部有 Git 服务器，通常是部署的开源 GitLab ，则需要安装<code>GitLab Plugin</code>用于管理源码和<code>Gitlab Hook Plugin</code>用于构建 GitLab 的触发器。</p>
+<p>我的主要目的是 iOS 项目构建，因此还需要选择<code>Xcode integration</code>安装 Xcode 插件，和管理签名证书私钥和 PP 文件的<code>Keychains and Provisioning Profiles Management</code>。</p>
 <p>安装完了这些，我们就可以配置一个构建项目了。</p>
 <h2 id="构建项目"><a href="#构建项目" class="headerlink" title="构建项目"></a>构建项目</h2><h3 id="基本项目配置"><a href="#基本项目配置" class="headerlink" title="基本项目配置"></a>基本项目配置</h3><p>回到主界面上，点击左上角 <em>新建任务</em> ，进入新建任务界面。</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/j5l33.png" alt=""></p>
 <p>确定后，开始项目的通用配置：</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/tpk2j.png" alt=""></p>
-<p>我的项目是托管在公司内部SVN上的，所以<code>Github Project</code>不打勾，勾上<code>丢弃旧的构建</code>会将构建记录保留一定时间（根据自己需求设置天数）和最大保留个数。<code>参数化构建过程</code>可以为构建过程添加相应的参数。<code>关闭构建</code>主要针对定时任务（下面会说到），顾名思义就是关闭当前任务，自然不会启动定时任务。</p>
-<h3 id="源码管理——SVN"><a href="#源码管理——SVN" class="headerlink" title="源码管理——SVN"></a>源码管理——SVN</h3><p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/7r6yz.png" alt=""></p>
-<p>我所在的公司源码管理使用SVN，在Module中填上SVN的一些信息：</p>
+<p>我的项目是托管在公司内部 SVN 上的，所以<code>Github Project</code>不打勾，勾上<code>丢弃旧的构建</code>会将构建记录保留一定时间（根据自己需求设置天数）和最大保留个数。<code>参数化构建过程</code>可以为构建过程添加相应的参数。<code>关闭构建</code>主要针对定时任务（下面会说到），顾名思义就是关闭当前任务，自然不会启动定时任务。</p>
+<h3 id="源码管理——-SVN"><a href="#源码管理——-SVN" class="headerlink" title="源码管理—— SVN"></a>源码管理—— SVN</h3><p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/7r6yz.png" alt=""></p>
+<p>我所在的公司源码管理使用 SVN ，在 Module 中填上 SVN 的一些信息：</p>
 <ul>
 <li>Repository URL ：仓库地址</li>
 <li>Credentials ：用于登录、拉取代码的账户密码</li>
-<li>Local module directory ： 存放在工作空间的位置，每当新建一个任务，Jenkins会在<code>$HOME</code>目录下的<code>workspace</code>中新建一个以任务名称命名的文件夹。因此，如果此项填入<code>.</code>（默认值就是<code>.</code>），则从SVN仓库地址拉取的代码将直接存放在其中。填写其他路径（如<code>./path/to/subfolder</code>），则放在对应的路径中。<strong>Jenkins在运行脚本的时候所在的位置是<code>$HOME/workspace/[任务名称]</code>，所以如果此项修改了，添加了其他子文件夹，在下面写运行脚本位置时需要注意路径是否正确。</strong></li>
+<li>Local module directory ： 存放在工作空间的位置，每当新建一个任务， Jenkins 会在<code>$HOME</code>目录下的<code>workspace</code>中新建一个以任务名称命名的文件夹。因此，如果此项填入<code>.</code>（默认值就是<code>.</code>），则从 SVN 仓库地址拉取的代码将直接存放在其中。填写其他路径（如<code>./path/to/subfolder</code>），则放在对应的路径中。 <strong>Jenkins 在运行脚本的时候所在的位置是<code>$HOME/workspace/[任务名称]</code>，所以如果此项修改了，添加了其他子文件夹，在下面写运行脚本位置时需要注意路径是否正确。</strong></li>
 <li>Repository depth ：拉取代码时的深度，分别有以下几个：<ul>
-<li>infinity：遍历所有文件夹，拉取所有文件和文件夹</li>
-<li>empty：将本地路径初始化，不拉取任何文件</li>
-<li>files：当前文件夹和文件，不包含子文件夹</li>
-<li>immediates：当前文件夹、文件、子文件夹，但不遍历子文件夹</li>
-<li>as-it-is：继承原有的深度</li>
+<li>infinity ：遍历所有文件夹，拉取所有文件和文件夹</li>
+<li>empty ：将本地路径初始化，不拉取任何文件</li>
+<li>files ：当前文件夹和文件，不包含子文件夹</li>
+<li>immediates ：当前文件夹、文件、子文件夹，但不遍历子文件夹</li>
+<li>as-it-is ：继承原有的深度</li>
 </ul>
 </li>
-<li>Ignore external：拉取代码时忽略external的属性设置的库。</li>
-<li>Cancel process on externals fail：拉取external的属性设置的库失败时停止。</li>
+<li>Ignore external ：拉取代码时忽略 external 的属性设置的库。</li>
+<li>Cancel process on externals fail ：拉取 external 的属性设置的库失败时停止。</li>
 </ul>
-<p><code>Check-out Strategy</code>是检出策略。可选择：尽可能多地使用<code>svn update</code>，每次都checkout一个新的，或使用脚本checkout，不需要Jenkins帮我们checkout等等。</p>
-<h3 id="构建环境"><a href="#构建环境" class="headerlink" title="构建环境"></a>构建环境</h3><p>我们知道，打包iOS需要代码签名( <em>codesign</em> )，也就需要私钥，因此第一步，是先将keychain添加到Jenkins。</p>
-<h4 id="添加Keychain和Provisioning-Profiles"><a href="#添加Keychain和Provisioning-Profiles" class="headerlink" title="添加Keychain和Provisioning Profiles"></a>添加Keychain和Provisioning Profiles</h4><p>还记得上面安装插件的时候安装了<code>Keychains and Provisioning Profiles Management</code>吗？在构建环境这里，可以看到<code>Keychains and Code Signing Identities</code>选项：</p>
+<p><code>Check-out Strategy</code>是检出策略。可选择 ：尽可能多地使用<code>svn update</code>，每次都 checkout 一个新的，或使用脚本 checkout ，不需要 Jenkins 帮我们 checkout 等等。</p>
+<h3 id="构建环境"><a href="#构建环境" class="headerlink" title="构建环境"></a>构建环境</h3><p>我们知道，打包 iOS 需要代码签名( <em>codesign</em> )，也就需要私钥，因此第一步，是先将 keychain 添加到 Jenkins 。</p>
+<h4 id="添加-Keychain-和-Provisioning-Profiles"><a href="#添加-Keychain-和-Provisioning-Profiles" class="headerlink" title="添加 Keychain 和 Provisioning Profiles"></a>添加 Keychain 和 Provisioning Profiles</h4><p>还记得上面安装插件的时候安装了<code>Keychains and Provisioning Profiles Management</code>吗？在构建环境这里，可以看到<code>Keychains and Code Signing Identities</code>选项：</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/7r1ie.png" alt=""></p>
-<p>但此时还没有配置，所以要先去 <strong>系统管理 —— Keychains and Provisioning Profiles Management</strong>添加Keychain和Provisioning Profiles。</p>
+<p>但此时还没有配置，所以要先去 <strong>系统管理 —— Keychains and Provisioning Profiles Management</strong>添加 Keychain 和 Provisioning Profiles 。</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/3n7n0.png" alt=""></p>
-<p>提示我们Upload Keychain，选择<code>/Users/管理员用户名/Library/keychains/login.keychain</code>上传。然后输入Keychain的密码和签名使用的证书的Code Signing Identity（ 如：iPhone Distribution: <em>*</em> CO.,LTD (ABCD678EFG) ）</p>
-<p>再上传Provisioning Profiles，上传的文件最终位置在<code>/Users/Shared/Jenkins/Home/kpp_upload/</code>。然后将<code>/Users/Shared/Jenkins/Library/MobileDevice/Provisioning Profiles</code>填写到页面的<code>Provisioning Profiles Directory Path</code>，然后保存就可以了。</p>
-<p>这样的操作是让Jenkins在进行构建的时候将<code>kpp_upload</code>中的Provisioning Profiles拷贝到<code>MobileDevice/Provisioning Profiles</code>文件夹中，就跟我们平时安装Provisioning Profiles一样。</p>
+<p>提示我们 Upload Keychain ，选择<code>/Users/管理员用户名/Library/keychains/login.keychain</code>上传。然后输入 Keychain 的密码和签名使用的证书的 Code Signing Identity （ 如：iPhone Distribution: <em>*</em> CO.,LTD (ABCD678EFG) ）</p>
+<p>再上传 Provisioning Profiles ，上传的文件最终位置在<code>/Users/Shared/Jenkins/Home/kpp_upload/</code>。然后将<code>/Users/Shared/Jenkins/Library/MobileDevice/Provisioning Profiles</code>填写到页面的<code>Provisioning Profiles Directory Path</code>，然后保存就可以了。</p>
+<p>这样的操作是让 Jenkins 在进行构建的时候将<code>kpp_upload</code>中的 Provisioning Profiles 拷贝到<code>MobileDevice/Provisioning Profiles</code>文件夹中，就跟我们平时安装 Provisioning Profiles 一样。</p>
 <p>完成后大致是这样子：</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/ac2j7.png" alt=""></p>
-<p>这里添加了Developer和Distribution的开发者证书和Development和Ad-hoc的Provisioning Profiles。</p>
-<h4 id="配置项目使用的Keychain"><a href="#配置项目使用的Keychain" class="headerlink" title="配置项目使用的Keychain"></a>配置项目使用的Keychain</h4><p>回到项目配置中，此时就可以选择Keychain and Code Signing Identity了。</p>
+<p>这里添加了 Developer 和 Distribution 的开发者证书和 Development 和 Ad-hoc 的 Provisioning Profiles 。</p>
+<h4 id="配置项目使用的-Keychain"><a href="#配置项目使用的-Keychain" class="headerlink" title="配置项目使用的 Keychain"></a>配置项目使用的 Keychain</h4><p>回到项目配置中，此时就可以选择 Keychain and Code Signing Identity 了。</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/4wmwm.png" alt=""></p>
-<p>这里的Provisioning Profiles是需要development和ad-hoc的。</p>
+<p>这里的 Provisioning Profiles 是需要 development 和 ad-hoc 的。</p>
 <h3 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h3><p>项目构建最简单的方式就是使用脚本了，可以看我前面写过的<a href="https://objchris.com/2018/04/02/iOS脚本打包/" target="_blank" rel="external">文章——iOS脚本打包 - xcodebuild</a>。</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/l2gp4.png" alt=""></p>
 <p>增加构建步骤，选择<code>Execute shell</code>，填入脚本：</p>
@@ -367,32 +367,32 @@ security find-identity -p codesigning -v
 # 执行我们的打包脚本
 sh KeyXBuild.sh
 </code></pre>
-<p>到这里就已经完成打包，得到ipa文件了。</p>
-<p>一些构建后的操作就不多说了，不就是SVN上传到某个目录，或者就是上传到蒲公英。</p>
+<p>到这里就已经完成打包，得到 ipa 文件了。</p>
+<p>一些构建后的操作就不多说了，或者通过 SVN 上传到某个目录，或者上传到蒲公英这种分发平台。</p>
 <h2 id="构建状态提示"><a href="#构建状态提示" class="headerlink" title="构建状态提示"></a>构建状态提示</h2><p>每一次构建成功失败都会有提示：</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/zm08o.png" alt=""></p>
 <p>构建结束后可以查看日志输出：</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/crs2g.png" alt=""></p>
-<p>项目构建的成功与否决定了一个项目的分数，Jenkins使用类似天气预报的样式呈现：</p>
+<p>项目构建的成功与否决定了一个项目的分数， Jenkins 使用类似天气预报的样式呈现：</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/2en18.jpg" alt=""></p>
-<p>第一次使用Jenkins，尝试个四五十次应该就差不多了：</p>
+<p>第一次使用 Jenkins ，尝试个四五十次应该就差不多了：</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/m8t6x.png" alt=""></p>
-<h2 id="Troubleshooting"><a href="#Troubleshooting" class="headerlink" title="Troubleshooting"></a>Troubleshooting</h2><h3 id="bash-pod-command-not-found"><a href="#bash-pod-command-not-found" class="headerlink" title="-bash: pod: command not found"></a>-bash: pod: command not found</h3><p>前面说过，Jenkins在安装完成后会创建一个名为jenkins的普通用户，我们可以通过 <strong>系统偏好设置 -&gt; 用户与群组</strong> 来修改jenkins用户的密码，然后登入到其中。进行一些检查操作。</p>
-<p>我的项目使用到Cocoapods来管理第三方库，且<code>Pods</code>这个文件夹没有上传到SVN上，只上传了<code>Podfile</code>和<code>Podfile.lock</code>。因此需要在Jenkins上进行一次<code>Pod install</code>。这就需要Jenkins用户安装Pod，这时候就需要登录jenkins去完成安装操作了。</p>
-<h3 id="Code-Signing-Error-Provisioning-profile-“xxx”-doesn’t-include-signing-certificate-“iPhone-Developer-xxx”"><a href="#Code-Signing-Error-Provisioning-profile-“xxx”-doesn’t-include-signing-certificate-“iPhone-Developer-xxx”" class="headerlink" title="Code Signing Error: Provisioning profile “xxx” doesn’t include signing certificate “iPhone Developer: xxx”"></a>Code Signing Error: Provisioning profile “xxx” doesn’t include signing certificate “iPhone Developer: xxx”</h3><p>出现此问题是因为，使用xcodebuild archive时，指定的Provisioning profile和证书都必须是开发使用的。不能是ad-hoc或app store。</p>
-<p>在archive后进行export的时候才是使用ad-hoc或app store的证书和Provisioning profile。</p>
-<h3 id="codesign：unknown-error-1-ffffffffffffffff"><a href="#codesign：unknown-error-1-ffffffffffffffff" class="headerlink" title="codesign：unknown error -1=ffffffffffffffff"></a>codesign：unknown error -1=ffffffffffffffff</h3><p>这个问题是没有访问Keychain的权限，因为我们的Keychain是从Jenkins上传的，每次构建时Jenkins都会将Keychain文件拷贝到工作项目路径中。</p>
+<h2 id="Troubleshooting"><a href="#Troubleshooting" class="headerlink" title="Troubleshooting"></a>Troubleshooting</h2><h3 id="bash-pod-command-not-found"><a href="#bash-pod-command-not-found" class="headerlink" title="-bash: pod: command not found"></a>-bash: pod: command not found</h3><p>前面说过，Jenkins 在安装完成后会创建一个名为 jenkins 的普通用户，我们可以通过 <strong>系统偏好设置 -&gt; 用户与群组</strong> 来修改 jenkins 用户的密码，然后登入到其中。进行一些检查操作。</p>
+<p>我的项目使用到 Cocoapods 来管理第三方库，且<code>Pods</code>这个文件夹没有上传到 SVN 上，只上传了<code>Podfile</code>和<code>Podfile.lock</code>。因此需要在 Jenkins 上进行一次<code>Pod install</code>。这就需要 Jenkins 用户安装 Pod ，这时候就需要登录 jenkins 去完成安装操作了。</p>
+<h3 id="Code-Signing-Error-Provisioning-profile-“xxx”-doesn’t-include-signing-certificate-“iPhone-Developer-xxx”"><a href="#Code-Signing-Error-Provisioning-profile-“xxx”-doesn’t-include-signing-certificate-“iPhone-Developer-xxx”" class="headerlink" title="Code Signing Error: Provisioning profile “xxx” doesn’t include signing certificate “iPhone Developer: xxx”"></a>Code Signing Error: Provisioning profile “xxx” doesn’t include signing certificate “iPhone Developer: xxx”</h3><p>出现此问题是因为，使用 xcodebuild archive 时，指定的 Provisioning profile 和证书都必须是开发使用的。不能是 ad-hoc 或 app store 。</p>
+<p>在 archive 后进行 export 的时候才是使用 ad-hoc 或 app store 的证书和 Provisioning profile 。</p>
+<h3 id="codesign：unknown-error-1-ffffffffffffffff"><a href="#codesign：unknown-error-1-ffffffffffffffff" class="headerlink" title="codesign：unknown error -1=ffffffffffffffff"></a>codesign：unknown error -1=ffffffffffffffff</h3><p>这个问题是没有访问 Keychain 的权限，因为我们的 Keychain 是从 Jenkins 上传的，每次构建时 Jenkins 都会将 Keychain 文件拷贝到工作项目路径中。</p>
 <p>因此我们需要自己手动解锁：</p>
 <pre><code class="shell">security unlock-keychain -p &quot;${KEYCHAIN_PASSWORD}&quot;
 </code></pre>
-<p>在macOS 10.12前，这样就可以了。但是新版本中，解锁操作过后还是会弹出UI来解锁Keychain。而Jenkins是没有用户交互的，所以签名时才会有这个错误出现。</p>
+<p>在 macOS 10.12 前，这样就可以了。但是新版本中，解锁操作过后还是会弹出UI来解锁 Keychain 。而 Jenkins 是没有用户交互的，所以签名时才会有这个错误出现。</p>
 <p>解决方法是：</p>
 <pre><code class="shell">security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k &quot;${KEYCHAIN_PASSWORD}&quot; &quot;${KEYCHAIN_PATH}&quot;
 </code></pre>
 <p>别忘了其中的<code>codesign:</code>，很多添加了类似命令还是不成功的原因可能是忽略了<code>codesign:</code></p>
-<h3 id="Something-of-Keychain"><a href="#Something-of-Keychain" class="headerlink" title="Something of Keychain"></a>Something of Keychain</h3><p>脚本打包时，会使用<code>~/Library/Keychain</code>中的login.keychain。因此，网上很多教程都是将打包使用的证书和私钥（login.keychain）直接拷贝到Jenkins中，但是这样不利于项目配置。因为不同的项目可能需要不同的证书签名，要添加新证书就需要再次复制keychain文件到jenkins的<code>~/Library/Keychains</code>下，覆盖原来的<code>login.keychain</code>。这样容易造成老项目无法成功打包（因为旧keychain被覆盖）。</p>
-<p>因此，我一直在找如何直接使用Jenkins提供的配置去动态添加keychain，<strong>Keychains and Provisioning Profiles Management</strong>插件帮我们完成keychain文件和Provisioning Profiles的位置问题，但是需要配合<code>Xcode</code>插件去使用。这样让脚本打包变得不方便。</p>
-<p>为了解决这个问题，才有了上面构建脚本中对Keychain的一系列操作。</p>
+<h3 id="Something-of-Keychain"><a href="#Something-of-Keychain" class="headerlink" title="Something of Keychain"></a>Something of Keychain</h3><p>脚本打包时，会使用<code>~/Library/Keychain</code>中的 login.keychain 。因此，网上很多教程都是将打包使用的证书和私钥（ login.keychain ）直接拷贝到 Jenkins 中，但是这样不利于项目配置。因为不同的项目可能需要不同的证书签名，要添加新证书就需要再次复制 keychain 文件到 jenkins 的<code>~/Library/Keychains</code>下，覆盖原来的<code>login.keychain</code>。这样容易造成老项目无法成功打包（因为旧 keychain 被覆盖）。</p>
+<p>因此，我一直在找如何直接使用 Jenkins 提供的配置去动态添加 keychain ，<strong>Keychains and Provisioning Profiles Management</strong> 插件帮我们完成 keychain 文件和 Provisioning Profiles 的位置问题，但是需要配合<code>Xcode</code>插件去使用。这样让脚本打包变得不方便。</p>
+<p>为了解决这个问题，才有了上面构建脚本中对 Keychain 的一系列操作。</p>
 <h2 id="说在最后"><a href="#说在最后" class="headerlink" title="说在最后"></a>说在最后</h2><p>可能在未来使用过程中会遇到问题，会回来补充。</p>
 <p>つつく</p>
 ]]></content>
@@ -409,14 +409,14 @@ sh KeyXBuild.sh
     <entry>
       <title><![CDATA[iOS脚本打包 - xcodebuild]]></title>
       <url>/2018/04/02/iOS%E8%84%9A%E6%9C%AC%E6%89%93%E5%8C%85/</url>
-      <content type="html"><![CDATA[<p>xcodebuild和xcrun是Xcode为开发者提供的一套构建打包的命令。使用它们编写脚本，可以实现通过脚本自动化打包的功能。本文基于Xcode9，xcrun的打包工具被移除，因此笔者主要使用xcodebuild来完成打包工作。</p>
+      <content type="html"><![CDATA[<p>xcodebuild 和 xcrun 是 Xcode 为开发者提供的一套构建打包的命令。使用它们编写脚本，可以实现通过脚本自动化打包的功能。本文基于 Xcode9 ，xcrun 的打包工具被移除，因此笔者主要使用 xcodebuild 来完成打包工作。</p>
 <a id="more"></a>
-<p>在日常开发中，无论是提交给测试部测试还是最终打包上线，都需要将工程打包成ipa文件，通常我们是选定Scheme，然后在Xcode中点击『Project - Archive』，当整个工程 archive 后，在自动弹出的 『Organizer』 中点击『Export』，选择Ad Hoc或App Store，选择证书或自动签名，等待圈圈转完，导出到指定位置，才能得到里面的ipa文件。虽然Xcode完美地帮我们完成这一项工作，但其中我们还是需要点击5~6次。而使用脚本来构建打包，就只需要一个命令运行脚本，在等待脚本运行结束的时候，我们可以同时进行其他的工作。</p>
-<p>同时，使用构建脚本也能更好地集成CI。</p>
+<p>在日常开发中，无论是提交给测试部测试还是最终打包上线，都需要将工程打包成 ipa 文件，通常我们是选定 Scheme ，然后在 Xcode 中点击『 Project - Archive 』，当整个工程  archive 后，在自动弹出的 『 Organizer 』 中点击『 Export 』，选择 Ad Hoc 或 App Store ，选择证书或自动签名，等待圈圈转完，导出到指定位置，才能得到里面的 ipa 文件。虽然 Xcode 完美地帮我们完成这一项工作，但其中我们还是需要点击 5 ~ 6 次。而使用脚本来构建打包，就只需要一个命令运行脚本，在等待脚本运行结束的时候，我们可以同时进行其他的工作。</p>
+<p>同时，使用构建脚本也能更好地集成 CI 。</p>
 <h2 id="xcodebuild"><a href="#xcodebuild" class="headerlink" title="xcodebuild"></a>xcodebuild</h2><blockquote>
 <p>xcodebuild builds one or more targets contained in an Xcode project, or builds a scheme contained in an Xcode workspace or Xcode project.</p>
 </blockquote>
-<p><code>xcodebuild</code>是构建工具，可以将工程中的target或scheme编译、链接成.app文件。要使用<code>xcodebuild</code>，需要在<code>.xcodeproj</code>存放的文件夹中执行。</p>
+<p><code>xcodebuild</code>是构建工具，可以将工程中的 target 或 scheme 编译、链接成 .app 文件。要使用<code>xcodebuild</code>，需要在<code>.xcodeproj</code>存放的文件夹中执行。</p>
 <p>可以使用<code>man</code>来查看<code>xcodebuild</code>，可以看到该命令提供了一些常用概要( <em>SYNOPSIS</em> )：</p>
 <pre><code class="shell">xcodebuild [-project name.xcodeproj]
            [[-target targetname] ... | -alltargets]
@@ -456,39 +456,39 @@ xcodebuild -importLocalizations -project name.xcodeproj -localizationPath path
 </code></pre>
 <p>前三条指令是比较常用的，其中涉及很多参数：</p>
 <ul>
-<li>-project：指定要构建的project，当文件夹中有多个<code>.xcodeproj</code>文件时需要指定。</li>
-<li>-target：指定构建哪一个target。默认地，若不指定此参数，xcodebuild构建工程中的第一个target。</li>
-<li>-alltargets：构建所有target。</li>
-<li>-workspace：如果要构建一个workspace（例如使用cocoapods管理第三方依赖文件），则需要指定workspace，当然后缀就是<code>.xcworkspace</code>。</li>
-<li>-scheme：构建workspace，还必须指定scheme，使用此参数。</li>
-<li>-destination：指定设备，如：<code>&#39;platform=OS X,arch=x86_64&#39;</code>指代当前Mac或<code>generic/platform=iOS</code>指定Generic iOS device。</li>
-<li>-destination-timeout：搜索指定设备超时时间，默认30S。</li>
-<li>-configuration：如果工程中没有添加其他配置，默认就是Debug和Release这两个版本。没有指定此参数和scheme参数，则默认为Release版本。</li>
-<li>-arch：指定架构armv7、armv7s、arm64等。</li>
-<li>-sdk：指定构建使用的sdk，后跟sdk的绝对路径或sdk名称，可通过<code>xcodebuild -showsdks</code>查看。</li>
-<li>-list：查看工程的target、configuration、scheme。</li>
+<li>-project：指定要构建的 project ，当文件夹中有多个<code>.xcodeproj</code>文件时需要指定。</li>
+<li>-target：指定构建哪一个 target 。默认地，若不指定此参数，xcodebuild 构建工程中的第一个 target 。</li>
+<li>-alltargets：构建所有 target 。</li>
+<li>-workspace：如果要构建一个 workspace （例如使用 cocoapods 管理第三方依赖文件），则需要指定 workspace ，当然后缀就是<code>.xcworkspace</code>。</li>
+<li>-scheme：构建 workspace ，还必须指定 scheme ，使用此参数。</li>
+<li>-destination：指定设备，如：<code>&#39;platform=OS X,arch=x86_64&#39;</code>指代当前 Mac 或<code>generic/platform=iOS</code>指定 Generic iOS device 。</li>
+<li>-destination-timeout：搜索指定设备超时时间，默认 30S 。</li>
+<li>-configuration：如果工程中没有添加其他配置，默认就是 Debug 和 Release 这两个版本。没有指定此参数和 scheme 参数，则默认为 Release 版本。</li>
+<li>-arch：指定架构 armv7、armv7s、arm64 等。</li>
+<li>-sdk：指定构建使用的 sdk ，后跟 sdk 的绝对路径或 sdk 名称，可通过<code>xcodebuild -showsdks</code>查看。</li>
+<li>-list：查看工程的 target、configuration、scheme 。</li>
 </ul>
-<p>我们常用<code>xcodebuild</code>来构建项目，得到.app文件，但其实，<code>xcodebuild</code>也能打包出我们需要的.ipa文件，这就需要了解多以下几个比较重要的参数：</p>
+<p>我们常用<code>xcodebuild</code>来构建项目，得到 .app 文件，但其实，<code>xcodebuild</code>也能打包出我们需要的 .ipa 文件，这就需要了解多以下几个比较重要的参数：</p>
 <ul>
-<li>-exportArchive：archive后导出，需要-exportFormat，-archivePath和-exportPath三个参数</li>
-<li>-exportFormat：指定格式为pkg（macOS）或ipa（iOS）的一种</li>
-<li>-archivePath：指定archive文件的地址，将此<code>.xcarchive</code>打包成ipa</li>
-<li>-exportPath：最后输出文件ipa所在的<strong>文件夹</strong>。</li>
-<li>-exportOptionsPlist：plist文件，其中定义了将<code>.xcarchive</code>导出成ipa所需要的配置参数。后面会说到。</li>
+<li>-exportArchive：archive 后导出，需要<code>-exportFormat</code> ，<code>-archivePath</code> 和<code>-exportPath</code>三个参数</li>
+<li>-exportFormat：指定格式为 pkg ( macOS ) 或 ipa ( iOS ) 的一种</li>
+<li>-archivePath：指定 archive 文件的地址，将此<code>.xcarchive</code>打包成 ipa</li>
+<li>-exportPath：最后输出文件 ipa 所在的<strong>文件夹</strong>。</li>
+<li>-exportOptionsPlist：plist 文件，其中定义了将<code>.xcarchive</code>导出成 ipa 所需要的配置参数。后面会说到。</li>
 </ul>
 <p><code>xcodebuild</code>还能进行各种操作，挑选一些常用的来讲：</p>
 <ul>
-<li>build：构建，默认操作。如果没有指定，则默认为build，将会在<code>SYMROOT</code>中生成文件夹<code>[configuration]-iphones</code>的文件夹（configuration见上述参数介绍）。其中有项目用到的第三方库的framework、<code>.app</code>文件、<code>.dSYM</code>文件。</li>
-<li>archive：对应Xcode中的Archive，在build的基础上还将生成<code>.xcarchive</code>文件。</li>
-<li>clean：对应Xcode中的clean，删除上次构建过程产生的中间文件。</li>
+<li>build：构建，默认操作。如果没有指定，则默认为 build ，将会在<code>SYMROOT</code>中生成文件夹<code>[configuration]-iphones</code>的文件夹（ configuration 见上述参数介绍）。其中有项目用到的第三方库的 framework 、<code>.app</code>文件、<code>.dSYM</code>文件。</li>
+<li>archive：对应 Xcode 中的 Archive ，在 build 的基础上还将生成<code>.xcarchive</code>文件。</li>
+<li>clean：对应 Xcode 中的 clean ，删除上次构建过程产生的中间文件。</li>
 </ul>
 <h2 id="xcrun"><a href="#xcrun" class="headerlink" title="xcrun"></a>xcrun</h2><pre><code class="shell">xcrun -sdk iphoneos PackageApplication &quot;./Release-iphoneos/${APP_NAME}.app&quot; -o ~/&quot;${IPANAME}&quot;
 </code></pre>
-<p>xcrun更多地用来将app文件打包到ipa中，得以安装在用户的设备上。其中使用到 <em>PackageApplication</em> 这个工具，命令也相对简单，就不多说了。</p>
-<p>需要注意的是：从Xcode8.3开始，<em>PackageApplication</em> 从开发工具中被移除，因此我们用来将.app打包成ipa最常用的<code>xcrun</code>指令也变得不好用了。当然可以从旧版本的Xcode中将 <em>PackageApplication</em> 拷贝一份放在新的Xcode中，让 <em>PackageApplication</em> 继续发光发热。请见<a href="https://stackoverflow.com/questions/43068608/xcrun-error-unable-to-find-utility-packageapplication-not-a-developer-tool" target="_blank" rel="external">stackoverflow</a>。</p>
-<p>不过使用<code>xcrun</code>还可能存在一些问题：当解压ipa后，你会发现，在app文件中，<code>Payload</code>文件夹存在，但是<code>BCSymbolMaps</code>、<code>SwiftSupport</code> 和<code>Symbols</code>却找不到了，这有可能会在提交到App Store的时候出现问题。</p>
-<p>但是从Xcode中Export xcarchive则不会出现这样的问题，说明单纯使用xcrun的打包旧命令已经不被建议使用了。</p>
-<h2 id="Demonstration🌰"><a href="#Demonstration🌰" class="headerlink" title="Demonstration🌰"></a>Demonstration🌰</h2><p>笔者在使用脚本打包的时候舍弃了xcrun，直接用xcodebuild来完成工作，提供一个示例：</p>
+<p>xcrun 更多地用来将app文件打包到 ipa 中，得以安装在用户的设备上。其中使用到 <em>PackageApplication</em> 这个工具，命令也相对简单，就不多说了。</p>
+<p>需要注意的是：从 Xcode8.3 开始，<em>PackageApplication</em> 从开发工具中被移除，因此我们用来将.app打包成ipa最常用的<code>xcrun</code>指令也变得不好用了。当然可以从旧版本的 Xcode 中将 <em>PackageApplication</em> 拷贝一份放在新的 Xcode 中，让 <em>PackageApplication</em> 继续发光发热。请见<a href="https://stackoverflow.com/questions/43068608/xcrun-error-unable-to-find-utility-packageapplication-not-a-developer-tool" target="_blank" rel="external">stackoverflow</a>。</p>
+<p>不过使用<code>xcrun</code>还可能存在一些问题：当解压 ipa 后，你会发现，在 app 文件中，<code>Payload</code>文件夹存在，但是<code>BCSymbolMaps</code>、<code>SwiftSupport</code> 和<code>Symbols</code>却找不到了，这有可能会在提交到 App Store 的时候出现问题。</p>
+<p>但是从 Xcode 中 Export xcarchive 则不会出现这样的问题，说明单纯使用 xcrun 的打包旧命令已经不被建议使用了。</p>
+<h2 id="Demonstration🌰"><a href="#Demonstration🌰" class="headerlink" title="Demonstration🌰"></a>Demonstration🌰</h2><p>笔者在使用脚本打包的时候舍弃了 xcrun ，直接用 xcodebuild 来完成工作，提供一个示例：</p>
 <pre><code class="shell"># 工程名
 APP_NAME=&quot;KeyX_iOS&quot;
 # info.plist路径
@@ -546,22 +546,22 @@ mv &quot;${APP_NAME}.ipa&quot; &quot;${IPA_NAME}&quot;
 </code></pre>
 <p>需要注意几点：</p>
 <ol>
-<li>archive前clean是一个比较好的习惯，清除上次构建形成的中间文件。</li>
-<li>archive时配置了<code>PROVISIONING_PROFILE_SPECIFIER</code>和<code>DEVELOPMENT_TEAM</code>，用于指定archive的签名使用的证书，需要使用development用的Provisioning Profile，不可以用app store或ad-hoc的。</li>
-<li>第2点中那两个配置，如果去掉，则默认读取xcodeproj中的配置。此时可以在Xcode的<code>Target-&gt;Signing-&gt;Automaticall manage signing</code>打勾由Xcode设置开发证书，或自己设置开发用的Provisioning Profiles并确保配置无误（manual signing）。</li>
-<li>还是第2点的配置，在命令中可以配置的命令请见<a href="https://help.apple.com/xcode/mac/current/#/itcaec37c2a6?sub=dev186481df2" target="_blank" rel="external">这里</a>。</li>
-<li><code>allowProvisioningUpdates</code>是Xcode9才引入的，允许<code>xcodebuild</code>自动更新Provisioning profile等。</li>
+<li>archive 前 clean 是一个比较好的习惯，清除上次构建形成的中间文件。</li>
+<li>archive 时配置了<code>PROVISIONING_PROFILE_SPECIFIER</code>和<code>DEVELOPMENT_TEAM</code>，用于指定 archive 的签名使用的证书，需要使用 development 用的 Provisioning Profile ，不可以用 app store 或 ad-hoc 的。</li>
+<li>第 2 点中那两个配置，如果去掉，则默认读取 xcodeproj 中的配置。此时可以在 Xcode 的<code>Target-&gt;Signing-&gt;Automaticall manage signing</code>打勾由 Xcode 设置开发证书，或自己设置开发用的 Provisioning Profiles 并确保配置无误（ manual signing ）。</li>
+<li>还是第 2 点的配置，在命令中可以配置的命令请见<a href="https://help.apple.com/xcode/mac/current/#/itcaec37c2a6?sub=dev186481df2" target="_blank" rel="external">这里</a>。</li>
+<li><code>allowProvisioningUpdates</code>是 Xcode9 才引入的，允许<code>xcodebuild</code>自动更新 Provisioning profile 等。</li>
 </ol>
-<h3 id="exportOptionsPlist参数"><a href="#exportOptionsPlist参数" class="headerlink" title="-exportOptionsPlist参数"></a>-exportOptionsPlist参数</h3><p>ExportOptions.plist存在很久了，只是一直没有被拿来使用。在xcodebuild打包的时候，这个参数指定ExportOptions.plist的位置，用来告诉<code>xcodebuild</code>怎么将<code>.xcarchive</code>文件打包。</p>
-<p>下面是笔者所使用的plist文件：</p>
+<h3 id="exportOptionsPlist-参数"><a href="#exportOptionsPlist-参数" class="headerlink" title="-exportOptionsPlist 参数"></a>-exportOptionsPlist 参数</h3><p>ExportOptions.plist 存在很久了，只是一直没有被拿来使用。在 xcodebuild 打包的时候，这个参数指定 ExportOptions.plist 的位置，用来告诉<code>xcodebuild</code>怎么将<code>.xcarchive</code>文件打包。</p>
+<p>下面是笔者所使用的 plist 文件：</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/gq8g9.png" alt=""></p>
-<p>provisioningProfiles中，key是bundleid，value是对应的provisioningProfile的名称或ID。</p>
+<p>provisioningProfiles 中，key 是 bundleid ， value 是对应的 provisioningProfile 的名称或 ID 。</p>
 <p>有哪些键可以通过<code>xcodebuild -help</code>，然后拉到最下面查看。</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/l89oh.png" alt=""></p>
-<p>如果还是觉得创建麻烦，可以先在Xcode中手动打包一遍，在Export后的文件夹中找到<code>ExportOptions.plist</code>，这就是适用于项目的plist文件了。</p>
+<p>如果还是觉得创建麻烦，可以先在 Xcode 中手动打包一遍，在 Export 后的文件夹中找到<code>ExportOptions.plist</code>，这就是适用于项目的 plist 文件了。</p>
 <h2 id="Troubleshotting"><a href="#Troubleshotting" class="headerlink" title="Troubleshotting"></a>Troubleshotting</h2><p>编写此章节，是为了记录打包时出现的错误，长期更新：</p>
 <h3 id="1-ipatool-json-filepath-XXXXXX-“No-value”"><a href="#1-ipatool-json-filepath-XXXXXX-“No-value”" class="headerlink" title="1.ipatool-json-filepath-XXXXXX “No value”."></a>1.ipatool-json-filepath-XXXXXX “No value”.</h3><p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/m5j01.png" alt=""></p>
-<p>笔者遇到此问题的时候，是因为archive失败，但是路径中还是出现了<code>.xcarchive</code>文件，继续往下export的时候就报错了，此时不妨尝试一下，只是archive是否有问题？具体原因笔者尚未发现。</p>
+<p>笔者遇到此问题的时候，是因为 archive 失败，但是路径中还是出现了<code>.xcarchive</code>文件，继续往下 export 的时候就报错了，此时不妨尝试一下，只是 archive 是否有问题？具体原因笔者尚未发现。</p>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://developer.apple.com/library/content/technotes/tn2339/_index.html" target="_blank" rel="external">1.Building from the Command Line with Xcode FAQ</a></p>
 <p><a href="http://subathrathanabalan.com/2016/01/07/building-ipa-export-archive/" target="_blank" rel="external">2.Using -exportArchive instead of Package Application to export an IPA</a></p>
 <p><a href="https://encyclopediaofdaniel.com/blog/xcarchive-to-ipa/" target="_blank" rel="external">3.XCArchive to ipa</a></p>
@@ -580,10 +580,10 @@ mv &quot;${APP_NAME}.ipa&quot; &quot;${IPA_NAME}&quot;
     <entry>
       <title><![CDATA[使用makefile创建静态库]]></title>
       <url>/2017/08/08/%E4%BD%BF%E7%94%A8MakeFile%E5%88%9B%E5%BB%BA%E9%9D%99%E6%80%81%E5%BA%93/</url>
-      <content type="html"><![CDATA[<p>最近工作上需要将Win上的一个C库移植到iOS上以支持业务的开展，修改代码后需要编译成静态库供iOS使用，为了使用Windows或Linux的同事在修改完代码后也能编译出静态库而无需再搬到Mac上操作，学习了一下makefile。    </p>
+      <content type="html"><![CDATA[<p>最近工作上需要将 Win 上的一个 C 库移植到 iOS 上以支持业务的开展，修改代码后需要编译成静态库供 iOS 使用，不想每次别人修改完在 Mac 上编译时还要打开 Xcode ，学习了一下makefile ，直接执行 make 命令就可以了。    </p>
 <a id="more"></a>
-<p>说来惭愧，自己的C/C++水平还没有到达很高的水平，最开始想到的最简单的方式就是创建<code>Cocoa Touch Static Library</code>项目，然后直接将所需要的代码文件无脑添加到项目里面，编译，合成。    </p>
-<p>但是为了让其他同事更快捷地完成工作，学习了如何使用makefile来编译静态库。</p>
+<p>说来惭愧，自己的 C/C++ 水平还没有到达很高的水平，最开始想到的最简单的方式就是创建<code>Cocoa Touch Static Library</code>项目，然后直接将所需要的代码文件无脑添加到项目里面，编译，合成。    </p>
+<p>但是为了让其他同事更快捷地完成工作，学习了如何使用 makefile 来编译静态库。</p>
 <p>本文只是皮毛，主要是在此次工作中的一些历程。     </p>
 <h2 id="静态库特点"><a href="#静态库特点" class="headerlink" title="静态库特点"></a>静态库特点</h2><blockquote>
 <ul>
@@ -594,39 +594,39 @@ mv &quot;${APP_NAME}.ipa&quot; &quot;${IPA_NAME}&quot;
 </ul>
 </blockquote>
 <p>留下疑问：是否可以理解为：只需要其他库的头文件？</p>
-<h2 id="makefile"><a href="#makefile" class="headerlink" title="makefile"></a>makefile</h2><p>makefile本身只是一个文件，用来辅助make命令执行时，告诉make命令怎么去编译和链接程序。    </p>
+<h2 id="makefile"><a href="#makefile" class="headerlink" title="makefile"></a>makefile</h2><p>makefile 本身只是一个文件，用来辅助 make 命令执行时，告诉 make 命令怎么去编译和链接程序。    </p>
 <p>那编译和链接的规则是：</p>
 <blockquote>
 <ul>
-<li>如果这个工程没有编译过，那么我们的所有C文件都要编译并被链接。</li>
-<li>如果这个工程的某几个C文件被修改，那么我们只编译被修改的C文件，并链接目标程序。</li>
-<li>如果这个工程的头文件被改变了，那么我们需要编译引用了这几个头文件的C文件，并链接目标程序。</li>
+<li>如果这个工程没有编译过，那么我们的所有 C 文件都要编译并被链接。</li>
+<li>如果这个工程的某几个 C 文件被修改，那么我们只编译被修改的 C 文件，并链接目标程序。</li>
+<li>如果这个工程的头文件被改变了，那么我们需要编译引用了这几个头文件的 C 文件，并链接目标程序。</li>
 </ul>
 </blockquote>
-<p>Google可以搜索到很多makefile的好文章，这里简略介绍一下：</p>
+<p>Google 可以搜索到很多 makefile 的好文章，这里简略介绍一下：</p>
 <h3 id="基本语句"><a href="#基本语句" class="headerlink" title="基本语句"></a>基本语句</h3><pre><code>target : prerequisites
     command
 </code></pre><ul>
-<li>target : 编译或链接最终得到的目标文件，例如.o结尾的中间文件、由.o文件链接而成的Win下的可执行文件，.o文件打包而成的静态库文件</li>
-<li>prerequisites : 依赖，也就是编译成.o的.c、.cpp、.m和.h，链接成动态库、静态库、可执行文件的.o</li>
-<li>command : 命令，即如何将上述的依赖编译或链接成我们要的target，需要注意的是，command前必须要有一个制表符(tab)，不能是一连串的空格，也不能缺失。</li>
+<li>target : 编译或链接最终得到的目标文件，例如 .o 结尾的中间文件、由 .o 文件链接而成的 Win 下的可执行文件， .o 文件打包而成的静态库文件</li>
+<li>prerequisites : 依赖，也就是编译成 .o 的 .c 、.cpp、.m 和 .h ，链接成动态库、静态库、可执行文件的 .o</li>
+<li>command : 命令，即如何将上述的依赖编译或链接成我们要的 target ，需要注意的是， command 前必须要有一个制表符 ( tab ) ，不能是一连串的空格，也不能缺失。</li>
 </ul>
 <h4 id="Phony-Target"><a href="#Phony-Target" class="headerlink" title="Phony Target"></a>Phony Target</h4><p>PHONY 目标并非实际的文件名：只是在显式请求时执行命令的名字。    </p>
-<p>像平常我们需要自己编译第三方库的时候，在执行完链接后需要清楚产生的中间文件或其他配置等，需要执行<code>make clean</code>，这里的clean就是makefile中被定义的Phony Target。下面例子会说到。    </p>
-<p>一个makefile只能有一个总的Target(编译链接得到我们最终需要的文件)，如果需要多个Target，可以使用Phony Target来实现。当然，上述说到的除编译链接之外的操作用Phony Target也是很好的选择。</p>
+<p>像平常我们需要自己编译第三方库的时候，在执行完链接后需要清楚产生的中间文件或其他配置等，需要执行<code>make clean</code>，这里的 clean 就是 makefile 中被定义的 Phony Target 。下面例子会说到。    </p>
+<p>一个 makefile 只能有一个总的 Target (编译链接得到我们最终需要的文件)，如果需要多个 Target ，可以使用 Phony Target 来实现。当然，上述说到的除编译链接之外的操作用 Phony Target 也是很好的选择。</p>
 <h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><p>像写程序一样直接定义变量，变量在左侧，值在右侧，等号分开，然后通过<code>${变量}</code>使用，例如：</p>
 <pre><code>DEVICE=OS
 DEV_PATH=/Applications/Xcode.app/Contents/Developer/Platforms/iPhone${DEVICE}.platform/Developer
-</code></pre><h3 id="文件名及使用"><a href="#文件名及使用" class="headerlink" title="文件名及使用"></a>文件名及使用</h3><p>当然，既然叫makefile，文件名最好就叫makefile啦，Makefile也是可以的，但是是在makefile不存在的时候，make命令才会去使用。</p>
-<p>如果再不喜欢，文件名写成<code>chris</code>也可以，只是make的时候加上-f和文件名就好了~</p>
+</code></pre><h3 id="文件名及使用"><a href="#文件名及使用" class="headerlink" title="文件名及使用"></a>文件名及使用</h3><p>当然，既然叫 makefile ，文件名最好就叫 makefile 啦， Makefile 也是可以的，但是是在 makefile 不存在的时候， make 命令才会去使用。</p>
+<p>如果再不喜欢，文件名写成 chris 也可以，只是 make 的时候加上<code>-f</code>和文件名就好了~</p>
 <p><code>make -f chris</code></p>
 <h2 id="栗子🌰"><a href="#栗子🌰" class="headerlink" title="栗子🌰"></a>栗子🌰</h2><p>好啦，说起来简单，但是实际操作却需要些许耐心~</p>
-<p>以下是我写的一个简单的makefile，用于编译资源文件和打包成静态库，还有一个脚本，结合makefile，打包armv7,armv7s,arm64,i386,x86_64这五个平台的静态库，并使用lipo合成为”Fat Library”。</p>
+<p>以下是我写的一个简单的 makefile ，用于编译资源文件和打包成静态库，还有一个脚本，结合 makefile ，打包 armv7, armv7s , arm64 , i386 , x86_64 这五个平台的静态库，并使用 lipo 合成为 “ Fat Library “ 。</p>
 <h3 id="makefile-1"><a href="#makefile-1" class="headerlink" title="makefile"></a>makefile</h3><pre><code class="cmake">OUT_D=out
 ARCH_D=${OUT_D}/${ARCH}
 OBJ_D=tmp
 # DEVICE 和 ARCH 是外部传入的值，用于区分是OS还是SIMULATOR，平台是哪种
-# 由于C代码中使用到了CoreFoundation和跨平台编译使用到__APPLE__、TARGET_OS_IPHONE等宏，所以需要引入iOS的SDK
+# 如果C代码中使用到了CoreFoundation和跨平台编译使用到__APPLE__、TARGET_OS_IPHONE等宏，所以需要引入iOS的SDK
 DEV_PATH=/Applications/Xcode.app/Contents/Developer/Platforms/iPhone${DEVICE}.platform/Developer
 SDK_PATH=${DEV_PATH}/SDKs/iPhone${DEVICE}10.3.sdk
 
@@ -645,92 +645,14 @@ RM=rm
 MKDIR=mkdir
 
 # OBJECTS变量，后文会通过${OBJECTS}来使用
-OBJECTS=${OBJ_D}/string.o \
-    ${OBJ_D}/lock.o \
-    ${OBJ_D}/time.o \
-    ${OBJ_D}/NETCA_Alloc.o \
-    ${OBJ_D}/NETCA_ArrayList.o \
-    ${OBJ_D}/NETCA_BigInteger.o \
-    ${OBJ_D}/NETCA_BitSet.o \
-    ${OBJ_D}/NETCA_Error.o \
-    ${OBJ_D}/NETCA_Stream.o \
-    ${OBJ_D}/NETCA_Stream_Base64.o \
-    ${OBJ_D}/NETCA_Stream_File.o \
-    ${OBJ_D}/NETCA_Stream_Hex.o \
-    ${OBJ_D}/NETCA_Stream_HMAC.o \
-    ${OBJ_D}/NETCA_Stream_MD.o \
-    ${OBJ_D}/NETCA_Stream_Mem.o \
-    ${OBJ_D}/NETCA_Stream_Null.o \
-    ${OBJ_D}/NETCA_Time.o \
-    ${OBJ_D}/NETCA_UString.o \
-    ${OBJ_D}/NETCA_Util.o \
-    ${OBJ_D}/NETCA_JSON.o
+OBJECTS=${OBJ_D}/string.o 
 
 # 最终target，make解析makefile的时候会将第一个遇到的target作为最终target来执行本次操作
-all:${ARCH_D}/libnetca_util.2.5.1.a
+all:${ARCH_D}/libutil.a
 
 #下面是对资源文件的编译，生成.o中间文件        
 ${OBJ_D}/string.o:unix/string.c
     ${CC} ${CFLAG} -c unix/string.c -o ${OBJ_D}/string.o
-
-${OBJ_D}/time.o:unix/time.c
-    ${CC} ${CFLAG} -c unix/time.c -o ${OBJ_D}/time.o
-
-${OBJ_D}/lock.o:unix/lock.c
-    ${CC} -D_GNU_SOURCE ${CFLAG} -c unix/lock.c -o ${OBJ_D}/lock.o
-
-${OBJ_D}/NETCA_Alloc.o:NETCA_Alloc.c
-    ${CC} ${CFLAG} -c NETCA_Alloc.c -o ${OBJ_D}/NETCA_Alloc.o
-
-${OBJ_D}/NETCA_ArrayList.o:NETCA_ArrayList.c
-    ${CC} ${CFLAG} -c NETCA_ArrayList.c -o ${OBJ_D}/NETCA_ArrayList.o
-
-${OBJ_D}/NETCA_BigInteger.o:NETCA_BigInteger_Openssl.c
-    ${CC} ${CFLAG} -Wno-deprecated-declarations -c NETCA_BigInteger_Openssl.c -o ${OBJ_D}/NETCA_BigInteger.o
-
-${OBJ_D}/NETCA_BitSet.o:NETCA_BitSet.c
-    ${CC} ${CFLAG} -c NETCA_BitSet.c -o ${OBJ_D}/NETCA_BitSet.o
-
-${OBJ_D}/NETCA_Error.o:NETCA_Error.c
-    ${CC} ${CFLAG} -c NETCA_Error.c -o ${OBJ_D}/NETCA_Error.o
-
-${OBJ_D}/NETCA_Stream.o:NETCA_Stream.c
-    ${CC} ${CFLAG} -c NETCA_Stream.c -o ${OBJ_D}/NETCA_Stream.o
-
-${OBJ_D}/NETCA_Stream_Base64.o:NETCA_Stream_Base64.c
-    ${CC} ${CFLAG} -c NETCA_Stream_Base64.c -o ${OBJ_D}/NETCA_Stream_Base64.o
-
-${OBJ_D}/NETCA_Stream_File.o:NETCA_Stream_File.c
-    ${CC} ${CFLAG} -c NETCA_Stream_File.c -o ${OBJ_D}/NETCA_Stream_File.o
-
-${OBJ_D}/NETCA_Stream_Hex.o:NETCA_Stream_Hex.c
-    ${CC} ${CFLAG} -c NETCA_Stream_Hex.c -o ${OBJ_D}/NETCA_Stream_Hex.o
-
-${OBJ_D}/NETCA_Stream_HMAC.o:NETCA_Stream_HMAC.c
-    ${CC} ${CFLAG} -c NETCA_Stream_HMAC.c -o ${OBJ_D}/NETCA_Stream_HMAC.o
-
-${OBJ_D}/NETCA_Stream_MD.o:NETCA_Stream_MD.c
-    ${CC} ${CFLAG} -c NETCA_Stream_MD.c -o ${OBJ_D}/NETCA_Stream_MD.o
-
-${OBJ_D}/NETCA_Stream_Mem.o:NETCA_Stream_Mem.c
-    ${CC} ${CFLAG} -c NETCA_Stream_Mem.c -o ${OBJ_D}/NETCA_Stream_Mem.o
-
-${OBJ_D}/NETCA_Stream_Null.o:NETCA_Stream_Null.c
-    ${CC} ${CFLAG} -c NETCA_Stream_Null.c -o ${OBJ_D}/NETCA_Stream_Null.o
-
-${OBJ_D}/NETCA_Time.o:NETCA_Time.c
-    ${CC} ${CFLAG} -std=c99 -c NETCA_Time.c -o ${OBJ_D}/NETCA_Time.o
-
-${OBJ_D}/NETCA_UString.o:NETCA_UString.c NETCA_UString_Unicode_Data.c
-    ${CC} ${CFLAG} -c NETCA_UString.c -o ${OBJ_D}/NETCA_UString.o
-
-
-${OBJ_D}/NETCA_Util.o:NETCA_Util.c
-    ${CC} ${CFLAG} -c NETCA_Util.c -o ${OBJ_D}/NETCA_Util.o
-
-${OBJ_D}/NETCA_JSON.o:NETCA_JSON.c
-    ${CC} ${CFLAG} -c NETCA_JSON.c -o ${OBJ_D}/NETCA_JSON.o
-
 
 $(OBJ_D):
     ${MKDIR} ${OBJ_D}
@@ -742,8 +664,8 @@ $(ARCH_D):
     ${MKDIR} ${ARCH_D}
 
 # 对应于上面的all，依赖项是${OUT_D} ${ARCH_D} ${OBJ_D}对应的文件夹的创建和${OBJECTS} 对应的资源文件的编译
-${ARCH_D}/libnetca_util.2.5.1.a: ${OUT_D} ${ARCH_D} ${OBJ_D} ${OBJECTS} 
-    libtool -static ${IOS_LINK_FLAG} -o ${ARCH_D}/libnetca_util.2.5.1.a ${OBJECTS} #此处其实也可以使用Linux的 ar 命令
+${ARCH_D}/libutil.a: ${OUT_D} ${ARCH_D} ${OBJ_D} ${OBJECTS} 
+    libtool -static ${IOS_LINK_FLAG} -o ${ARCH_D}/libutil.a ${OBJECTS} #此处其实也可以使用Linux的 ar 命令
 
 # Phony Target: realclean 依赖于clean的执行，调用make realclean会先调用make clean清除编译过程中的中间文件，再清除目标文件(为了多平台)
 realclean: clean
@@ -752,9 +674,9 @@ realclean: clean
 clean:
     ${RM} -rf ${OBJ_D}
 </code></pre>
-<h3 id="Shell"><a href="#Shell" class="headerlink" title="Shell"></a>Shell</h3><pre><code class="shell">LIB_NAME=libnetca_util.2.5.1.a
-LIB_OS_NAME=libnetca_util.2.5.1_os.a
-LIB_SIMULATOR_NAME=libnetca_util.2.5.1_simulator.a
+<h3 id="Shell"><a href="#Shell" class="headerlink" title="Shell"></a>Shell</h3><pre><code class="shell">LIB_NAME=libutil.a
+LIB_OS_NAME=libutil_os.a
+LIB_SIMULATOR_NAME=libutil_simulator.a
 
 OUT_D=out
 HEADER_D=${OUT_D}/include
@@ -791,7 +713,7 @@ done
 
 #HEADER FILE 头文件提取出来
 mkdir ${HEADER_D}
-cp NETCA_*.h ${HEADER_D}/
+cp *.h ${HEADER_D}/
 
 #LIPO 合成为&quot;Fat Library&quot;
 cd ${OUT_D}
@@ -799,9 +721,9 @@ lipo -create ${LIB_OS_PATHS[@]} -output ${LIB_OS_NAME}
 lipo -create ${LIB_SIM_PATHS[@]} -output ${LIB_SIMULATOR_NAME}
 </code></pre>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
-<li>感觉makefile还是有必要学会，因为编译和链接可以由自己掌握。</li>
-<li>此次编写makefile的工作不是很难，因为这只是要移植部分里面最简单最小的一个库。</li>
-<li>makefile在iOS上的使用方面，最主要的困难还是如何指定SDK，毕竟移植到iOS的时候，Win上或Linux上的代码并不是都可用，像这次就需要用到iOS的SDK里CoreFoundation的内容去替换一些已有的实现。</li>
+<li>感觉 makefile 还是有必要学会，因为编译和链接可以由自己掌握。</li>
+<li>此次编写 makefile 的工作不是很难，因为这只是要移植部分里面最简单最小的一个库。</li>
+<li>makefile 在 iOS 上的使用方面，最主要的困难还是如何指定 SDK ，毕竟移植到 iOS 的时候，Win 上或 Linux 上的代码并不是都可用，像这次就需要用到 iOS 的 SDK 里 CoreFoundation 的内容去替换一些已有的实现。</li>
 </ol>
 ]]></content>
       
@@ -1014,7 +936,7 @@ end
     <entry>
       <title><![CDATA[iOS下重要的多线程GCD]]></title>
       <url>/2017/03/23/iOS%E4%B8%8B%E9%87%8D%E8%A6%81%E7%9A%84%E5%A4%9A%E7%BA%BF%E7%A8%8BGCD/</url>
-      <content type="html"><![CDATA[<p><strong>多线程</strong>是每个系统都必须具备的功能，带给用户更多的便利，伴随着友好度的提升，APP的被使用率和被使用频率也会更加高。<br>此篇笔记参考了网络上一些好文，学习到了很多。在Ray Wenderlich上摘录了一些队列的常用情景，希望自己得到提高的同时分享给大家。</p>
+      <content type="html"><![CDATA[<p><strong>多线程</strong>是每个系统都必须具备的功能，带给用户更多的便利，伴随着友好度的提升，APP 的被使用率和被使用频率也会更加高。<br>此篇笔记参考了网络上一些好文，学习到了很多。在Ray Wenderlich上摘录了一些队列的常用情景，希望自己得到提高的同时分享给大家。</p>
 <a id="more"></a>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/cjuwz.png" alt="Concurrency_vs_Parallelism"></p>
 <h2 id="一些概念"><a href="#一些概念" class="headerlink" title="一些概念"></a>一些概念</h2><h3 id="串行（Serial）与-并发（Concurrent）"><a href="#串行（Serial）与-并发（Concurrent）" class="headerlink" title="串行（Serial）与 并发（Concurrent）"></a>串行（Serial）与 并发（Concurrent）</h3><ul>
@@ -1178,26 +1100,26 @@ completionBlock(error);
 <ul>
 <li>运行：拥有时间片，可以执行代码</li>
 <li>就绪：在等待队列中，随时可以被执行</li>
-<li>等待：等待IO或者因为其他原因被阻塞，等待结束后进入就绪状态</li>
+<li>等待：等待 IO 或者因为其他原因被阻塞，等待结束后进入就绪状态</li>
 </ul>
 <p>三者的状态切换如下图所示：<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/eltyq.jpg" alt=""><br>线程有状态了，需要等待调度的发生，自然就涉及到轮换调度和优先级。</p>
-<p>轮换调度让各个线程轮流执行一小段时间后进入就绪状态或等待状态，而优先级则决定了CPU让处于就绪状态的哪个线程先执行。优先级改变有以下三种方式：</p>
+<p>轮换调度让各个线程轮流执行一小段时间后进入就绪状态或等待状态，而优先级则决定了 CPU 让处于就绪状态的哪个线程先执行。优先级改变有以下三种方式：</p>
 <ul>
-<li>在我们的编程中，我们可以手动设置优先级，最常见的，如iOS中GDC的<code>global queue</code>:</li>
+<li>在我们的编程中，我们可以手动设置优先级，最常见的，如 iOS 中 GCD 的<code>global queue</code>:</li>
 </ul>
 <pre><code class="Objc">// 创建一个优先级为HIGH的全局队列
 dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
 </code></pre>
 <ul>
-<li>操作系统也是会根据场景来适当提高线程的优先级，让更多的线程可以执行。通常情况下，频繁等待的线程（<strong>IO密集型线程</strong>）通常只占用很少的时间，这种线程比用完时间片的线程（<strong>CPU密集型线程</strong>）更受欢迎，在操作系统的调度中优先级更容易被提高。</li>
-<li>在调度过程中，还存在<em>线程饿死(Starvation)</em> 的现象，就是优先级很低的线程一直得不到时间片。为了解决这一问题，操作系统会逐步提高这些线程的优先级。</li>
+<li>操作系统也是会根据场景来适当提高线程的优先级，让更多的线程可以执行。通常情况下，频繁等待的线程（ <strong>IO 密集型线程</strong>）通常只占用很少的时间，这种线程比用完时间片的线程（ <strong>CPU 密集型线程</strong>）更受欢迎，在操作系统的调度中优先级更容易被提高。</li>
+<li>在调度过程中，还存在<em>线程饿死( Starvation )</em> 的现象，就是优先级很低的线程一直得不到时间片。为了解决这一问题，操作系统会逐步提高这些线程的优先级。</li>
 </ul>
 <h2 id="线程安全"><a href="#线程安全" class="headerlink" title="线程安全"></a>线程安全</h2><p>Q : 为什么会有线程安全问题？</p>
-<p>A : 如上所述，线程间有共享的数据：全局变量、堆上的数据、函数内的静态变量、代码等。两个线程同时修改一个全局变量，会导致修改后的结果不确定。如，两个线程同时对一个变量 <code>i</code> 执行 <code>i++</code>，线程A和线程B都各自拥有自己的寄存器，对<code>i++</code>这种操作，线程A先将<code>i</code>的值存放在线程的寄存器中，执行计算后再赋值回去给<code>i</code>这个变量，中间如果线程B在A赋值之前先获取到<code>i</code>的值，那么最后赋值的结果肯定不正确。这就是线程不安全。</p>
+<p>A : 如上所述，线程间有共享的数据：全局变量、堆上的数据、函数内的静态变量、代码等。两个线程同时修改一个全局变量，会导致修改后的结果不确定。如，两个线程同时对一个变量 <code>i</code> 执行 <code>i++</code>，线程 A 和线程 B 都各自拥有自己的寄存器，对<code>i++</code>这种操作，线程 A 先将<code>i</code>的值存放在线程的寄存器中，执行计算后再赋值回去给<code>i</code>这个变量，中间如果线程 B 在 A 赋值之前先获取到<code>i</code>的值，那么最后赋值的结果肯定不正确。这就是线程不安全。</p>
 <p>Q : 怎么保证线程安全？</p>
 <p>A : 保证数据或代码段在一段时间内只有一个线程在访问，方法有：原子操作、同步。</p>
 <ul>
-<li>原子操作（Atomic）<br>原子操作，简单点来说就是单条指令的执行。但仅适用于特定的场合，在复杂的场合下，比如我们要保证一个复杂的数据结构更改的原子性，原子操作指令就力不从心了。</li>
+<li>原子操作（ Atomic ）<br>原子操作，简单点来说就是单条指令的执行。但仅适用于特定的场合，在复杂的场合下，比如我们要保证一个复杂的数据结构更改的原子性，原子操作指令就力不从心了。</li>
 <li>同步与锁<br>同步也是一种保证线程安全的方式，是指在一个线程访问数据未结束的时候，其他线程不能对同一个数据进行访问。同步常见的有锁、信号量、临界区等。</li>
 </ul>
 <h3 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h3><p>同步最常见的操作就是锁，线程再访问数据之前视图获取锁，访问结束后释放锁。在获取锁时，如果锁被占用了，则线程会等待，直到锁重新可用。</p>
@@ -1208,7 +1130,7 @@ if ([theLock lock]) {
    [theLock unlock];
 }
 </code></pre>
-<h3 id="信号量"><a href="#信号量" class="headerlink" title="信号量"></a>信号量</h3><p>信号量也可以用在同步方面，但是这里所说的是二元信号量，即只表示占用与非占用。例如GCD中：</p>
+<h3 id="信号量"><a href="#信号量" class="headerlink" title="信号量"></a>信号量</h3><p>信号量也可以用在同步方面，但是这里所说的是二元信号量，即只表示占用与非占用。例如 GCD 中：</p>
 <pre><code class="objc">// 创建一个二元信号量，dispatch_semaphore_create的入参为0
 dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
 // 使用wait让semaphore减1
@@ -1216,15 +1138,15 @@ dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
 // 使用signal让semaphore加1
 dispatch_semaphore_signal(semaphore);
 </code></pre>
-<p>当信号量<code>semaphore</code>小于0时，线程会暂停执行，直到<code>semaphore</code>重新变成0。</p>
+<p>当信号量<code>semaphore</code>小于 0 时，线程会暂停执行，直到<code>semaphore</code>重新变成 0 。</p>
 <h3 id="临界区"><a href="#临界区" class="headerlink" title="临界区"></a>临界区</h3><p>临界区更多的是指一个访问共用资源的代码块，而这些共用资源又无法同时被多个线程访问的特性。</p>
 <p>信号量，我们知道，在本线程创建，可以在其他线程被获取到并调用<code>signal</code>或<code>wait</code>来操作信号量。相对来说，临界区显得更加严格。本线程进入临界区，只有当退出临界区了，其他线程才能访问临界区的代码块。如下代码，相信大家肯定不陌生：</p>
 <pre><code class="objc">@synchronized(self) {
     // 临界区代码
 }
 </code></pre>
-<h3 id="可重入-Reentrant"><a href="#可重入-Reentrant" class="headerlink" title="可重入(Reentrant)"></a>可重入(Reentrant)</h3><p>可重入的概念，适用于函数。</p>
-<p>首先了解一下什么是<em>函数被重入</em>：一个函数被重入，表示这个函数没有执行完成，由于外部因素（多线程同时调用）或内部调用（递归函数），又一次进入了该函数。</p>
+<h3 id="可重入-Reentrant"><a href="#可重入-Reentrant" class="headerlink" title="可重入( Reentrant )"></a>可重入( Reentrant )</h3><p>可重入的概念，适用于函数。</p>
+<p>首先了解一下什么是 <em>函数被重入</em> ：一个函数被重入，表示这个函数没有执行完成，由于外部因素（多线程同时调用）或内部调用（递归函数），又一次进入了该函数。</p>
 <p>可重入函数也保证线程安全，因为该种函数被重入之后不会产生任何不良的后果，比如：</p>
 <pre><code class="objc">- (int)sqr:(int) x {
     return x * x;
@@ -1232,29 +1154,29 @@ dispatch_semaphore_signal(semaphore);
 </code></pre>
 <p>保证可重入，需要保证以下几个方面：</p>
 <ul>
-<li>不使用静态或全局非const的变量</li>
-<li>不返还静态或全局非const变量的指针</li>
+<li>不使用静态或全局非 const 的变量</li>
+<li>不返还静态或全局非 const 变量的指针</li>
 <li>仅依赖入参</li>
 <li>不调用不可重入的函数</li>
 </ul>
 <h2 id="线程和队列的关系"><a href="#线程和队列的关系" class="headerlink" title="线程和队列的关系"></a>线程和队列的关系</h2><p>线程和队列的关系，一直都纠缠不清。</p>
 <p>在开发中，我们会接触到两种队列，串行队列和并行队列，二者的区别是：串行队列中的任务是有序被执行的，并行队列中的任务是利用多线程并发执行，不能保证执行顺序。</p>
 <p>举个可能不太恰当的例子：线程是消费者，队列是传输纽带，任务是面包，线程执行任务，比作将面包吃掉。对于面包呢，我（当前线程）可以自己享用，也可以通过传输带给其他消费者享用（任务可以自己完成，也可以交由其他线程去完成）。</p>
-<p>串行队列：它是有序的传输带，编号是SQ，我的面包吃不完，所以我往上面放了一个面包，给其他人享用，此时有消费者A拿了，并开始吃。同时消费者B也想分享他的面包，他也把面包放到SQ上，那就要等待A吃完面包了，B分享的面包才会被消费。此时传输带SQ就被暂停了。</p>
-<p>并行队列：任务的执行时无需等待前面的任务执行完，编号是CQ，同样，我的面包吃不完，放到CQ上，A正在享用，此时B也将面包放在CQ上，但是A无法享用（因为正在享用我的），因此CQ就发出警鸣，叫来了消费者C来将B的面包吃掉，以维持CQ的继续运转，当A吃完后，还可以继续享用其他人分享的面包。所以，并行队列并不是一定会产生新的线程，如果有空闲的线程还是会被继续叫来执行任务，只是平时线程执行完就被销毁，所以队列在需要执行新任务的时候就给我们造成一个创建新线程的假象。</p>
+<p>串行队列：它是有序的传输带，编号是 SQ ，我的面包吃不完，所以我往上面放了一个面包，给其他人享用，此时有消费者 A 拿了，并开始吃。同时消费者B也想分享他的面包，他也把面包放到 SQ 上，那就要等待A吃完面包了，B 分享的面包才会被消费。此时传输带 SQ 就被暂停了。</p>
+<p>并行队列：任务的执行时无需等待前面的任务执行完，编号是 CQ ，同样，我的面包吃不完，放到 CQ 上， A 正在享用，此时 B 也将面包放在 CQ 上，但是 A 无法享用（因为正在享用我的），因此 CQ 就发出警鸣，叫来了消费者 C 来将 B 的面包吃掉，以维持 CQ 的继续运转，当 A 吃完后，还可以继续享用其他人分享的面包。所以，并行队列并不是一定会产生新的线程，如果有空闲的线程还是会被继续叫来执行任务，只是平时线程执行完就被销毁，所以队列在需要执行新任务的时候就给我们造成一个创建新线程的假象。</p>
 <h2 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h2><p>首先，概念：</p>
 <blockquote>
 <p><em>死锁</em> 是指两个或两个以上的线程在执行过程中，由于竞争资源或者由于彼此通信而造成的一种阻塞的现象。  </p>
 </blockquote>
 <p>死锁不需要多说，相信学过计算机理论的同学都知道。多线程改善了系统资源的利用率和提高了系统的处理能力，多线程并发执行很有可能造成死锁，无外力作用的情况下，整个进程就无法继续推进。用户对程序内部的运作不知情，但看到界面毫无响应，怎么点击都没用，此时就会责怪应用的不完善。</p>
-<p>上述关于<em>死锁</em> 的概念来自百科，有一点我觉得要更正的是，死锁也有可能是由单一线程造成。作为一个iOS应用开发者，我使用GCD来说明一下：</p>
+<p>上述关于<em>死锁</em> 的概念来自百科，有一点我觉得要更正的是，死锁也有可能是由单一线程造成。作为一个 iOS 应用开发者，我使用 GCD 来说明一下：</p>
 <pre><code class="objc">// 主线程中调用
 dispatch_sync(dispatch_get_main_queue(), ^{
     // do something
 })
 </code></pre>
-<p>上述代码必将造成死锁，但是此例只涉及一个线程，那就是iOS App的主线程（亦称UI线程）。我们知道，在iOS中，<code>main queue</code>是串行队列，其任务只能由主线程去完成。而<code>dispatch_sync</code>会阻塞当前线程，因此，当上述代码用在主线程中调用时，主线程被会阻塞，然后将<code>block</code>放在<code>main queue</code>中，等主线程执行完<code>block</code>中的代码后才释放主线程，然而主线程已被阻塞，无法执行<code>main queue</code>中的<code>block</code>，所以造成死锁。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文对线程做了一个简单的描述，在每个App都涉及多线程开发的现在，需要注意线程安全的问题，通过原子操作、同步等方式可以保证。还讲述了串行队列和并行队列，最后浅浅地点了一下死锁的概念，算是一篇写给线程小白看的入门级iOS文章，如有写得不好的地方，请各位斧正。</p>
+<p>上述代码必将造成死锁，但是此例只涉及一个线程，那就是 iOS App 的主线程（亦称 UI 线程）。我们知道，在 iOS 中，<code>main queue</code>是串行队列，其任务只能由主线程去完成。而<code>dispatch_sync</code>会阻塞当前线程，因此，当上述代码用在主线程中调用时，主线程被会阻塞，然后将<code>block</code>放在<code>main queue</code>中，等主线程执行完<code>block</code>中的代码后才释放主线程，然而主线程已被阻塞，无法执行<code>main queue</code>中的<code>block</code>，所以造成死锁。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文对线程做了一个简单的描述，在每个 App 都涉及多线程开发的现在，需要注意线程安全的问题，通过原子操作、同步等方式可以保证。还讲述了串行队列和并行队列，最后浅浅地点了一下死锁的概念，算是一篇写给线程小白看的入门级 iOS 文章，如有写得不好的地方，请各位斧正。</p>
 ]]></content>
       
         
@@ -1269,23 +1191,23 @@ dispatch_sync(dispatch_get_main_queue(), ^{
     <entry>
       <title><![CDATA[iOS Touch Event传递和响应链]]></title>
       <url>/2017/02/27/iOS-Event%E4%BC%A0%E9%80%92%E5%92%8C%E5%93%8D%E5%BA%94%E9%93%BE/</url>
-      <content type="html"><![CDATA[<p>本来不想重复造轮子，因为网上已经很多关于iOS触碰事件传递响应链的文章，而且苹果官方文档也已经解释得很清楚。但是上周和朋友吃饭的时候聊到却不能很好地将想法表达出来，所以感觉还是写一写，加深印象吧～</p>
+      <content type="html"><![CDATA[<p>本来不想重复造轮子，因为网上已经很多关于 iOS 触碰事件传递响应链的文章，而且苹果官方文档也已经解释得很清楚。但是上周和朋友吃饭的时候聊到却不能很好地将想法表达出来，所以感觉还是写一写，加深印象吧～</p>
 <a id="more"></a>
-<p>毋庸置疑地，在论及事件传递的时候我们都会很顺口地使用用上下方向来表达事件传递(Event Delivery)，从UIApplication到响应事件的UIView是「从下往上」，反过来自然就是「从上往下」了。</p>
-<h2 id="从下往上——寻找HitTest-View"><a href="#从下往上——寻找HitTest-View" class="headerlink" title="从下往上——寻找HitTest View"></a>从下往上——寻找HitTest View</h2><p>当一个用户产生的事件发生并被系统捕获到后，UIKit会创建一个事件对象(Event Object)，携带着一些处理信息，eg:点击位置、事件类型等，然后将这个对象存放在UIApplication的事件队列中，等待处理。</p>
-<p>我们开发中使用的最多的是触碰事件(Touch Event)，也只有触碰事件才需要iOS为我们寻找<strong>HitTest View</strong>，即<strong>寻找响应该事件的View</strong>，这一过程，官方文档里称为<strong><em>Hit-Testing</em></strong>。</p>
-<p>了解这一过程，先了解UIView的两个可重载的方法：</p>
+<p>毋庸置疑地，在论及事件传递的时候我们都会很顺口地使用用上下方向来表达事件传递( Event Delivery )，从 UIApplication 到响应事件的 UIView 是「从下往上」，反过来自然就是「从上往下」了。</p>
+<h2 id="从下往上——寻找-HitTest-View"><a href="#从下往上——寻找-HitTest-View" class="headerlink" title="从下往上——寻找 HitTest View"></a>从下往上——寻找 HitTest View</h2><p>当一个用户产生的事件发生并被系统捕获到后，UIKit会创建一个事件对象( Event Object )，携带着一些处理信息，eg: 点击位置、事件类型等，然后将这个对象存放在 UIApplication 的事件队列中，等待处理。</p>
+<p>我们开发中使用的最多的是触碰事件( Touch Event )，也只有触碰事件才需要 iOS 为我们寻找 <strong>HitTest View</strong> ，即<strong>寻找响应该事件的 View </strong>，这一过程，官方文档里称为 <strong><em>Hit-Testing</em></strong> 。</p>
+<p>了解这一过程，先了解 UIView 的两个可重载的方法：</p>
 <ol>
 <li><p><code>- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event</code></p>
-<p>传入的参数类型是<code>CGPoint point</code>和<code>UIEvent *event</code> ，分别表示拥护触碰事件的<strong>触碰点</strong>和对应的<strong>事件</strong>，event可为nil，返回的是<code>Boolean</code>表示point是否在当前View的Bounds中。</p>
+<p>传入的参数类型是<code>CGPoint point</code>和<code>UIEvent *event</code> ，分别表示拥护触碰事件的<strong>触碰点</strong>和对应的<strong>事件</strong>，event 可为<code>nil</code>，返回的是<code>Boolean</code>表示 point 是否在当前 View 的Bounds中。</p>
 </li>
 <li><p><code>- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event</code></p>
-<p>同样，传入的参数类型是<code>CGPoint point</code>和<code>UIEvent *event</code> ，event可为nil(我们本次讨论的是触碰事件的Hit-Testing，自然此参数不会为空)，此方法返回的是point所在的View。</p>
+<p>同样，传入的参数类型是<code>CGPoint point</code>和<code>UIEvent *event</code> ，event 可为<code>nil</code>(我们本次讨论的是触碰事件的 Hit-Testing ，自然此参数不会为空)，此方法返回的是 point 所在的 View 。</p>
 </li>
 </ol>
 <p><code>hitTest:withEvent:</code>内部会先调用<code>pointInside:withEvent:</code>，来检测触碰点是否在当前View中</p>
 <ul>
-<li><p>若返回<code>NO</code>,则直接返回nil，且所有的SubView都不会响应当前事件。所以，敲重点啦，对于<code>clipsToBounds</code>设置为<code>NO</code>，允许SubView向外延伸的View，需要重载<code>pointInside:withEvent:</code>，例如：</p>
+<li><p>若返回<code>NO</code>,则直接返回<code>nil</code>，且所有的 SubView 都不会响应当前事件。所以，敲重点啦，对于<code>clipsToBounds</code>设置为<code>NO</code>，允许 SubView 向外延伸的 View ，需要重载<code>pointInside:withEvent:</code>，例如：</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/rkb9k.jpg" alt="TouchEvent_WechatIMG3"></p>
 <pre><code class="objective-c">- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event{
       //以下是伪代码  
@@ -1293,15 +1215,15 @@ dispatch_sync(dispatch_get_main_queue(), ^{
       else return false;
 }
 </code></pre>
-<p>如果没有重载<code>pointInside:withEvent:</code>，那么用户点击上图触碰点，SubView将不响应事件。</p>
+<p>如果没有重载<code>pointInside:withEvent:</code>，那么用户点击上图触碰点，SubView 将不响应事件。</p>
 </li>
 </ul>
 <ul>
-<li><p>若返回<code>YES</code>，则调用所有SubView的<code>hitTest:withEvent:</code>，继续寻找HitTest View。在视图层级树(这样翻译?! view hierarchy)中<strong>最后添加的叶结点</strong>且<strong>包含触碰点</strong>的View就会光荣地成为<strong>HitTest View</strong>(如下图最后一个UIView)，首先接受事件，并做下一步操作——寻找响应对象。</p>
+<li><p>若返回<code>YES</code>，则调用所有 SubView 的<code>hitTest:withEvent:</code>，继续寻找 HitTest View 。在视图层级树(这样翻译?!  view hierarchy )中<strong>最后添加的叶结点</strong>且<strong>包含触碰点</strong>的 View 就会光荣地成为 <strong>HitTest View</strong> (如下图最后一个 UIView )，首先接受事件，并做下一步操作——寻找响应对象。</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/zedzb.jpg" alt="TouchEvent_WechatIMG1"></p>
 </li>
 </ul>
-<p>我们也可以在中途截断系统的Hit-Testing，如果你想让某个View的所有SubView都不响应事件，最简单的就是重载该View的<code>hitTest:withEvent:</code>，返回View（自己响应点击事件）或者nil（都不响应）。</p>
+<p>我们也可以在中途截断系统的 Hit-Testing ，如果你想让某个 View 的所有 SubView 都不响应事件，最简单的就是重载该 View 的<code>hitTest:withEvent:</code>，返回 View （自己响应点击事件）或者<code>nil</code>（都不响应）。</p>
 <pre><code class="objective-c">-(UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
     //return nil; 本View和SubView都不成为HitTest View，都不响应事件
       return self;    // 自己成为HitTest View
@@ -1309,21 +1231,21 @@ dispatch_sync(dispatch_get_main_queue(), ^{
 </code></pre>
 <h2 id="从上往下——寻找响应对象"><a href="#从上往下——寻找响应对象" class="headerlink" title="从上往下——寻找响应对象"></a>从上往下——寻找响应对象</h2><p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/2fznc.png" alt="1387344-cd500e5bd93d9606"></p>
 <p>这张图相信在其他地方已经看了一千遍了，但是有图还是容易理解，从上往下的意思是：</p>
-<p>当上一步找到的HitTest View没能响应事件时(eg:userInteractionEnabled为NO或者没有定义响应事件的方法)，那么事件就会被传递到SuperView或着Controller。直至Applicaion都不能处理该事件则忽略。</p>
-<p>需要注意的是：这里的传递只会给SuperView或着Controller，并不会传递给与自己相同级别的View，除非你自己控制。</p>
-<p>iOS10的UIResponder中定义了两个新的Property：</p>
+<p>当上一步找到的 HitTest View 没能响应事件时( eg: userInteractionEnabled 为 NO 或者没有定义响应事件的方法)，那么事件就会被传递到 SuperView 或着 Controller 。直至 Applicaion 都不能处理该事件则忽略。</p>
+<p>需要注意的是：这里的传递只会给 SuperView 或着 Controller ，并不会传递给与自己相同级别的 View ，除非你自己控制。</p>
+<p>iOS10的 UIResponder 中定义了两个新的 Property ：</p>
 <ol>
-<li><code>nextResponder(Swift是next)</code>：这个比较蛋疼，因为UIResponder中它默认返回的是nil，所以如果我们想让特定的Responder响应事件，我们需要在我们的类中重载Get方法，返回自己想要的下一个Responder。</li>
-<li><code>isFirstResponder</code>：判断当前View或Controller是否为即将响应事件的Responder。不能明白？！那么想想这两个方法：<code>becomeFirstResponder</code>和<code>resignFirstResponder</code>：）</li>
+<li><code>nextResponder(Swift是next)</code>：这个比较蛋疼，因为 UIResponder 中它默认返回的是nil，所以如果我们想让特定的 Responder 响应事件，我们需要在我们的类中重载 Get 方法，返回自己想要的下一个 Responder 。</li>
+<li><code>isFirstResponder</code>：判断当前View或 Controller 是否为即将响应事件的 Responder 。不能明白？！那么想想这两个方法：<code>becomeFirstResponder</code>和<code>resignFirstResponder</code>：）</li>
 </ol>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>废话了这么多，三点：</p>
 <ol>
-<li>iOS的Touch Event先「从下往上」寻找HitTest View(FirstResponder)，再「从上往下」寻找真正响应该事件的Responder。</li>
-<li>可以通过重载<code>hitTest:withEvent:</code>，决定HitTest View，即最开始<strong>接收（敲重点，只是接收）</strong>事件的Responder。</li>
-<li>Responder不一定会响应事件，看有没有响应事件的方法。</li>
+<li>iOS 的 Touch Event 先「从下往上」寻找 HitTest View ( FirstResponder )，再「从上往下」寻找真正响应该事件的 Responder 。</li>
+<li>可以通过重载<code>hitTest:withEvent:</code>，决定 HitTest View ，即最开始<strong>接收（敲重点，只是接收）</strong>事件的 Responder 。</li>
+<li>Responder 不一定会响应事件，看有没有响应事件的方法。</li>
 </ol>
-<p>所以，以后如果有人问你：两个View重叠在一起，在上面的View将下面的View完全覆盖，且上面的View不能响应事件，下面的View会响应吗？</p>
-<p>你不如先反问一句，两个View是否为SuperView和SubView的关系？！</p>
+<p>所以，以后如果有人问你：两个View重叠在一起，在上面的 View 将下面的 View 完全覆盖，且上面的 View 不能响应事件，下面的 View 会响应吗？</p>
+<p>你不如先反问一句，两个 View 是否为 SuperView 和 SubView 的关系？！</p>
 <p>再分门别类地回答～</p>
 <p>以上</p>
 <h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a href="https://developer.apple.com/library/content/documentation/EventHandling/Conceptual/EventHandlingiPhoneOS/event_delivery_responder_chain/event_delivery_responder_chain.html#//apple_ref/doc/uid/TP40009541-CH4-SW1" target="_blank" rel="external">Event Handling Guide for iOS</a></p>
@@ -1374,13 +1296,13 @@ dispatch_sync(dispatch_get_main_queue(), ^{
     <entry>
       <title><![CDATA[Hello World Again]]></title>
       <url>/2017/02/17/hello-world/</url>
-      <content type="html"><![CDATA[<p>决定给博客的名字起为<strong>童年CHILDHOOD</strong>。</p>
+      <content type="html"><![CDATA[<p>决定给博客的名字起为<strong>童年 CHILDHOOD</strong>。</p>
 <p><strong>如童年般纯真，热爱，不朽。</strong></p>
-<p>趁着最近没有动力看书，又不想脑袋生锈，又看腻了之前Hexo的yilia主题。所以换个博客主题，Hello World Again。</p>
+<p>趁着最近没有动力看书，又不想脑袋生锈，又看腻了之前 Hexo 的 yilia 主题。所以换个博客主题，Hello World Again 。</p>
 <a id="more"></a>
-<h2 id="开始捣鼓"><a href="#开始捣鼓" class="headerlink" title="开始捣鼓"></a>开始捣鼓</h2><p>不是前端er要自己写个主题出来还真不是简单的事情。所以借鉴了hollow主题，并在其上进行修改。</p>
-<h3 id="主页"><a href="#主页" class="headerlink" title="主页"></a>主页</h3><p>主页大致上没有做太多的修改，因为一开始就是看上这种简简单单的，没有太多复杂成分的排版。厌倦了yilia，第一是：不想要左右版式的页面，显得左侧的菜单栏有点喧宾夺主。第二是：总把人脸留在左边显眼的位置，纯粹的不喜欢。</p>
-<p>hollow主题只是包含了主页，也就是显示文章序列和文章详情。其他的都没有。</p>
+<h2 id="开始捣鼓"><a href="#开始捣鼓" class="headerlink" title="开始捣鼓"></a>开始捣鼓</h2><p>不是前端er要自己写个主题出来还真不是简单的事情。所以借鉴了 hollow 主题，并在其上进行修改。</p>
+<h3 id="主页"><a href="#主页" class="headerlink" title="主页"></a>主页</h3><p>主页大致上没有做太多的修改，因为一开始就是看上这种简简单单的，没有太多复杂成分的排版。厌倦了 yilia ，第一是：不想要左右版式的页面，显得左侧的菜单栏有点喧宾夺主。第二是：总把人脸留在左边显眼的位置，纯粹的不喜欢。</p>
+<p>hollow 主题只是包含了主页，也就是显示文章序列和文章详情。其他的都没有。</p>
 <h3 id="Tags"><a href="#Tags" class="headerlink" title="Tags"></a>Tags</h3><p>进入标签页面在主页右上角的 <em>井号</em> 按钮，标签页面是显示所有标签。</p>
 <p>因为暂时不支持站内搜索（还在构思中…），如果要找某一篇文章需要一页页地翻，感觉会很繁琐。所以建立了个标签页面。</p>
 <p>我是通过修改page.ejs来达到目的。</p>
@@ -1418,48 +1340,48 @@ dispatch_sync(dispatch_get_main_queue(), ^{
 &lt;!-- Back to top --&gt;
 &lt;%- partial(&#39;_partial/backtop&#39;) %&gt;
 </code></pre>
-<p>修改完page.ejs后，执行<code>hexo new page &quot;tags&quot;</code>就可以创建tags页了。然后调整格式就可以了。</p>
+<p>修改完 page.ejs 后，执行 <code>hexo new page &quot;tags&quot;</code> 就可以创建 tags 页了。然后调整格式就可以了。</p>
 <h3 id="About（最近修改中…）"><a href="#About（最近修改中…）" class="headerlink" title="About（最近修改中…）"></a>About（最近修改中…）</h3><p>这个页面是自己添加的。</p>
-<p>这个页面是最复杂的。首先Hexo只支持<code>index</code>,<code>page</code>,<code>post</code>,<code>layout</code>,<code>archive</code>这几种自定义页面，所以修改了<code>page</code>后作为category页面之后就不能通过修改项目页面模板来添加新的自定义页面了。</p>
-<p>但是好在Hexo还是比较人性化的。</p>
-<p>除了修改Hexo的模板，有两种方法可以实现自定义页面</p>
+<p>这个页面是最复杂的。首先Hexo只支持 <code>index</code>,<code>page</code>,<code>post</code>,<code>layout</code>,<code>archive</code> 这几种自定义页面，所以修改了<code>page</code>后作为 category 页面之后就不能通过修改项目页面模板来添加新的自定义页面了。</p>
+<p>但是好在 Hexo 还是比较人性化的。</p>
+<p>除了修改 Hexo 的模板，有两种方法可以实现自定义页面</p>
 <ol>
-<li>先执行<code>hexo new page &quot;xxx&quot;</code>，在source中出现xxx文件夹，其中有xxx.md，然后在xxx.md前加上layout：false，可以绕过Hexo解析，直接将md中的内容显示出来，这样就可以在md里面写html代码了。详见<a href="https://hexo.io/zh-cn/docs/writing.html" target="_blank" rel="external">Hexo文档</a></li>
-<li>执行<code>hexo new page &quot;xxx&quot;</code>，同样得到xxx文件夹，你可以将这个文件夹当作一个项目的根目录，然后在其中尽情创建html，css，js，whatever you want。然后记得在博客的主_config.yml中的skip_render项添加xxx/**，就可以了。</li>
+<li>先执行<code>hexo new page &quot;xxx&quot;</code>，在 source 中出现 xxx 文件夹，其中有 xxx.md ，然后在 xxx.md 前加上<code>layout:false</code>，可以绕过 Hexo 解析，直接将 md 中的内容显示出来，这样就可以在 md 里面写 html 代码了。详见<a href="https://hexo.io/zh-cn/docs/writing.html" target="_blank" rel="external">Hexo文档</a></li>
+<li>执行<code>hexo new page &quot;xxx&quot;</code>，同样得到 xxx 文件夹，你可以将这个文件夹当作一个项目的根目录，然后在其中尽情创建 html，css，js，whatever you want 。然后记得在博客的主 _config.yml 中的 skip_render 项添加 xxx/** ，就可以了。</li>
 </ol>
 <h3 id="评论"><a href="#评论" class="headerlink" title="评论"></a>评论</h3><p>评论就不加啦，毕竟清清爽爽还是最爱啊。</p>
 <p>而且好像也没有很多人来过这个博客，等以后有需要再加上评论吧。</p>
-<p>厌倦了多说等评论管理平台的话，推荐一个 <a href="https://github.com/imsun/gitment" target="_blank" rel="external">Gitment</a>，观望了很久还是觉得这个比较简洁，不需要依赖其他第三方平台，它是将评论放在Github的issue里面，很适合托管在第三方服务器空间的博客使用。</p>
+<p>厌倦了多说等评论管理平台的话，推荐一个 <a href="https://github.com/imsun/gitment" target="_blank" rel="external">Gitment</a>，观望了很久还是觉得这个比较简洁，不需要依赖其他第三方平台，它是将评论放在 Github 的 issue 里面，很适合托管在第三方服务器空间的博客使用。</p>
 <p>有问题在微博等社交平台联系吧。</p>
-<h3 id="域名和全站HTTPS"><a href="#域名和全站HTTPS" class="headerlink" title="域名和全站HTTPS"></a>域名和全站HTTPS</h3><p>域名在万网上购买，实名认证，解析到github page。都是很简单的操作。</p>
-<p>在实现全站HTTPS的时候走了不少弯路。主要想实现的有如下几点：</p>
+<h3 id="域名和全站-HTTPS"><a href="#域名和全站-HTTPS" class="headerlink" title="域名和全站 HTTPS"></a>域名和全站 HTTPS</h3><p>域名在万网上购买，实名认证，解析到 github page 。都是很简单的操作。</p>
+<p>在实现全站 HTTPS 的时候走了不少弯路。主要想实现的有如下几点：</p>
 <ul>
 <li>[x] 全站小绿锁</li>
 </ul>
 <ul>
-<li>[x] 怕HTTPS慢，所以上CDN</li>
+<li>[x] 怕 HTTPS 慢，所以上 CDN</li>
 </ul>
 <ul>
-<li>[ ] <del>自定义SSL证书</del> (无解)</li>
+<li>[ ] <del>自定义 SSL 证书</del> (无解)</li>
 </ul>
-<p>因为博客是托管在Github上的，要强制HTTPS，Coding可以做到，但是没有必要再部署一套到Coding上。所以就想到使用CDN来实现，顺便解决网页的访问速度问题。</p>
-<p>CDN有国内几家云服务厂商有免费流量，又拍云、腾讯云等。都支持上传自定义SSL证书。但我的博客没有国内的服务器空间，自然没有私钥，无法申请证书。</p>
-<p>工信部的备案系统虽然减少了很多黑网站，但也让我们这些只有域名没有空间的人徒增了许多麻烦。所以最后选了国外的CDN厂商<a href="https://www.cloudflare.com/" target="_blank" rel="external">Cloudflare</a>来解析我的域名，Cloudflare和百度云合作，在国内也有CDN服务器，先试试速度如何，且免费版本基本能够满足要求，配置也不难。</p>
-<p>在Cloudflare成功解析后，在Page rules中定义重定向，将<code>http</code>301永久重定向到<code>https</code>。Cloudflare还可以设置缓存时间，设置用户与DNS、DNS与我们博客的服务器之间是否使用SSL，压缩CSS、JS，永久在线（不定时向服务器请求数据），安全级别（防DDoS）等。</p>
+<p>因为博客是托管在 Github 上的，要强制 HTTPS，Coding 可以做到，但是没有必要再部署一套到 Coding 上。所以就想到使用 CDN 来实现，顺便解决网页的访问速度问题。</p>
+<p>CDN 有国内几家云服务厂商有免费流量，又拍云、腾讯云等。都支持上传自定义 SSL 证书。但我的博客没有国内的服务器空间，自然没有私钥，无法申请证书。</p>
+<p>工信部的备案系统虽然减少了很多黑网站，但也让我们这些只有域名没有空间的人徒增了许多麻烦。所以最后选了国外的 CDN 厂商 <a href="https://www.cloudflare.com/" target="_blank" rel="external">Cloudflare</a> 来解析我的域名，Cloudflare 和百度云合作，在国内也有 CDN 服务器，先试试速度如何，且免费版本基本能够满足要求，配置也不难。</p>
+<p>在 Cloudflare 成功解析后，在 Page rules 中定义重定向，将<code>http</code> 301 永久重定向到<code>https</code>。Cloudflare 还可以设置缓存时间，设置用户与 DNS 、DNS 与我们博客的服务器之间是否使用 SSL ，压缩 CSS、JS ，永久在线（不定时向服务器请求数据），安全级别（防 DDoS ）等。</p>
 <p>设置完后，看到了久违的小绿锁：</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/rwfkq.png" alt=""></p>
 <p>但是，点击文章，可以看到：</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/dw1rg.png" alt=""></p>
-<p>访问时就有『并非完成安全』的提示，这涉及一个小问题，就是图床，我的图片资源是托管在七牛云上的，之前七牛云还提供<code>https</code>的二级域名，但现在已经关闭，要使用<code>https</code>需要自定义域名，这又回到上面所说的备案问题。纠结之余，将七牛云迁移到腾讯云COS上，腾讯云COS就有支持SSL的图床测试域名，且提供CDN服务，同样是每月免费空间，免费流量，对于我这个小站来说，足够了。</p>
-<p>所以，Congratulations~😄😄😄🎉🎉🎉~</p>
+<p>访问时就有『并非完成安全』的提示，这涉及一个小问题，就是图床，我的图片资源是托管在七牛云上的，之前七牛云还提供<code>https</code>的二级域名，但现在已经关闭，要使用<code>https</code>需要自定义域名，这又回到上面所说的备案问题。纠结之余，将七牛云迁移到腾讯云 COS 上，腾讯云 COS 就有支持 SSL 的图床测试域名，且提供 CDN 服务，同样是每月免费空间，免费流量，对于我这个小站来说，足够了。</p>
+<p>所以，Congratulations~ 😄😄😄🎉🎉🎉~</p>
 <h2 id="写在后面"><a href="#写在后面" class="headerlink" title="写在后面"></a>写在后面</h2><p>总有一些奇思妙想，所以本文仍在不断更新…</p>
-<p>博客是在hollow主题的<a href="https://github.com/zchen9/hexo-theme-hollow" target="_blank" rel="external">创作家</a>的基础上进行修改的，对此表示最真挚的感谢，开源万岁。</p>
+<p>博客是在 hollow 主题的<a href="https://github.com/zchen9/hexo-theme-hollow" target="_blank" rel="external">创作家</a>的基础上进行修改的，对此表示最真挚的感谢，开源万岁。</p>
 <p>如果要自己写主题，<a href="https://hexo.io/zh-cn/docs/writing.html" target="_blank" rel="external">Hexo文档</a>记得多看看。</p>
-<p>对于域名购买和Cloudflare、腾讯云的使用，Google可以搜到许多精彩且详细的文章，此处就不再赘述了。</p>
+<p>对于域名购买和 Cloudflare 、腾讯云的使用， Google 可以搜到许多精彩且详细的文章，此处就不再赘述了。</p>
 <h3 id="对于这次实践的总结："><a href="#对于这次实践的总结：" class="headerlink" title="对于这次实践的总结："></a>对于这次实践的总结：</h3><ul>
-<li>虽然是Node.js小白，但勉强做得出来，因为一行nodejs的代码都没写到</li>
-<li>HTML、CSS、JS可以做很多事情</li>
-<li>需要学习下ejs、stylus，都不是很难</li>
+<li>虽然是 Node.js 小白，但勉强做得出来，因为一行 nodejs 的代码都没写到</li>
+<li>HTML、CSS、JS 可以做很多事情</li>
+<li>需要学习下 ejs、stylus ，都不是很难</li>
 <li>多看看别人的代码，很受启发</li>
 </ul>
 ]]></content>
@@ -1522,17 +1444,17 @@ dispatch_sync(dispatch_get_main_queue(), ^{
     <entry>
       <title><![CDATA[穿越的桃心~]]></title>
       <url>/2016/05/21/EZHeartForLike/</url>
-      <content type="html"><![CDATA[<p>最近没事看看Instagram的时候，对于双击点赞的功能感觉蛮Like。所以就想自己仿照做一个。但是嘞，直接仿造感觉不是很好玩，所以就自己想添加点新东西，因此就有了EZHeartForLike。:)</p>
+      <content type="html"><![CDATA[<p>最近没事看看 Instagram 的时候，对于双击点赞的功能感觉蛮 Like 。所以就想自己仿照做一个。但是嘞，直接仿造感觉不是很好玩，所以就自己想添加点新东西，因此就有了EZHeartForLike。:)</p>
 <a id="more"></a>
-<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/pwmtz.png" alt="EZHeartForLike_logo"><br>效果图(第一张是双击图片触发，第二张是单击按钮)：<br><img src="https://raw.githubusercontent.com/Ezfen/EZHeartForLike/master/double.gif" alt="">       <img src="https://raw.githubusercontent.com/Ezfen/EZHeartForLike/master/single.gif" alt=""><br>先说说这是个什么东西。<br>一开始我是在Instagram的基础上开始做的。双击点击图片可以弹出一个桃心，随即下面的小桃心点亮。完成点赞的操作。like this(专门截了我❤️GEM❤️过来，Instagram的心挡住她的脸了。。。)：<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/37lsw.jpg" alt="EZHeartForLike_gem"><br>好吧，尺寸是是用我又爱又恨的4S的 320 x 480<br>紧接着就想，能不能实现大桃心一边移动一边缩小，最后到大小桃心的位置并替换它？！就像上面最终效果一样<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/4p80z.jpg" alt="aixin"><br>很快我遇到问题：如果两个桃心都在同一个View中，话甘易啦！！！但是现在的情况是两个桃心并不在同一个View中（现实中很多情况都不会），<strong>位置不明确</strong>是一个Super巨大的问题。因此跨View的动画是EZHeartForLike是这次的主要话题。当然动画是使用UIView来实现的~~<br>那么，讲讲我的思路历程吧：<br>首先，我想了下能不能在一个EZHeartForLikeView中分别放入下列三个View，已实现我的想法：    </p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/pwmtz.png" alt="EZHeartForLike_logo"><br>效果图(第一张是双击图片触发，第二张是单击按钮)：<br><img src="https://raw.githubusercontent.com/Ezfen/EZHeartForLike/master/double.gif" alt="">       <img src="https://raw.githubusercontent.com/Ezfen/EZHeartForLike/master/single.gif" alt=""><br>先说说这是个什么东西。<br>一开始我是在 Instagram 的基础上开始做的。双击点击图片可以弹出一个桃心，随即下面的小桃心点亮。完成点赞的操作。就像这样：<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/37lsw.jpg" alt="EZHeartForLike_gem"><br>好吧，尺寸是是用我又爱又恨的 4S 的 320 x 480<br>紧接着就想，能不能实现大桃心一边移动一边缩小，最后到大小桃心的位置并替换它？！就像上面最终效果一样<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/4p80z.jpg" alt="aixin"><br>很快我遇到问题：如果两个桃心都在同一个 View 中，话甘易啦！！！但是现在的情况是两个桃心并不在同一个 View 中（现实中很多情况都不会），<strong>位置不明确</strong>是一个巨大的问题。因此跨View的动画是 EZHeartForLike 是这次的主要话题。当然动画是使用 UIView 来实现的~~<br>那么，讲讲我的思路历程吧：<br>首先，我想了下能不能在一个 EZHeartForLikeView 中分别放入下列三个 View ，已实现我的想法：    </p>
 <ul>
-<li>ContentView ：用于让用户将自己的View放入其中。类似iOS8里面的UIVisualEffectView的contentView一样。    </li>
-<li>SmallHeart ：被当做按钮的小桃心，是Public的，提供给用户改造它的样式、大小、位置等。 </li>
-<li>BigHeart ：出现在图片(ImageView)中的大桃心</li>
+<li>ContentView ：用于让用户将自己的 View 放入其中。类似 iOS8 里面的UIVisualEffectView 的 contentView 一样。    </li>
+<li>SmallHeart ：被当做按钮的小桃心，是 Public 的，提供给用户改造它的样式、大小、位置等。 </li>
+<li>BigHeart ：出现在图片( ImageView )中的大桃心</li>
 </ul>
 <p>在我自己涂涂画画后是这样的：<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/r0ov5.jpg" alt="EZHeartForLike_begin"></p>
-<p>一开始觉得可能能行，因为两个桃心都在同一个View中(EZHeartForLikeView)，要实现动画应该是没什么问题，但是后来想到，既然我把小桃心作为Public对外提供，那么用户就可以将它放入自己的View中。因此这个想法很快被否了。。。</p>
-<p>这个问题让我便秘了两天，哈哈哈哈。后来在洗澡时想到一个或许能解决问题的方法，虽然大小桃心的位置都不清楚，但是他们至少有同一个SuperView，或许加以利用就能实现这个想法。谁知道嘞，试一下吧：<br>简单一句话就是：<strong>找到相同的SuperView，映射坐标，在SuperView上完成动画的实现</strong><br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/1c4s3.jpg" alt="EZHeartForLike_findview"><br>具体怎么找到相同的SuperView嘞，那就要扯到另外一个算法了，那就是判断两条链表是否相交，且交点是哪一个的问题。<br>这里我又要祭出我的灵魂画风了<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/e0q6r.jpg" alt="EZHeartForLike_lianbiao"><br>实现起来其实不是能难，且看代码：</p>
+<p>一开始觉得可能能行，因为两个桃心都在同一个View中( EZHeartForLikeView )，要实现动画应该是没什么问题，但是后来想到，既然我把小桃心作为 Public 对外提供，那么用户就可以将它放入自己的 View 中。因此这个想法很快被否了。。。</p>
+<p>这个问题让我便秘了两天，哈哈哈哈。后来在洗澡时想到一个或许能解决问题的方法，虽然大小桃心的位置都不清楚，但是他们至少有同一个 SuperView ，或许加以利用就能实现这个想法。谁知道嘞，试一下吧：<br>简单一句话就是：<strong>找到相同的 SuperView ，映射坐标，在 SuperView 上完成动画的实现</strong><br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/1c4s3.jpg" alt="EZHeartForLike_findview"><br>具体怎么找到相同的 SuperView 嘞，那就要扯到另外一个算法了，那就是判断两条链表是否相交，且交点是哪一个的问题。<br>这里我又要祭出我的灵魂画风了<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/e0q6r.jpg" alt="EZHeartForLike_lianbiao"><br>实现起来其实不是能难，且看代码：</p>
 <pre><code class="objc">- (UIView *)findTheMutualSuperView {
     // 找出小桃心（self）和大桃心（self.BigHeart）的共同的SuperView
     // 计算self到UIWindow的距离（以中间View的层数为距离计量）
@@ -1590,7 +1512,7 @@ dispatch_sync(dispatch_get_main_queue(), ^{
         view2 = view2.superview;
     }
 </code></pre>
-<p>既然得到两个桃心的坐标了，实现动画就自然变得简单啦，就不赘述了:)<br>有兴趣的同学可以查看我的<a href="https://github.com/objchris/EZHeartForLike" target="_blank" rel="external">Github</a>，可以下载在项目中，顺便给我个Like吧<img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/pivxc.jpg" alt="hahaha"></p>
+<p>既然得到两个桃心的坐标了，实现动画就自然变得简单啦，就不赘述了:)<br>有兴趣的同学可以查看我的 <a href="https://github.com/objchris/EZHeartForLike" target="_blank" rel="external">Github</a> ，可以下载在项目中，顺便给我个 Like 吧<img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/pivxc.jpg" alt="hahaha"></p>
 ]]></content>
       
         
@@ -2006,9 +1928,9 @@ enum {
     <entry>
       <title><![CDATA[Autoresizing Mask]]></title>
       <url>/2016/03/19/autoresizingMask/</url>
-      <content type="html"><![CDATA[<p>不知道大家在开发的时候会不会使用到UIView的autoresizingMask属性。我自己的话自从开始出现autoLayout就没再用过了。前几天翻看一些较老的书籍，发现了它静静躺在角落。不知不觉还真的有些忘记了，于是温故知新，再学习了一下。</p>
+      <content type="html"><![CDATA[<p>不知道大家在开发的时候会不会使用到 UIView 的 autoresizingMask 属性。我自己的话自从开始出现 autoLayout 就没再用过了。前几天翻看一些较老的书籍，发现了它静静躺在角落。不知不觉还真的有些忘记了，于是温故知新，再学习了一下。</p>
 <a id="more"></a>
-<h1 id="autoresizingMask"><a href="#autoresizingMask" class="headerlink" title="autoresizingMask"></a>autoresizingMask</h1><p>它对应着一个枚举，属性是自动调整SubView和SuperView之间的位置和宽高。</p>
+<h1 id="autoresizingMask"><a href="#autoresizingMask" class="headerlink" title="autoresizingMask"></a>autoresizingMask</h1><p>它对应着一个枚举，属性是自动调整 SubView 和 SuperView 之间的位置和宽高。</p>
 <pre><code>enum {
    UIViewAutoresizingNone                 = 0,
    UIViewAutoresizingFlexibleLeftMargin   = 1 &lt;&lt; 0,
@@ -2019,8 +1941,8 @@ enum {
    UIViewAutoresizingFlexibleBottomMargin = 1 &lt;&lt; 5
 };
 </code></pre><h2 id="简单介绍"><a href="#简单介绍" class="headerlink" title="简单介绍"></a>简单介绍</h2><h3 id="UIViewAutoresizingNone"><a href="#UIViewAutoresizingNone" class="headerlink" title="UIViewAutoresizingNone"></a>UIViewAutoresizingNone</h3><p>不设置自动调整，默认值</p>
-<h3 id="UIViewAutoresizingFlexibleRightMargin"><a href="#UIViewAutoresizingFlexibleRightMargin" class="headerlink" title="UIViewAutoresizingFlexibleRightMargin"></a>UIViewAutoresizingFlexibleRightMargin</h3><p>这里就只讲UIViewAutoresizingFlexibleRightMargin,因为上下左右四个方位是一致的原理<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/skwhi.jpg" alt="autoresizingMask_FlexibleRightMargin"></p>
-<h3 id="UIViewAutoresizingFlexibleWidth"><a href="#UIViewAutoresizingFlexibleWidth" class="headerlink" title="UIViewAutoresizingFlexibleWidth"></a>UIViewAutoresizingFlexibleWidth</h3><p>UIViewAutoresizingFlexibleWidth和UIViewAutoresizingFlexibleHeight也是同样的原理<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/wrxva.jpg" alt="autoresizingMask_FlexibleWidthCompare"></p>
+<h3 id="UIViewAutoresizingFlexibleRightMargin"><a href="#UIViewAutoresizingFlexibleRightMargin" class="headerlink" title="UIViewAutoresizingFlexibleRightMargin"></a>UIViewAutoresizingFlexibleRightMargin</h3><p>这里就只讲 UIViewAutoresizingFlexibleRightMargin ，因为上下左右四个方位是一致的原理<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/skwhi.jpg" alt="autoresizingMask_FlexibleRightMargin"></p>
+<h3 id="UIViewAutoresizingFlexibleWidth"><a href="#UIViewAutoresizingFlexibleWidth" class="headerlink" title="UIViewAutoresizingFlexibleWidth"></a>UIViewAutoresizingFlexibleWidth</h3><p>UIViewAutoresizingFlexibleWidth 和 UIViewAutoresizingFlexibleHeight 也是同样的原理<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/wrxva.jpg" alt="autoresizingMask_FlexibleWidthCompare"></p>
 <h3 id="组合起来"><a href="#组合起来" class="headerlink" title="组合起来"></a>组合起来</h3><p>枚举中的值是允许使用|组合起来的，同时拥有多个值的功能，like this：</p>
 <pre><code class="objc">UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRIGHTMargin
 </code></pre>
@@ -2052,8 +1974,8 @@ UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(textLabelTop, tex
 CGFloat topViewWidth = kUIScreen.size.width - kMargin * 2;
 [topView setFrame:CGRectMake(kMargin, kTopSpace, topViewWidth, kTopViewHeight)];
 </code></pre>
-<p>上面的代码中尺寸宽度被限定为iPhone4s的320。没有设置子View（蓝色的View）的autoresizingMask属性的话运行结果如下：<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/pmjrs.jpg" alt="autoresizingMask_4s"></p>
-<p>设置了子View（蓝色的View）autoresizingMask后，再修改父View的宽度，可以看到随着赋值的不同，有不同的效果：<br>设置了UIViewAutoresizingFlexibleLeftMargin<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/m2hgw.jpg" alt="autoresizingMask_FlexibleLeftMargin"></p>
+<p>上面的代码中尺寸宽度被限定为 iPhone4s 的 320 。没有设置子 View（蓝色的 View ）的 autoresizingMask 属性的话运行结果如下：<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/pmjrs.jpg" alt="autoresizingMask_4s"></p>
+<p>设置了子 View（蓝色的 View ）autoresizingMask 后，再修改父 View 的宽度，可以看到随着赋值的不同，有不同的效果：<br>设置了 UIViewAutoresizingFlexibleLeftMargin<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/m2hgw.jpg" alt="autoresizingMask_FlexibleLeftMargin"></p>
 <p>还有的其他值对应的效果图在上文已经摆出来了，请参阅哈~~</p>
 ]]></content>
       

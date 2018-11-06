@@ -36,6 +36,7 @@
     <!-- Custom Fonts -->
     <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href='//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
     <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
 
     <link rel="shortcut icon" href="/favicon.png">
@@ -76,14 +77,14 @@
         <div class="row">
             <!-- Post Main Content -->
             <div class="post-content col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <p>xcodebuild和xcrun是Xcode为开发者提供的一套构建打包的命令。使用它们编写脚本，可以实现通过脚本自动化打包的功能。本文基于Xcode9，xcrun的打包工具被移除，因此笔者主要使用xcodebuild来完成打包工作。</p>
+                <p>xcodebuild 和 xcrun 是 Xcode 为开发者提供的一套构建打包的命令。使用它们编写脚本，可以实现通过脚本自动化打包的功能。本文基于 Xcode9 ，xcrun 的打包工具被移除，因此笔者主要使用 xcodebuild 来完成打包工作。</p>
 <a id="more"></a>
-<p>在日常开发中，无论是提交给测试部测试还是最终打包上线，都需要将工程打包成ipa文件，通常我们是选定Scheme，然后在Xcode中点击『Project - Archive』，当整个工程 archive 后，在自动弹出的 『Organizer』 中点击『Export』，选择Ad Hoc或App Store，选择证书或自动签名，等待圈圈转完，导出到指定位置，才能得到里面的ipa文件。虽然Xcode完美地帮我们完成这一项工作，但其中我们还是需要点击5~6次。而使用脚本来构建打包，就只需要一个命令运行脚本，在等待脚本运行结束的时候，我们可以同时进行其他的工作。</p>
-<p>同时，使用构建脚本也能更好地集成CI。</p>
+<p>在日常开发中，无论是提交给测试部测试还是最终打包上线，都需要将工程打包成 ipa 文件，通常我们是选定 Scheme ，然后在 Xcode 中点击『 Project - Archive 』，当整个工程  archive 后，在自动弹出的 『 Organizer 』 中点击『 Export 』，选择 Ad Hoc 或 App Store ，选择证书或自动签名，等待圈圈转完，导出到指定位置，才能得到里面的 ipa 文件。虽然 Xcode 完美地帮我们完成这一项工作，但其中我们还是需要点击 5 ~ 6 次。而使用脚本来构建打包，就只需要一个命令运行脚本，在等待脚本运行结束的时候，我们可以同时进行其他的工作。</p>
+<p>同时，使用构建脚本也能更好地集成 CI 。</p>
 <h2 id="xcodebuild"><a href="#xcodebuild" class="headerlink" title="xcodebuild"></a>xcodebuild</h2><blockquote>
 <p>xcodebuild builds one or more targets contained in an Xcode project, or builds a scheme contained in an Xcode workspace or Xcode project.</p>
 </blockquote>
-<p><code>xcodebuild</code>是构建工具，可以将工程中的target或scheme编译、链接成.app文件。要使用<code>xcodebuild</code>，需要在<code>.xcodeproj</code>存放的文件夹中执行。</p>
+<p><code>xcodebuild</code>是构建工具，可以将工程中的 target 或 scheme 编译、链接成 .app 文件。要使用<code>xcodebuild</code>，需要在<code>.xcodeproj</code>存放的文件夹中执行。</p>
 <p>可以使用<code>man</code>来查看<code>xcodebuild</code>，可以看到该命令提供了一些常用概要( <em>SYNOPSIS</em> )：</p>
 <pre><code class="shell">xcodebuild [-project name.xcodeproj]
            [[-target targetname] ... | -alltargets]
@@ -123,39 +124,39 @@ xcodebuild -importLocalizations -project name.xcodeproj -localizationPath path
 </code></pre>
 <p>前三条指令是比较常用的，其中涉及很多参数：</p>
 <ul>
-<li>-project：指定要构建的project，当文件夹中有多个<code>.xcodeproj</code>文件时需要指定。</li>
-<li>-target：指定构建哪一个target。默认地，若不指定此参数，xcodebuild构建工程中的第一个target。</li>
-<li>-alltargets：构建所有target。</li>
-<li>-workspace：如果要构建一个workspace（例如使用cocoapods管理第三方依赖文件），则需要指定workspace，当然后缀就是<code>.xcworkspace</code>。</li>
-<li>-scheme：构建workspace，还必须指定scheme，使用此参数。</li>
-<li>-destination：指定设备，如：<code>&#39;platform=OS X,arch=x86_64&#39;</code>指代当前Mac或<code>generic/platform=iOS</code>指定Generic iOS device。</li>
-<li>-destination-timeout：搜索指定设备超时时间，默认30S。</li>
-<li>-configuration：如果工程中没有添加其他配置，默认就是Debug和Release这两个版本。没有指定此参数和scheme参数，则默认为Release版本。</li>
-<li>-arch：指定架构armv7、armv7s、arm64等。</li>
-<li>-sdk：指定构建使用的sdk，后跟sdk的绝对路径或sdk名称，可通过<code>xcodebuild -showsdks</code>查看。</li>
-<li>-list：查看工程的target、configuration、scheme。</li>
+<li>-project：指定要构建的 project ，当文件夹中有多个<code>.xcodeproj</code>文件时需要指定。</li>
+<li>-target：指定构建哪一个 target 。默认地，若不指定此参数，xcodebuild 构建工程中的第一个 target 。</li>
+<li>-alltargets：构建所有 target 。</li>
+<li>-workspace：如果要构建一个 workspace （例如使用 cocoapods 管理第三方依赖文件），则需要指定 workspace ，当然后缀就是<code>.xcworkspace</code>。</li>
+<li>-scheme：构建 workspace ，还必须指定 scheme ，使用此参数。</li>
+<li>-destination：指定设备，如：<code>&#39;platform=OS X,arch=x86_64&#39;</code>指代当前 Mac 或<code>generic/platform=iOS</code>指定 Generic iOS device 。</li>
+<li>-destination-timeout：搜索指定设备超时时间，默认 30S 。</li>
+<li>-configuration：如果工程中没有添加其他配置，默认就是 Debug 和 Release 这两个版本。没有指定此参数和 scheme 参数，则默认为 Release 版本。</li>
+<li>-arch：指定架构 armv7、armv7s、arm64 等。</li>
+<li>-sdk：指定构建使用的 sdk ，后跟 sdk 的绝对路径或 sdk 名称，可通过<code>xcodebuild -showsdks</code>查看。</li>
+<li>-list：查看工程的 target、configuration、scheme 。</li>
 </ul>
-<p>我们常用<code>xcodebuild</code>来构建项目，得到.app文件，但其实，<code>xcodebuild</code>也能打包出我们需要的.ipa文件，这就需要了解多以下几个比较重要的参数：</p>
+<p>我们常用<code>xcodebuild</code>来构建项目，得到 .app 文件，但其实，<code>xcodebuild</code>也能打包出我们需要的 .ipa 文件，这就需要了解多以下几个比较重要的参数：</p>
 <ul>
-<li>-exportArchive：archive后导出，需要-exportFormat，-archivePath和-exportPath三个参数</li>
-<li>-exportFormat：指定格式为pkg（macOS）或ipa（iOS）的一种</li>
-<li>-archivePath：指定archive文件的地址，将此<code>.xcarchive</code>打包成ipa</li>
-<li>-exportPath：最后输出文件ipa所在的<strong>文件夹</strong>。</li>
-<li>-exportOptionsPlist：plist文件，其中定义了将<code>.xcarchive</code>导出成ipa所需要的配置参数。后面会说到。</li>
+<li>-exportArchive：archive 后导出，需要<code>-exportFormat</code> ，<code>-archivePath</code> 和<code>-exportPath</code>三个参数</li>
+<li>-exportFormat：指定格式为 pkg ( macOS ) 或 ipa ( iOS ) 的一种</li>
+<li>-archivePath：指定 archive 文件的地址，将此<code>.xcarchive</code>打包成 ipa</li>
+<li>-exportPath：最后输出文件 ipa 所在的<strong>文件夹</strong>。</li>
+<li>-exportOptionsPlist：plist 文件，其中定义了将<code>.xcarchive</code>导出成 ipa 所需要的配置参数。后面会说到。</li>
 </ul>
 <p><code>xcodebuild</code>还能进行各种操作，挑选一些常用的来讲：</p>
 <ul>
-<li>build：构建，默认操作。如果没有指定，则默认为build，将会在<code>SYMROOT</code>中生成文件夹<code>[configuration]-iphones</code>的文件夹（configuration见上述参数介绍）。其中有项目用到的第三方库的framework、<code>.app</code>文件、<code>.dSYM</code>文件。</li>
-<li>archive：对应Xcode中的Archive，在build的基础上还将生成<code>.xcarchive</code>文件。</li>
-<li>clean：对应Xcode中的clean，删除上次构建过程产生的中间文件。</li>
+<li>build：构建，默认操作。如果没有指定，则默认为 build ，将会在<code>SYMROOT</code>中生成文件夹<code>[configuration]-iphones</code>的文件夹（ configuration 见上述参数介绍）。其中有项目用到的第三方库的 framework 、<code>.app</code>文件、<code>.dSYM</code>文件。</li>
+<li>archive：对应 Xcode 中的 Archive ，在 build 的基础上还将生成<code>.xcarchive</code>文件。</li>
+<li>clean：对应 Xcode 中的 clean ，删除上次构建过程产生的中间文件。</li>
 </ul>
 <h2 id="xcrun"><a href="#xcrun" class="headerlink" title="xcrun"></a>xcrun</h2><pre><code class="shell">xcrun -sdk iphoneos PackageApplication &quot;./Release-iphoneos/${APP_NAME}.app&quot; -o ~/&quot;${IPANAME}&quot;
 </code></pre>
-<p>xcrun更多地用来将app文件打包到ipa中，得以安装在用户的设备上。其中使用到 <em>PackageApplication</em> 这个工具，命令也相对简单，就不多说了。</p>
-<p>需要注意的是：从Xcode8.3开始，<em>PackageApplication</em> 从开发工具中被移除，因此我们用来将.app打包成ipa最常用的<code>xcrun</code>指令也变得不好用了。当然可以从旧版本的Xcode中将 <em>PackageApplication</em> 拷贝一份放在新的Xcode中，让 <em>PackageApplication</em> 继续发光发热。请见<a href="https://stackoverflow.com/questions/43068608/xcrun-error-unable-to-find-utility-packageapplication-not-a-developer-tool" target="_blank" rel="external">stackoverflow</a>。</p>
-<p>不过使用<code>xcrun</code>还可能存在一些问题：当解压ipa后，你会发现，在app文件中，<code>Payload</code>文件夹存在，但是<code>BCSymbolMaps</code>、<code>SwiftSupport</code> 和<code>Symbols</code>却找不到了，这有可能会在提交到App Store的时候出现问题。</p>
-<p>但是从Xcode中Export xcarchive则不会出现这样的问题，说明单纯使用xcrun的打包旧命令已经不被建议使用了。</p>
-<h2 id="Demonstration🌰"><a href="#Demonstration🌰" class="headerlink" title="Demonstration🌰"></a>Demonstration🌰</h2><p>笔者在使用脚本打包的时候舍弃了xcrun，直接用xcodebuild来完成工作，提供一个示例：</p>
+<p>xcrun 更多地用来将app文件打包到 ipa 中，得以安装在用户的设备上。其中使用到 <em>PackageApplication</em> 这个工具，命令也相对简单，就不多说了。</p>
+<p>需要注意的是：从 Xcode8.3 开始，<em>PackageApplication</em> 从开发工具中被移除，因此我们用来将.app打包成ipa最常用的<code>xcrun</code>指令也变得不好用了。当然可以从旧版本的 Xcode 中将 <em>PackageApplication</em> 拷贝一份放在新的 Xcode 中，让 <em>PackageApplication</em> 继续发光发热。请见<a href="https://stackoverflow.com/questions/43068608/xcrun-error-unable-to-find-utility-packageapplication-not-a-developer-tool" target="_blank" rel="external">stackoverflow</a>。</p>
+<p>不过使用<code>xcrun</code>还可能存在一些问题：当解压 ipa 后，你会发现，在 app 文件中，<code>Payload</code>文件夹存在，但是<code>BCSymbolMaps</code>、<code>SwiftSupport</code> 和<code>Symbols</code>却找不到了，这有可能会在提交到 App Store 的时候出现问题。</p>
+<p>但是从 Xcode 中 Export xcarchive 则不会出现这样的问题，说明单纯使用 xcrun 的打包旧命令已经不被建议使用了。</p>
+<h2 id="Demonstration🌰"><a href="#Demonstration🌰" class="headerlink" title="Demonstration🌰"></a>Demonstration🌰</h2><p>笔者在使用脚本打包的时候舍弃了 xcrun ，直接用 xcodebuild 来完成工作，提供一个示例：</p>
 <pre><code class="shell"># 工程名
 APP_NAME=&quot;KeyX_iOS&quot;
 # info.plist路径
@@ -213,22 +214,22 @@ mv &quot;${APP_NAME}.ipa&quot; &quot;${IPA_NAME}&quot;
 </code></pre>
 <p>需要注意几点：</p>
 <ol>
-<li>archive前clean是一个比较好的习惯，清除上次构建形成的中间文件。</li>
-<li>archive时配置了<code>PROVISIONING_PROFILE_SPECIFIER</code>和<code>DEVELOPMENT_TEAM</code>，用于指定archive的签名使用的证书，需要使用development用的Provisioning Profile，不可以用app store或ad-hoc的。</li>
-<li>第2点中那两个配置，如果去掉，则默认读取xcodeproj中的配置。此时可以在Xcode的<code>Target-&gt;Signing-&gt;Automaticall manage signing</code>打勾由Xcode设置开发证书，或自己设置开发用的Provisioning Profiles并确保配置无误（manual signing）。</li>
-<li>还是第2点的配置，在命令中可以配置的命令请见<a href="https://help.apple.com/xcode/mac/current/#/itcaec37c2a6?sub=dev186481df2" target="_blank" rel="external">这里</a>。</li>
-<li><code>allowProvisioningUpdates</code>是Xcode9才引入的，允许<code>xcodebuild</code>自动更新Provisioning profile等。</li>
+<li>archive 前 clean 是一个比较好的习惯，清除上次构建形成的中间文件。</li>
+<li>archive 时配置了<code>PROVISIONING_PROFILE_SPECIFIER</code>和<code>DEVELOPMENT_TEAM</code>，用于指定 archive 的签名使用的证书，需要使用 development 用的 Provisioning Profile ，不可以用 app store 或 ad-hoc 的。</li>
+<li>第 2 点中那两个配置，如果去掉，则默认读取 xcodeproj 中的配置。此时可以在 Xcode 的<code>Target-&gt;Signing-&gt;Automaticall manage signing</code>打勾由 Xcode 设置开发证书，或自己设置开发用的 Provisioning Profiles 并确保配置无误（ manual signing ）。</li>
+<li>还是第 2 点的配置，在命令中可以配置的命令请见<a href="https://help.apple.com/xcode/mac/current/#/itcaec37c2a6?sub=dev186481df2" target="_blank" rel="external">这里</a>。</li>
+<li><code>allowProvisioningUpdates</code>是 Xcode9 才引入的，允许<code>xcodebuild</code>自动更新 Provisioning profile 等。</li>
 </ol>
-<h3 id="exportOptionsPlist参数"><a href="#exportOptionsPlist参数" class="headerlink" title="-exportOptionsPlist参数"></a>-exportOptionsPlist参数</h3><p>ExportOptions.plist存在很久了，只是一直没有被拿来使用。在xcodebuild打包的时候，这个参数指定ExportOptions.plist的位置，用来告诉<code>xcodebuild</code>怎么将<code>.xcarchive</code>文件打包。</p>
-<p>下面是笔者所使用的plist文件：</p>
+<h3 id="exportOptionsPlist-参数"><a href="#exportOptionsPlist-参数" class="headerlink" title="-exportOptionsPlist 参数"></a>-exportOptionsPlist 参数</h3><p>ExportOptions.plist 存在很久了，只是一直没有被拿来使用。在 xcodebuild 打包的时候，这个参数指定 ExportOptions.plist 的位置，用来告诉<code>xcodebuild</code>怎么将<code>.xcarchive</code>文件打包。</p>
+<p>下面是笔者所使用的 plist 文件：</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/gq8g9.png" alt=""></p>
-<p>provisioningProfiles中，key是bundleid，value是对应的provisioningProfile的名称或ID。</p>
+<p>provisioningProfiles 中，key 是 bundleid ， value 是对应的 provisioningProfile 的名称或 ID 。</p>
 <p>有哪些键可以通过<code>xcodebuild -help</code>，然后拉到最下面查看。</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/l89oh.png" alt=""></p>
-<p>如果还是觉得创建麻烦，可以先在Xcode中手动打包一遍，在Export后的文件夹中找到<code>ExportOptions.plist</code>，这就是适用于项目的plist文件了。</p>
+<p>如果还是觉得创建麻烦，可以先在 Xcode 中手动打包一遍，在 Export 后的文件夹中找到<code>ExportOptions.plist</code>，这就是适用于项目的 plist 文件了。</p>
 <h2 id="Troubleshotting"><a href="#Troubleshotting" class="headerlink" title="Troubleshotting"></a>Troubleshotting</h2><p>编写此章节，是为了记录打包时出现的错误，长期更新：</p>
 <h3 id="1-ipatool-json-filepath-XXXXXX-“No-value”"><a href="#1-ipatool-json-filepath-XXXXXX-“No-value”" class="headerlink" title="1.ipatool-json-filepath-XXXXXX “No value”."></a>1.ipatool-json-filepath-XXXXXX “No value”.</h3><p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/m5j01.png" alt=""></p>
-<p>笔者遇到此问题的时候，是因为archive失败，但是路径中还是出现了<code>.xcarchive</code>文件，继续往下export的时候就报错了，此时不妨尝试一下，只是archive是否有问题？具体原因笔者尚未发现。</p>
+<p>笔者遇到此问题的时候，是因为 archive 失败，但是路径中还是出现了<code>.xcarchive</code>文件，继续往下 export 的时候就报错了，此时不妨尝试一下，只是 archive 是否有问题？具体原因笔者尚未发现。</p>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://developer.apple.com/library/content/technotes/tn2339/_index.html" target="_blank" rel="external">1.Building from the Command Line with Xcode FAQ</a></p>
 <p><a href="http://subathrathanabalan.com/2016/01/07/building-ipa-export-archive/" target="_blank" rel="external">2.Using -exportArchive instead of Package Application to export an IPA</a></p>
 <p><a href="https://encyclopediaofdaniel.com/blog/xcarchive-to-ipa/" target="_blank" rel="external">3.XCArchive to ipa</a></p>
