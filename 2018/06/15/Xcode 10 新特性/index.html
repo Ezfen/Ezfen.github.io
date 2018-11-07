@@ -77,12 +77,13 @@
         <div class="row">
             <!-- Post Main Content -->
             <div class="post-content col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <p>要让开发效率提高，写更多的 <del>bug</del> ，呸，更多改变世界的代码，我们就需要先了解每个苹果系列开发者必须使用的工具，就是今天要讲的主角 —— Xcode 10</p>
-<a id="more"></a>
-<p>Xcode 在每年的 <a href="https://developer.apple.com/videos/wwdc2018/" target="_blank" rel="external">WWDC</a> 都会有所改进，今年也不例外，如约而至降临于六月五号。同样是先发布 <a href="https://developer.apple.com/download/" target="_blank" rel="external">beta</a> 版，正式版将在秋季发布于新的 App Store 上（新版的 App Store 还挺好看的，欢心荡漾中 :] ）</p>
-<h2 id="关于-Xcode-10"><a href="#关于-Xcode-10" class="headerlink" title="关于 Xcode 10"></a>关于 Xcode 10</h2><h3 id="平台限制"><a href="#平台限制" class="headerlink" title="平台限制"></a>平台限制</h3><p>Xcode 10 现在只有 beta 版，只能安装在 mac 10.13.4 及以上的版本，如果升级了最新的 beta 版系统 Mojave 还可以尝试一下黑夜模式，下面会说到。</p>
+                <div class="post-excerpt">
+                    <p>要让开发效率提高，写更多的 <del>bug</del> ，呸，更多改变世界的代码，我们就需要先了解每个苹果系列开发者必须使用的工具，就是今天要讲的主角 —— Xcode 10</p>
+                </div>
+                <h2 id="关于-Xcode-10"><a href="#关于-Xcode-10" class="headerlink" title="关于 Xcode 10"></a>关于 Xcode 10</h2><p>Xcode 在每年的 <a href="https://developer.apple.com/videos/wwdc2018/">WWDC</a> 都会有所改进，今年也不例外，如约而至降临于六月五号。同样是先发布 <a href="https://developer.apple.com/download/">beta</a> 版，正式版将在秋季发布于新的 App Store 上（新版的 App Store 还挺好看的，欢心荡漾中 :] ）</p>
+<h3 id="平台限制"><a href="#平台限制" class="headerlink" title="平台限制"></a>平台限制</h3><p>Xcode 10 现在只有 beta 版，只能安装在 mac 10.13.4 及以上的版本，如果升级了最新的 beta 版系统 Mojave 还可以尝试一下黑夜模式，下面会说到。</p>
 <h3 id="SDK"><a href="#SDK" class="headerlink" title="SDK"></a>SDK</h3><p>beta 版包含了新发布的 iOS 12, watchOS 5, macOS 10.14 以及 tvOS 12 的 SDK 开发工具包。</p>
-<h3 id="下载安装"><a href="#下载安装" class="headerlink" title="下载安装"></a>下载安装</h3><p>首先下载 <a href="https://download.developer.apple.com/Developer_Tools/Xcode_10_Beta/Xcode_10_Beta.xip" target="_blank" rel="external">.xip 安装包</a>，解压放到 Applications 文件夹就可以了。使用 beta 版的 command line tools ，在 iTerm 或自带的 Terminals 中执行命令：</p>
+<h3 id="下载安装"><a href="#下载安装" class="headerlink" title="下载安装"></a>下载安装</h3><p>首先下载 <a href="https://download.developer.apple.com/Developer_Tools/Xcode_10_Beta/Xcode_10_Beta.xip">.xip 安装包</a>，解压放到 Applications 文件夹就可以了。使用 beta 版的 command line tools ，在 iTerm 或自带的 Terminals 中执行命令：</p>
 <pre><code class="Shell">xcode-select -s &lt;path to Xcode&gt;
 </code></pre>
 <p>对了，Xcode 10 beta 版是可以与原有的 Xcode 共存的。</p>
@@ -102,13 +103,13 @@
 </li>
 <li><p>OpenGL , OpenGL|ES , OpenCL 进入废弃列表，原有 API 还是可用，但说不定以后的某一天跟 i386 一样突然就没了，对游戏开发和图像处理工具等 App 影响还是蛮大的。对此，苹果建议使用 Metal 来进行图像处理，声称可以更大程度地使用到 GPU 。</p>
 </li>
-<li><p>还有一些其他的 API ，请见 <a href="https://developer.apple.com/documentation/" target="_blank" rel="external">Apple Developer Documentation</a> 。</p>
+<li><p>还有一些其他的 API ，请见 <a href="https://developer.apple.com/documentation/">Apple Developer Documentation</a> 。</p>
 </li>
 </ul>
 <h2 id="新特性"><a href="#新特性" class="headerlink" title="新特性"></a>新特性</h2><p>Xcode 10 beta 的新特性是我们比较关心的，涉及到方方面面，接下来我们看看今年的Xcode 10 给我们带来了什么？</p>
 <h3 id="通用层面"><a href="#通用层面" class="headerlink" title="通用层面"></a>通用层面</h3><h4 id="Dark-Mode"><a href="#Dark-Mode" class="headerlink" title="Dark Mode"></a>Dark Mode</h4><p>说到 macOS Mojave ，首先想到的应该就是 Dark Mode 黑夜模式了，看 WWDC Keynote 的时候，桌面从白天变成黑夜，真的惊艳到。Mojave 的黑夜模式不仅仅是系统层面，App 也可以融入这种深沉的黑色。当然了，Xcode 10 beta 版也在众多支持黑夜模式的首发 App 中，打开看一下：</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/moj7b.png" alt=""></p>
-<p>对这个有兴趣可以看看 <a href="https://developer.apple.com/videos/play/wwdc2018/210/" target="_blank" rel="external">Introducing Dark Mode</a> 。</p>
+<p>对这个有兴趣可以看看 <a href="https://developer.apple.com/videos/play/wwdc2018/210/">Introducing Dark Mode</a> 。</p>
 <h4 id="Library-的位置改变了"><a href="#Library-的位置改变了" class="headerlink" title="Library 的位置改变了"></a>Library 的位置改变了</h4><p>用多了 storyboard ，我们都知道，每次从 Inspectors 底部的 Library(库内容) 中将各种组件拉出来放到 storyboard 为我们设置好的画布上，是一件很舒服的事情。</p>
 <p>从 Xcode 10 开始，Library 不再内嵌于 Inspectors 。而是放到 Xcode 右上角 Configure editor area 的左侧：</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/mpxl8.png" alt=""></p>
@@ -141,7 +142,7 @@
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/aykpw.png" alt=""></p>
 <p>这样的话，在构建时， Toolbar 的 View Activity 的 Activity Indicators 区域会出现一个橘黄色的小锤子：</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/u2dp7.png" alt=""></p>
-<p>新的 Build System 保证了构建时的可靠性和性能，能捕获到项目的配置问题。在我们没有能很好地使用新的 Build System 之前，使用新的工具总会遇到问题，常见的一些编译问题的解释和解决方法在 <a href="https://help.apple.com/xcode/mac/current/#/dev621201fb0" target="_blank" rel="external">Xcode Help</a> 。</p>
+<p>新的 Build System 保证了构建时的可靠性和性能，能捕获到项目的配置问题。在我们没有能很好地使用新的 Build System 之前，使用新的工具总会遇到问题，常见的一些编译问题的解释和解决方法在 <a href="https://help.apple.com/xcode/mac/current/#/dev621201fb0">Xcode Help</a> 。</p>
 <h3 id="Testing"><a href="#Testing" class="headerlink" title="Testing"></a>Testing</h3><h4 id="乱序"><a href="#乱序" class="headerlink" title="乱序"></a>乱序</h4><p>首先，支持乱序。Test Bundle 中的方法可以不按顺序进行测试，默认是关闭的，可以通过 Edit Scheme &gt; Test &gt; Info &gt; Tests 选择任意 Test Bundle ，打开 Options 勾选 Randomize execution order 来开启。</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/tn1xw.png" alt=""></p>
 <h4 id="并行测试"><a href="#并行测试" class="headerlink" title="并行测试"></a>并行测试</h4><p>上图还透露了一个信息，在 Randomize execution order 上面，还有个选项 Execute in parallel on Simulator ，那就是可以并行测试了（并发已经满足不了广大开发者的需求了）。只限于 macOS 的 unit tests ，iOS 模拟器和 tvOS 模拟器的 unit 和 UI tests 。因为，要达到真正的并行，真机肯定是不支持的。并行测试时，Xcode 会开启多个线程运行多个我们选定的模拟器，然后在上面进行测试，在 Report navigator 也会记录线程启动和测试的日志，你会看到很多诸如 Clone X of iPhone X 的信息。</p>
@@ -199,20 +200,18 @@
 </li>
 </ol>
 <h3 id="Localization"><a href="#Localization" class="headerlink" title="Localization"></a>Localization</h3><p>Xcode 10 beta 版支持新的国际化 workflow ，使用新的国际化文件 .xcloc 取代以前的 .xliff 。喔，不，应该是包含 .xliff 。还支持其他可能需要国际化的文件，如图片。</p>
-<p>有兴趣的同学可以看看 <a href="https://developer.apple.com/videos/play/wwdc2018/404/" target="_blank" rel="external">New Localization Workflows in Xcode 10</a> 。</p>
+<p>有兴趣的同学可以看看 <a href="https://developer.apple.com/videos/play/wwdc2018/404/">New Localization Workflows in Xcode 10</a> 。</p>
 <h3 id="Signing-And-Distribution"><a href="#Signing-And-Distribution" class="headerlink" title="Signing And Distribution"></a>Signing And Distribution</h3><p>今年的 Xcode 10 完善了 macOS App 的发布和认证， Organizer Distribution 的 Developer ID 选项提供了上传到 Apple 进行认证的功能。Archive 后， Distribute App &gt; Developer ID ，可以选择 Upload 上传到 Apple 进行认证或 Export 到本地保存。要上传应用，需要在 Xcode 中添加苹果账号，并填写所需的App Store Connect role与提供者资格，此外，认证应用还需要有开发者ID证书签名。</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/97fpw.png" alt=""></p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/a05lh.png" alt=""></p>
 <p>在上传的应用被认证后，你可以在 Organizer 中选择你的档案并点击 Show Status Log 按钮，这样就能查看应用的状态。当收到认证通过的通知后，就可以从 Organizer 中将 App Export 出来，保存下来的 App 包含一个附加的票据，就意味着可以发布了。</p>
 <h2 id="最后说一句"><a href="#最后说一句" class="headerlink" title="最后说一句"></a>最后说一句</h2><p>今年的 WWDC 没有专题讲述 Xcode 10 。很多都是穿插在各个 Session 中。理解并用好一个工具能提高我们开发的效率，每年 Xcode 都有很多新的功能和改进，虽然出 Bug 和闪退的问题依旧存在，依旧是开发者们诟病的一点，但是，苹果爸爸在改善开发者的工作环境和提高 Xcode 的友好度作出的努力，大家还是有目共睹的，至少黑夜模式照顾到了我们这群深夜加班<del>努力写 Bug</del> ，呸，努力写改变世界的代码的工程狮。</p>
 <p>本文是我一份小小的学习笔记，请各位批判性地看，肯定有写的不好或错误的地方，请斧正，我定虚心接受。</p>
-
  
                 <!-- Meta -->
                 <div class="post-meta">
                     <hr>
                     <br>
-                    
                     <div class="post-tags">
                         
                             
@@ -272,7 +271,8 @@
 <script src="/js/backtop.js"></script>
 
 <script type="text/javascript">
-	console.log('Chris Cheung ❤ 2016 - ' + (new Date()).getFullYear());
+	console.log('Chris Cheung ❤ CHILDHOOD 2016 - ' + (new Date()).getFullYear());
+	console.log('嘿嘿，没想到吧，埋了个没什么价值的彩蛋: Go Go Go, you guy, 祝愿你在接下来的路上越跑越远，冲鸭');
 </script>
 
 

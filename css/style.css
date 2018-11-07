@@ -343,6 +343,7 @@ nav {
   height: 100%;
   font-size: 2em;
   transform: translate(0, 0);
+  word-wrap: break-word;
 }
 .post-preview > a > .post-title:before {
   margin-right: 0;
@@ -372,6 +373,18 @@ nav {
 }
 .post-content {
   padding-bottom: 100px;
+}
+.post-excerpt {
+  background-color: #fffafa;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 1px;
+  padding-bottom: 1px;
+  margin-bottom: 70px;
+  margin-left: -10px;
+  margin-right: -10px;
+  border-radius: 10px;
+  border: 1px;
 }
 .post-meta {
   padding-top: 50px;
@@ -539,6 +552,49 @@ img::-moz-selection {
 }
 body {
   webkit-tap-highlight-color: #0085a1;
+}
+@media screen and (max-width: 414px) {
+  .post-preview>a>.post-title {
+    width: 100%;
+    font-size: 1.7em;
+    word-wrap: break-word;
+  }
+  .post-preview p {
+    margin-left: 0%;
+    padding-left: 0;
+  }
+  .intro-header {
+    margin-bottom: 0px;
+  }
+  .intro-header .post-heading h1 {
+    font-size: 25px;
+  }
+  .container {
+    padding-right: 30px;
+    padding-left: 35px;
+    font-size: 16px;
+  }
+  h2 {
+    font-size: 20px;
+  }
+  h2:before {
+    margin-right: 3px;
+    padding-left: 10px;
+  }
+  h3 {
+    font-size: 18px;
+  }
+  h3:before {
+    margin-right: 3px;
+    padding-left: 10px;
+  }
+  h4 h5 h6 {
+    font-size: 16px;
+  }
+  h4 h5 h6:before {
+    margin-right: 3px;
+    padding-left: 10px;
+  }
 }
 .transition-all {
   -webkit-transition: all 0.5s;

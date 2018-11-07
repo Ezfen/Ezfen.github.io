@@ -77,9 +77,10 @@
         <div class="row">
             <!-- Post Main Content -->
             <div class="post-content col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <p>xcodebuild 和 xcrun 是 Xcode 为开发者提供的一套构建打包的命令。使用它们编写脚本，可以实现通过脚本自动化打包的功能。本文基于 Xcode9 ，xcrun 的打包工具被移除，因此笔者主要使用 xcodebuild 来完成打包工作。</p>
-<a id="more"></a>
-<p>在日常开发中，无论是提交给测试部测试还是最终打包上线，都需要将工程打包成 ipa 文件，通常我们是选定 Scheme ，然后在 Xcode 中点击『 Project - Archive 』，当整个工程  archive 后，在自动弹出的 『 Organizer 』 中点击『 Export 』，选择 Ad Hoc 或 App Store ，选择证书或自动签名，等待圈圈转完，导出到指定位置，才能得到里面的 ipa 文件。虽然 Xcode 完美地帮我们完成这一项工作，但其中我们还是需要点击 5 ~ 6 次。而使用脚本来构建打包，就只需要一个命令运行脚本，在等待脚本运行结束的时候，我们可以同时进行其他的工作。</p>
+                <div class="post-excerpt">
+                    <p>xcodebuild 和 xcrun 是 Xcode 为开发者提供的一套构建打包的命令。使用它们编写脚本，可以实现通过脚本自动化打包的功能。本文基于 Xcode9 ，xcrun 的打包工具被移除，因此笔者主要使用 xcodebuild 来完成打包工作。</p>
+                </div>
+                <p>在日常开发中，无论是提交给测试部测试还是最终打包上线，都需要将工程打包成 ipa 文件，通常我们是选定 Scheme ，然后在 Xcode 中点击『 Project - Archive 』，当整个工程  archive 后，在自动弹出的 『 Organizer 』 中点击『 Export 』，选择 Ad Hoc 或 App Store ，选择证书或自动签名，等待圈圈转完，导出到指定位置，才能得到里面的 ipa 文件。虽然 Xcode 完美地帮我们完成这一项工作，但其中我们还是需要点击 5 ~ 6 次。而使用脚本来构建打包，就只需要一个命令运行脚本，在等待脚本运行结束的时候，我们可以同时进行其他的工作。</p>
 <p>同时，使用构建脚本也能更好地集成 CI 。</p>
 <h2 id="xcodebuild"><a href="#xcodebuild" class="headerlink" title="xcodebuild"></a>xcodebuild</h2><blockquote>
 <p>xcodebuild builds one or more targets contained in an Xcode project, or builds a scheme contained in an Xcode workspace or Xcode project.</p>
@@ -153,7 +154,7 @@ xcodebuild -importLocalizations -project name.xcodeproj -localizationPath path
 <h2 id="xcrun"><a href="#xcrun" class="headerlink" title="xcrun"></a>xcrun</h2><pre><code class="shell">xcrun -sdk iphoneos PackageApplication &quot;./Release-iphoneos/${APP_NAME}.app&quot; -o ~/&quot;${IPANAME}&quot;
 </code></pre>
 <p>xcrun 更多地用来将app文件打包到 ipa 中，得以安装在用户的设备上。其中使用到 <em>PackageApplication</em> 这个工具，命令也相对简单，就不多说了。</p>
-<p>需要注意的是：从 Xcode8.3 开始，<em>PackageApplication</em> 从开发工具中被移除，因此我们用来将.app打包成ipa最常用的<code>xcrun</code>指令也变得不好用了。当然可以从旧版本的 Xcode 中将 <em>PackageApplication</em> 拷贝一份放在新的 Xcode 中，让 <em>PackageApplication</em> 继续发光发热。请见<a href="https://stackoverflow.com/questions/43068608/xcrun-error-unable-to-find-utility-packageapplication-not-a-developer-tool" target="_blank" rel="external">stackoverflow</a>。</p>
+<p>需要注意的是：从 Xcode8.3 开始，<em>PackageApplication</em> 从开发工具中被移除，因此我们用来将.app打包成ipa最常用的<code>xcrun</code>指令也变得不好用了。当然可以从旧版本的 Xcode 中将 <em>PackageApplication</em> 拷贝一份放在新的 Xcode 中，让 <em>PackageApplication</em> 继续发光发热。请见<a href="https://stackoverflow.com/questions/43068608/xcrun-error-unable-to-find-utility-packageapplication-not-a-developer-tool">stackoverflow</a>。</p>
 <p>不过使用<code>xcrun</code>还可能存在一些问题：当解压 ipa 后，你会发现，在 app 文件中，<code>Payload</code>文件夹存在，但是<code>BCSymbolMaps</code>、<code>SwiftSupport</code> 和<code>Symbols</code>却找不到了，这有可能会在提交到 App Store 的时候出现问题。</p>
 <p>但是从 Xcode 中 Export xcarchive 则不会出现这样的问题，说明单纯使用 xcrun 的打包旧命令已经不被建议使用了。</p>
 <h2 id="Demonstration🌰"><a href="#Demonstration🌰" class="headerlink" title="Demonstration🌰"></a>Demonstration🌰</h2><p>笔者在使用脚本打包的时候舍弃了 xcrun ，直接用 xcodebuild 来完成工作，提供一个示例：</p>
@@ -217,7 +218,7 @@ mv &quot;${APP_NAME}.ipa&quot; &quot;${IPA_NAME}&quot;
 <li>archive 前 clean 是一个比较好的习惯，清除上次构建形成的中间文件。</li>
 <li>archive 时配置了<code>PROVISIONING_PROFILE_SPECIFIER</code>和<code>DEVELOPMENT_TEAM</code>，用于指定 archive 的签名使用的证书，需要使用 development 用的 Provisioning Profile ，不可以用 app store 或 ad-hoc 的。</li>
 <li>第 2 点中那两个配置，如果去掉，则默认读取 xcodeproj 中的配置。此时可以在 Xcode 的<code>Target-&gt;Signing-&gt;Automaticall manage signing</code>打勾由 Xcode 设置开发证书，或自己设置开发用的 Provisioning Profiles 并确保配置无误（ manual signing ）。</li>
-<li>还是第 2 点的配置，在命令中可以配置的命令请见<a href="https://help.apple.com/xcode/mac/current/#/itcaec37c2a6?sub=dev186481df2" target="_blank" rel="external">这里</a>。</li>
+<li>还是第 2 点的配置，在命令中可以配置的命令请见<a href="https://help.apple.com/xcode/mac/current/#/itcaec37c2a6?sub=dev186481df2">这里</a>。</li>
 <li><code>allowProvisioningUpdates</code>是 Xcode9 才引入的，允许<code>xcodebuild</code>自动更新 Provisioning profile 等。</li>
 </ol>
 <h3 id="exportOptionsPlist-参数"><a href="#exportOptionsPlist-参数" class="headerlink" title="-exportOptionsPlist 参数"></a>-exportOptionsPlist 参数</h3><p>ExportOptions.plist 存在很久了，只是一直没有被拿来使用。在 xcodebuild 打包的时候，这个参数指定 ExportOptions.plist 的位置，用来告诉<code>xcodebuild</code>怎么将<code>.xcarchive</code>文件打包。</p>
@@ -230,17 +231,15 @@ mv &quot;${APP_NAME}.ipa&quot; &quot;${IPA_NAME}&quot;
 <h2 id="Troubleshotting"><a href="#Troubleshotting" class="headerlink" title="Troubleshotting"></a>Troubleshotting</h2><p>编写此章节，是为了记录打包时出现的错误，长期更新：</p>
 <h3 id="1-ipatool-json-filepath-XXXXXX-“No-value”"><a href="#1-ipatool-json-filepath-XXXXXX-“No-value”" class="headerlink" title="1.ipatool-json-filepath-XXXXXX “No value”."></a>1.ipatool-json-filepath-XXXXXX “No value”.</h3><p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/m5j01.png" alt=""></p>
 <p>笔者遇到此问题的时候，是因为 archive 失败，但是路径中还是出现了<code>.xcarchive</code>文件，继续往下 export 的时候就报错了，此时不妨尝试一下，只是 archive 是否有问题？具体原因笔者尚未发现。</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://developer.apple.com/library/content/technotes/tn2339/_index.html" target="_blank" rel="external">1.Building from the Command Line with Xcode FAQ</a></p>
-<p><a href="http://subathrathanabalan.com/2016/01/07/building-ipa-export-archive/" target="_blank" rel="external">2.Using -exportArchive instead of Package Application to export an IPA</a></p>
-<p><a href="https://encyclopediaofdaniel.com/blog/xcarchive-to-ipa/" target="_blank" rel="external">3.XCArchive to ipa</a></p>
-<p><a href="https://help.apple.com/xcode/mac/current/#/dev3a05256b8" target="_blank" rel="external">4.Xcode Help</a></p>
-
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://developer.apple.com/library/content/technotes/tn2339/_index.html">1.Building from the Command Line with Xcode FAQ</a></p>
+<p><a href="http://subathrathanabalan.com/2016/01/07/building-ipa-export-archive/">2.Using -exportArchive instead of Package Application to export an IPA</a></p>
+<p><a href="https://encyclopediaofdaniel.com/blog/xcarchive-to-ipa/">3.XCArchive to ipa</a></p>
+<p><a href="https://help.apple.com/xcode/mac/current/#/dev3a05256b8">4.Xcode Help</a></p>
  
                 <!-- Meta -->
                 <div class="post-meta">
                     <hr>
                     <br>
-                    
                     <div class="post-tags">
                         
                             
@@ -300,7 +299,8 @@ mv &quot;${APP_NAME}.ipa&quot; &quot;${IPA_NAME}&quot;
 <script src="/js/backtop.js"></script>
 
 <script type="text/javascript">
-	console.log('Chris Cheung ❤ 2016 - ' + (new Date()).getFullYear());
+	console.log('Chris Cheung ❤ CHILDHOOD 2016 - ' + (new Date()).getFullYear());
+	console.log('嘿嘿，没想到吧，埋了个没什么价值的彩蛋: Go Go Go, you guy, 祝愿你在接下来的路上越跑越远，冲鸭');
 </script>
 
 

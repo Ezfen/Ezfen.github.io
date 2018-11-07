@@ -77,9 +77,10 @@
         <div class="row">
             <!-- Post Main Content -->
             <div class="post-content col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <p>本来不想重复造轮子，因为网上已经很多关于 iOS 触碰事件传递响应链的文章，而且苹果官方文档也已经解释得很清楚。但是上周和朋友吃饭的时候聊到却不能很好地将想法表达出来，所以感觉还是写一写，加深印象吧～</p>
-<a id="more"></a>
-<p>毋庸置疑地，在论及事件传递的时候我们都会很顺口地使用用上下方向来表达事件传递( Event Delivery )，从 UIApplication 到响应事件的 UIView 是「从下往上」，反过来自然就是「从上往下」了。</p>
+                <div class="post-excerpt">
+                    <p>本来不想重复造轮子，因为网上已经很多关于 iOS 触碰事件传递响应链的文章，而且苹果官方文档也已经解释得很清楚。但是上周和朋友吃饭的时候聊到却不能很好地将想法表达出来，所以感觉还是写一写，加深印象吧～</p>
+                </div>
+                <p>毋庸置疑地，在论及事件传递的时候我们都会很顺口地使用用上下方向来表达事件传递( Event Delivery )，从 UIApplication 到响应事件的 UIView 是「从下往上」，反过来自然就是「从上往下」了。</p>
 <h2 id="从下往上——寻找-HitTest-View"><a href="#从下往上——寻找-HitTest-View" class="headerlink" title="从下往上——寻找 HitTest View"></a>从下往上——寻找 HitTest View</h2><p>当一个用户产生的事件发生并被系统捕获到后，UIKit会创建一个事件对象( Event Object )，携带着一些处理信息，eg: 点击位置、事件类型等，然后将这个对象存放在 UIApplication 的事件队列中，等待处理。</p>
 <p>我们开发中使用的最多的是触碰事件( Touch Event )，也只有触碰事件才需要 iOS 为我们寻找 <strong>HitTest View</strong> ，即<strong>寻找响应该事件的 View </strong>，这一过程，官方文档里称为 <strong><em>Hit-Testing</em></strong> 。</p>
 <p>了解这一过程，先了解 UIView 的两个可重载的方法：</p>
@@ -134,14 +135,12 @@
 <p>你不如先反问一句，两个 View 是否为 SuperView 和 SubView 的关系？！</p>
 <p>再分门别类地回答～</p>
 <p>以上</p>
-<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a href="https://developer.apple.com/library/content/documentation/EventHandling/Conceptual/EventHandlingiPhoneOS/event_delivery_responder_chain/event_delivery_responder_chain.html#//apple_ref/doc/uid/TP40009541-CH4-SW1" target="_blank" rel="external">Event Handling Guide for iOS</a></p>
-
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a href="https://developer.apple.com/library/content/documentation/EventHandling/Conceptual/EventHandlingiPhoneOS/event_delivery_responder_chain/event_delivery_responder_chain.html#//apple_ref/doc/uid/TP40009541-CH4-SW1">Event Handling Guide for iOS</a></p>
  
                 <!-- Meta -->
                 <div class="post-meta">
                     <hr>
                     <br>
-                    
                     <div class="post-tags">
                         
                             
@@ -201,7 +200,8 @@
 <script src="/js/backtop.js"></script>
 
 <script type="text/javascript">
-	console.log('Chris Cheung ❤ 2016 - ' + (new Date()).getFullYear());
+	console.log('Chris Cheung ❤ CHILDHOOD 2016 - ' + (new Date()).getFullYear());
+	console.log('嘿嘿，没想到吧，埋了个没什么价值的彩蛋: Go Go Go, you guy, 祝愿你在接下来的路上越跑越远，冲鸭');
 </script>
 
 

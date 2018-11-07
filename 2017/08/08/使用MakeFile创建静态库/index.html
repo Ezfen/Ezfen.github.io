@@ -77,9 +77,10 @@
         <div class="row">
             <!-- Post Main Content -->
             <div class="post-content col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <p>最近工作上需要将 Win 上的一个 C 库移植到 iOS 上以支持业务的开展，修改代码后需要编译成静态库供 iOS 使用，不想每次别人修改完在 Mac 上编译时还要打开 Xcode ，学习了一下makefile ，直接执行 make 命令就可以了。    </p>
-<a id="more"></a>
-<p>说来惭愧，自己的 C/C++ 水平还没有到达很高的水平，最开始想到的最简单的方式就是创建<code>Cocoa Touch Static Library</code>项目，然后直接将所需要的代码文件无脑添加到项目里面，编译，合成。    </p>
+                <div class="post-excerpt">
+                    <p>最近工作上需要将 Win 上的一个 C 库移植到 iOS 上以支持业务的开展，修改代码后需要编译成静态库供 iOS 使用，不想每次别人修改完在 Mac 上编译时还要打开 Xcode ，学习了一下makefile ，直接执行 make 命令就可以了。    </p>
+                </div>
+                <p>说来惭愧，自己的 C/C++ 水平还没有到达很高的水平，最开始想到的最简单的方式就是创建<code>Cocoa Touch Static Library</code>项目，然后直接将所需要的代码文件无脑添加到项目里面，编译，合成。    </p>
 <p>但是为了让其他同事更快捷地完成工作，学习了如何使用 makefile 来编译静态库。</p>
 <p>本文只是皮毛，主要是在此次工作中的一些历程。     </p>
 <h2 id="静态库特点"><a href="#静态库特点" class="headerlink" title="静态库特点"></a>静态库特点</h2><blockquote>
@@ -222,13 +223,11 @@ lipo -create ${LIB_SIM_PATHS[@]} -output ${LIB_SIMULATOR_NAME}
 <li>此次编写 makefile 的工作不是很难，因为这只是要移植部分里面最简单最小的一个库。</li>
 <li>makefile 在 iOS 上的使用方面，最主要的困难还是如何指定 SDK ，毕竟移植到 iOS 的时候，Win 上或 Linux 上的代码并不是都可用，像这次就需要用到 iOS 的 SDK 里 CoreFoundation 的内容去替换一些已有的实现。</li>
 </ol>
-
  
                 <!-- Meta -->
                 <div class="post-meta">
                     <hr>
                     <br>
-                    
                     <div class="post-tags">
                         
                             
@@ -288,7 +287,8 @@ lipo -create ${LIB_SIM_PATHS[@]} -output ${LIB_SIMULATOR_NAME}
 <script src="/js/backtop.js"></script>
 
 <script type="text/javascript">
-	console.log('Chris Cheung ❤ 2016 - ' + (new Date()).getFullYear());
+	console.log('Chris Cheung ❤ CHILDHOOD 2016 - ' + (new Date()).getFullYear());
+	console.log('嘿嘿，没想到吧，埋了个没什么价值的彩蛋: Go Go Go, you guy, 祝愿你在接下来的路上越跑越远，冲鸭');
 </script>
 
 

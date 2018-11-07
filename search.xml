@@ -7,8 +7,8 @@
       <url>/2018/06/15/Xcode%2010%20%E6%96%B0%E7%89%B9%E6%80%A7/</url>
       <content type="html"><![CDATA[<p>要让开发效率提高，写更多的 <del>bug</del> ，呸，更多改变世界的代码，我们就需要先了解每个苹果系列开发者必须使用的工具，就是今天要讲的主角 —— Xcode 10</p>
 <a id="more"></a>
-<p>Xcode 在每年的 <a href="https://developer.apple.com/videos/wwdc2018/" target="_blank" rel="external">WWDC</a> 都会有所改进，今年也不例外，如约而至降临于六月五号。同样是先发布 <a href="https://developer.apple.com/download/" target="_blank" rel="external">beta</a> 版，正式版将在秋季发布于新的 App Store 上（新版的 App Store 还挺好看的，欢心荡漾中 :] ）</p>
-<h2 id="关于-Xcode-10"><a href="#关于-Xcode-10" class="headerlink" title="关于 Xcode 10"></a>关于 Xcode 10</h2><h3 id="平台限制"><a href="#平台限制" class="headerlink" title="平台限制"></a>平台限制</h3><p>Xcode 10 现在只有 beta 版，只能安装在 mac 10.13.4 及以上的版本，如果升级了最新的 beta 版系统 Mojave 还可以尝试一下黑夜模式，下面会说到。</p>
+<h2 id="关于-Xcode-10"><a href="#关于-Xcode-10" class="headerlink" title="关于 Xcode 10"></a>关于 Xcode 10</h2><p>Xcode 在每年的 <a href="https://developer.apple.com/videos/wwdc2018/" target="_blank" rel="external">WWDC</a> 都会有所改进，今年也不例外，如约而至降临于六月五号。同样是先发布 <a href="https://developer.apple.com/download/" target="_blank" rel="external">beta</a> 版，正式版将在秋季发布于新的 App Store 上（新版的 App Store 还挺好看的，欢心荡漾中 :] ）</p>
+<h3 id="平台限制"><a href="#平台限制" class="headerlink" title="平台限制"></a>平台限制</h3><p>Xcode 10 现在只有 beta 版，只能安装在 mac 10.13.4 及以上的版本，如果升级了最新的 beta 版系统 Mojave 还可以尝试一下黑夜模式，下面会说到。</p>
 <h3 id="SDK"><a href="#SDK" class="headerlink" title="SDK"></a>SDK</h3><p>beta 版包含了新发布的 iOS 12, watchOS 5, macOS 10.14 以及 tvOS 12 的 SDK 开发工具包。</p>
 <h3 id="下载安装"><a href="#下载安装" class="headerlink" title="下载安装"></a>下载安装</h3><p>首先下载 <a href="https://download.developer.apple.com/Developer_Tools/Xcode_10_Beta/Xcode_10_Beta.xip" target="_blank" rel="external">.xip 安装包</a>，解压放到 Applications 文件夹就可以了。使用 beta 版的 command line tools ，在 iTerm 或自带的 Terminals 中执行命令：</p>
 <pre><code class="Shell">xcode-select -s &lt;path to Xcode&gt;

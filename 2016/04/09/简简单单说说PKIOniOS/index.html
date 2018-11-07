@@ -77,9 +77,10 @@
         <div class="row">
             <!-- Post Main Content -->
             <div class="post-content col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <p>Hacker,问你惊未Σ( ° △ °|||)︴</p>
-<a id="more"></a>
-<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/sijuh.jpg" alt="Crypto_Sherlock"> </p>
+                <div class="post-excerpt">
+                    <p>Hacker,问你惊未Σ( ° △ °|||)︴</p>
+                </div>
+                <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/sijuh.jpg" alt="Crypto_Sherlock"> </p>
 <p>看了很多侦探片之后，逐渐发现加解密的神奇所在。能够在别人无法察觉的情况下传递信息（我很喜欢看这些片子，哈哈哈）。无论是Morse Code还是对着某本书根据页码行数字数来确定表达信息，都能让我看到前人的智慧。说真的，我特别钟意神探夏洛克，就算英文渣渣也会在更新的时候到Youtube上看看，等翻译完再翻看一次。记得中国剧场那一集最后根据伦敦地图破解了藏在苏州码子里的暗号，So Sexy~··<br>​<br>今天来聊聊阿澤君的故事，顺便谈谈</p>
 <ol>
 <li>CommonCryto中关于DES、AES的部分内容</li>
@@ -94,7 +95,7 @@
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/7o3yv.jpg" alt="Crypto_DES"></p>
 <h3 id="3DES"><a href="#3DES" class="headerlink" title="3DES"></a>3DES</h3><p>3DES是在DES的基础上做了两次加密和一次解密。具体实现如下：设Ek()和Dk()代表DES算法的加密和解密过程，K代表DES算法使用的密钥，P代表明文，C代表密文，这样：<br>3DES加密过程为：C=Ek3(Dk2(Ek1(P)))<br>3DES解密过程为：P=Dk1(EK2(Dk3(C)))<br>若<strong>Ek1 == Ek2 == Ek3</strong>，就是简单的DES了。</p>
 <h2 id="AES"><a href="#AES" class="headerlink" title="AES"></a>AES</h2><p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/1lfh4.png" alt="Crypto_AES"><br>图片来自网络，若有侵犯到权利之处，请告知，谢谢~    </p>
-<p>AES加密过程涉及到4种操作：字节替代（SubBytes）、行移位（ShiftRows）、列混淆（MixColumns）和轮密钥加（AddRoundKey）。解密过程分别为对应的逆操作。由于每一步操作都是可逆的，按照相反的顺序进行解密即可恢复明文。加解密中每轮的密钥分别由初始密钥扩展得到。算法中16字节的明文、密文和轮密钥都以一个4x4的矩阵表示。<br>算法详细已经有其他人写了，我就不再造轮子了。<a href="http://www.blogfshare.com/aes-rijndael.html" target="_blank" rel="external">密码算法详解——AES</a><br>还有算法及解密算法的<a href="http://blog.csdn.net/searchsun/article/details/2516191" target="_blank" rel="external">模式介绍</a>，可以了解了解~    </p>
+<p>AES加密过程涉及到4种操作：字节替代（SubBytes）、行移位（ShiftRows）、列混淆（MixColumns）和轮密钥加（AddRoundKey）。解密过程分别为对应的逆操作。由于每一步操作都是可逆的，按照相反的顺序进行解密即可恢复明文。加解密中每轮的密钥分别由初始密钥扩展得到。算法中16字节的明文、密文和轮密钥都以一个4x4的矩阵表示。<br>算法详细已经有其他人写了，我就不再造轮子了。<a href="http://www.blogfshare.com/aes-rijndael.html">密码算法详解——AES</a><br>还有算法及解密算法的<a href="http://blog.csdn.net/searchsun/article/details/2516191">模式介绍</a>，可以了解了解~    </p>
 <h2 id="RC4"><a href="#RC4" class="headerlink" title="RC4"></a>RC4</h2><p>不同于块算法的是，RC4等流算法不是对明文进行分组处理，而是字节流的方式依次加密明文中的每一个字节，解密的时候也是依次对密文中的每一个字节进行解密。</p>
 <h2 id="CommonCrypto"><a href="#CommonCrypto" class="headerlink" title="CommonCrypto"></a>CommonCrypto</h2><p>对于身为iOS攻城狮的阿澤君来说，感觉还是这一部分比较重要。    </p>
 <h3 id="CommonCrypto的一些主要的结构体"><a href="#CommonCrypto的一些主要的结构体" class="headerlink" title="CommonCrypto的一些主要的结构体"></a>CommonCrypto的一些主要的结构体</h3><ol>
@@ -292,7 +293,7 @@ enum {
 - (NSString *)decryptInCBC:(NSString *)cipherText key:(NSString *)key iv:(NSData *)iv;
 - (NSString *)encryptInEBC:(NSString *)plainText key:(NSString *)key;
 - (NSString *)decryptInEBC:(NSString *)cipherText key:(NSString *)key;
-</code></pre><p>　　```<br>　　还有AES、RC4的实现大致相同，具体可参考Demo，已经上传<a href="https://github.com/objchris/PKIDemo" target="_blank" rel="external">Github</a></p>
+</code></pre><p>　　```<br>　　还有AES、RC4的实现大致相同，具体可参考Demo，已经上传<a href="https://github.com/objchris/PKIDemo">Github</a></p>
 <p>　　果然，采用加密算法加密后的论文顺利发到老师那里，问题是解密用密钥还在阿澤君手上，老师还是无法看到论文内容，密钥不能通过网络传输给老师，因为Hacker君还在监听着阿澤君和老师的通讯。难道要阿澤君不惧千里（其实不是很远，哈哈哈。我就夸张那么一点点~）去到老师那边，那为何不直接将论文交给老师呢？！！！<br>　　What the <em>**</em>！！！💔💔阿澤君此时心里千万只草泥马在奔腾。        </p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/9hwet.jpg" alt="desk">    </p>
 <p>　　但是阿澤君不会这样轻易地狗带，因为还可以通过非对称加密来解决…</p>
@@ -319,7 +320,7 @@ enum {
 <li>RSA_PKCS1_OAEP_PADDING<br>输入：RSA_size(rsa) – 41<br>输出：和modulus一样长    </li>
 <li>for RSA_NO_PADDING 不填充<br>输入：可以和RSA钥模长一样长，如果输入的明文过长，必须切割，然后填充<br>输出：和modulus一样长    </li>
 </ol>
-<p>特别推荐的是阮一峰的日志两篇日志，写得非常好，我也是参考这个写的：<br><a href="http://www.ruanyifeng.com/blog/2013/06/rsa_algorithm_part_one.html" target="_blank" rel="external">RSA算法原理（一）</a><br><a href="http://www.ruanyifeng.com/blog/2013/07/rsa_algorithm_part_two.html" target="_blank" rel="external">RSA算法原理（二）</a></p>
+<p>特别推荐的是阮一峰的日志两篇日志，写得非常好，我也是参考这个写的：<br><a href="http://www.ruanyifeng.com/blog/2013/06/rsa_algorithm_part_one.html">RSA算法原理（一）</a><br><a href="http://www.ruanyifeng.com/blog/2013/07/rsa_algorithm_part_two.html">RSA算法原理（二）</a></p>
 <h3 id="iOS-Security-framework"><a href="#iOS-Security-framework" class="headerlink" title="iOS Security.framework"></a>iOS Security.framework</h3><h4 id="encryptWithPublicKey"><a href="#encryptWithPublicKey" class="headerlink" title="encryptWithPublicKey"></a>encryptWithPublicKey</h4><pre><code class="objc">- (NSString *)encrypt:(NSString *)stringToEncrypt withPublicKey:(SecKeyRef)publicKey{
     OSStatus status = noErr;
     size_t cipherBufferSize;
@@ -442,18 +443,16 @@ enum {
     return decryptedString;
 }
 </code></pre>
-<p>解密和加密的方式基本一样，此处不多加赘述。<br><a href="https://github.com/objchris/PKIDemo" target="_blank" rel="external">Demo</a></p>
+<p>解密和加密的方式基本一样，此处不多加赘述。<br><a href="https://github.com/objchris/PKIDemo">Demo</a></p>
 <p><strong>Hacker君，问你惊未，哈哈哈哈哈。</strong><br>非对称加密对阿澤君来说完全解决了问题(づ￣ 3￣)づ，使用老师的公钥加密论文后发送回给他。Hacker君就算截取到也无济于事，因为Hacker君没有老师的私钥，无法获取到其中的内容。老师获取到阿澤君发送的论文后自然可以解密查看。    </p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/pivxc.jpg" alt="hahahahaha"><br>从中阿澤君也学到了很多，所以分享给大家❤️。故事有(fei)点(chang)弱智，希望大家不要在意，关注加解密算法就好了~
 　　</p>
-<p>题外话：PKI基础最近才接触，学得不深，有些东西写错请大家见谅。<br>更多的算法，eg：数字摘要、数字签名、口令认证等等都在<a href="https://github.com/objchris/PKIDemo" target="_blank" rel="external">Github</a>上了，有兴趣请移步。<br>关于加解密，貌似OpenSSL会经常用，具体阿澤君也不清楚，还需要更加深入的学习，共勉吧！！！！</p>
-
+<p>题外话：PKI基础最近才接触，学得不深，有些东西写错请大家见谅。<br>更多的算法，eg：数字摘要、数字签名、口令认证等等都在<a href="https://github.com/objchris/PKIDemo">Github</a>上了，有兴趣请移步。<br>关于加解密，貌似OpenSSL会经常用，具体阿澤君也不清楚，还需要更加深入的学习，共勉吧！！！！</p>
  
                 <!-- Meta -->
                 <div class="post-meta">
                     <hr>
                     <br>
-                    
                     <div class="post-tags">
                         
                             
@@ -513,7 +512,8 @@ enum {
 <script src="/js/backtop.js"></script>
 
 <script type="text/javascript">
-	console.log('Chris Cheung ❤ 2016 - ' + (new Date()).getFullYear());
+	console.log('Chris Cheung ❤ CHILDHOOD 2016 - ' + (new Date()).getFullYear());
+	console.log('嘿嘿，没想到吧，埋了个没什么价值的彩蛋: Go Go Go, you guy, 祝愿你在接下来的路上越跑越远，冲鸭');
 </script>
 
 

@@ -77,9 +77,10 @@
         <div class="row">
             <!-- Post Main Content -->
             <div class="post-content col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <p>Block在很多时候会引起循环引用，已经是老生常谈了。很多文章在讲述Block的时候都会谈及这个问题：<br>在一个对象中有着对Block的强引用，而在该Block中又保留着对该对象的强引用。循环引用所带来的后果相信大家也知道，有一个环存在，就意味着每次创建该对象，就会占据一定的内存不会被释放，等到内存不足以继续维持该App的存在时，就会Crash。    </p>
-<a id="more"></a>
-<p>　　常见的解决方法是使用__weak或将有可能造成循环引用的对象作为Block的参数传入。<br>　　循环引用我不打算在此展开，因为有很多好的文章已经讲得很详细，大家可自行找找。<br>　　<br>　　很多文章提及：循环引用所针对的是对象，能够形成环的是“对象——Block——对象”。换种方式思考，类方法就不会造成相似的内存泄漏。真的是这样吗？！<br>　　<strong>不是。</strong><br>　　<strong>不是。</strong><br>　　<strong>不是。</strong>    </p>
+                <div class="post-excerpt">
+                    <p>Block在很多时候会引起循环引用，已经是老生常谈了。很多文章在讲述Block的时候都会谈及这个问题：<br>在一个对象中有着对Block的强引用，而在该Block中又保留着对该对象的强引用。循环引用所带来的后果相信大家也知道，有一个环存在，就意味着每次创建该对象，就会占据一定的内存不会被释放，等到内存不足以继续维持该App的存在时，就会Crash。    </p>
+                </div>
+                <p>　　常见的解决方法是使用__weak或将有可能造成循环引用的对象作为Block的参数传入。<br>　　循环引用我不打算在此展开，因为有很多好的文章已经讲得很详细，大家可自行找找。<br>　　<br>　　很多文章提及：循环引用所针对的是对象，能够形成环的是“对象——Block——对象”。换种方式思考，类方法就不会造成相似的内存泄漏。真的是这样吗？！<br>　　<strong>不是。</strong><br>　　<strong>不是。</strong><br>　　<strong>不是。</strong>    </p>
 <h2 id="举个栗子"><a href="#举个栗子" class="headerlink" title="举个栗子"></a>举个栗子</h2><p>　　平常使用UIView的Animation之时，例如<code>[UIView animateWithDuration:animations:];</code>使用Block可以方便快捷地将设置需要变换的属性。对于类方法可以放心地写self而不必担心循环引用的问题。但是，对于<code>[UIView animateWithDuration: animations: completion:];</code>除了在动画结束时做一些操作外，当我们需要动画循环播放的时候，很常用的方法类似于：     </p>
 <pre><code class="objectivec">- (void)startAnimation {
     [UIView animateWithDuration:3.5 animations:^{
@@ -102,20 +103,18 @@
 <li>将上述代码的self改成weakSelf，再来看看Instruments：<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/jnbwl.jpg" alt="block_weakSelf"><br>QRCodeScanner被销毁后：<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/p1pae.jpg" alt="block_weakSelf2">     </li>
 </ol>
 <p>　　结果很明显，若是使用self，EZScanNetGrid这个View一直存在于内存中没有被释放，因为UIView Animation对其的强引用使其一直存在于内存中，直至Block里面的代码执行完毕。但是这段代码里可以看到，completion中又继续调用了<code>[self startAnimation];</code>因此，系统会继续保留对EZScanNetGrid的引用，从而即使EZScanNetGrid的SuperView被销毁了，EZScanNetGrid还是没有被销毁，无限地循环调用着动画，占据内存的同时也耗费着CPU。:(</p>
-<p>　　此文有点晦涩，附上<a href="https://github.com/objchris/ChrisDerDemos/tree/master/ClassBlockDemo" target="_blank" rel="external">DEMO地址</a></p>
+<p>　　此文有点晦涩，附上<a href="https://github.com/objchris/ChrisDerDemos/tree/master/ClassBlockDemo">DEMO地址</a></p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
 <li>关于Block的内存泄漏不只是循环引用会引起。</li>
 <li>不仅仅是UIView，其他将Block作为参数的类方法，如果在一个Block中递归调用到本Block，记得将引用的对象加上__weak。你说，在Block被调用的时候self被释放了怎么办？！去看看__strong的资料吧。</li>
 <li><del>很多iOS的类方法传入的Block是_NSConcreteStackBlock，可见_NSConcreteStackBlock也会对Block中的对象保持强引用。(待考究)</del>确实，没有强指针引用的block都是StackBlock，表面看起来系统API传入的Block都是StackBlock，但是以下四种情况：<br>1.手动调用copy<br>2.Block是函数的返回值<br>3.Block被强引用，Block被赋值给__strong或者id类型<br>4.调用系统API入参中含有usingBlcok的方法<br>系统都会默认调用copy方法把Block复制到堆中，变成MallocBlock，会对对象进行持有。</li>
-<li>关于ARC和MRC下的三种Block是否能执行，请做做这几道测试题<a href="http://blog.parse.com/learn/engineering/objective-c-blocks-quiz/" target="_blank" rel="external">Objective-C Blocks Quiz</a></li>
+<li>关于ARC和MRC下的三种Block是否能执行，请做做这几道测试题<a href="http://blog.parse.com/learn/engineering/objective-c-blocks-quiz/">Objective-C Blocks Quiz</a></li>
 </ol>
-
  
                 <!-- Meta -->
                 <div class="post-meta">
                     <hr>
                     <br>
-                    
                     <div class="post-tags">
                         
                             
@@ -175,7 +174,8 @@
 <script src="/js/backtop.js"></script>
 
 <script type="text/javascript">
-	console.log('Chris Cheung ❤ 2016 - ' + (new Date()).getFullYear());
+	console.log('Chris Cheung ❤ CHILDHOOD 2016 - ' + (new Date()).getFullYear());
+	console.log('嘿嘿，没想到吧，埋了个没什么价值的彩蛋: Go Go Go, you guy, 祝愿你在接下来的路上越跑越远，冲鸭');
 </script>
 
 

@@ -77,10 +77,11 @@
         <div class="row">
             <!-- Post Main Content -->
             <div class="post-content col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <p>说到持续集成，Jenkins 是用得比较多的。本文说明了我从安装到配置再到打包 ipa 文件，从手动打包到点击一下按钮自动生成 ipa 所做的事情。</p>
+                <div class="post-excerpt">
+                    <p>说到持续集成，Jenkins 是用得比较多的。本文说明了我从安装到配置再到打包 ipa 文件，从手动打包到点击一下按钮自动生成 ipa 所做的事情。</p>
 <p>得益于 Jenkins ，让开发体验提升了不少。不多说，文内多图，来跟我一起密林探索吧 :]</p>
-<a id="more"></a>
-<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/aohum.png" alt="Jenkins"></p>
+                </div>
+                <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/aohum.png" alt="Jenkins"></p>
 <h2 id="Jenkins安装"><a href="#Jenkins安装" class="headerlink" title="Jenkins安装"></a>Jenkins安装</h2><p>本文以 <em>Jenkins</em> 当前时间 <strong>2018.03.27</strong> 的最近 weekly 版本 <em>2.113</em> 来说明， Jenkins 是 Java web 项目，在使用上有 Java 环境的限制：<strong>jdk1.8 以上</strong>。</p>
 <p>对于 macOS10.9 和 10.10 来说，系统中自带有 jdk1.6 ，但这并不符合要求。而其他版本（ macOS10.11 以上）中貌似没有 jdk ，可以在命令行工具键入<code>java -version</code>来判断。</p>
 <p>若出现以下提示，则表示没有配置 Java 环境或系统中没有安装 jdk ：</p>
@@ -88,7 +89,7 @@
 </code></pre>
 <p>若弹出安装对话框，点击 <strong>『好』</strong> 退出对话框。</p>
 <p>不然，定位到<code>/Library/Java/JavaVirtualMachines</code>中可查看是否存在 jdk 。</p>
-<p>如果都没有，或 jdk 版本不符，则需要重新安装。 macOS 的安装方式比较简单，在<a href="http://www.oracle.com/technetwork/java/javase/downloads/index-jsp-138363.html" target="_blank" rel="external">Oracle的jdk下载地址</a>上下载 dmg 安装包，直接安装 jdk1.8 到系统中。然后修改<code>~/.bashrc</code>文件配置一系列的系统变量，如果使用<code>zsh</code>，则修改<code>~/.zshrc</code>。在文件末尾添加：</p>
+<p>如果都没有，或 jdk 版本不符，则需要重新安装。 macOS 的安装方式比较简单，在<a href="http://www.oracle.com/technetwork/java/javase/downloads/index-jsp-138363.html">Oracle的jdk下载地址</a>上下载 dmg 安装包，直接安装 jdk1.8 到系统中。然后修改<code>~/.bashrc</code>文件配置一系列的系统变量，如果使用<code>zsh</code>，则修改<code>~/.zshrc</code>。在文件末尾添加：</p>
 <pre><code class="shell"># 通常通过dmg安装的jdk都是在/Library/Java/JavaVirtualMachines/下，需根据实际情况对JAVA_HOME进行配置
 export JAVA_HOME=&quot;/Library/Java/JavaVirtualMachines/jdk1.8.0_161.jdk/Content/Home&quot;
 export CLASS_HOME=&quot;$JAVA_HOME/lib&quot;
@@ -102,7 +103,7 @@ export PATH=&quot;.;$PATH:$JAVA_HOME/bin&quot;
 </code></pre>
 <p>再次使用<code>java - version</code>验证是否安装成功（全文部分截图是我使用公司电脑安装 Jenkins 时截下来的）：</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/ve0qh.png" alt="55B9E6EFD1C3099B8203D17D0089360C"></p>
-<p>好了，然后安装 <strong>Jenkins </strong> 。同样的，在<a href="https://jenkins.io/download/" target="_blank" rel="external">官网下载页面</a>上选择 <strong>Weekly — Mac OS X</strong> 下载 <em>pkg</em> 安装包。</p>
+<p>好了，然后安装 <strong>Jenkins </strong> 。同样的，在<a href="https://jenkins.io/download/">官网下载页面</a>上选择 <strong>Weekly — Mac OS X</strong> 下载 <em>pkg</em> 安装包。</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/gz4yg.png" alt="Jenkins Website"></p>
 <p>以 <strong>2.113</strong> 为例，一步步安装。</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/9ez6l.png" alt="Jenkins Install Begin"></p>
@@ -137,7 +138,7 @@ export PATH=&quot;.;$PATH:$JAVA_HOME/bin&quot;
 </ol>
 <h3 id="启动与关闭"><a href="#启动与关闭" class="headerlink" title="启动与关闭"></a>启动与关闭</h3><p>首先，针对使用 <strong>pkg</strong> 安装的方式（使用直接下载 war ，用<code>java -jar</code>运行不在本文的讨论范围内。），Jenkins 作为一个后台驻留程序（ <em>Daemon</em> ），在 Wins 下我们习惯叫服务，自然有开关。</p>
 <p>一个后台驻留程序是运行在系统后台的，没有任何GUI的程序。在 macOS 下，一个后台驻留程序的配置保存在一个<code>plist</code>文件中，非系统驻留程序的<code>plist</code>文件都统一存放在<code>/Library/LaunchDaemons</code>之中。</p>
-<p>我们知道，<code>plist</code>本质是 xml 文件，其中存放的都是键值对，里面的键都是 <a href="x-man-page://5/launchd.plist" target="_blank" rel="external">launch.plist</a> 中定义的，这个<code>plist</code>用于告知<code>launch</code>去哪里运行脚本，以及运行过程中一些路径和用户、组的配置。</p>
+<p>我们知道，<code>plist</code>本质是 xml 文件，其中存放的都是键值对，里面的键都是 <a href="x-man-page://5/launchd.plist">launch.plist</a> 中定义的，这个<code>plist</code>用于告知<code>launch</code>去哪里运行脚本，以及运行过程中一些路径和用户、组的配置。</p>
 <p>所以，启动和关闭的命令看起来比较少见：</p>
 <pre><code class="shell"># 开启Jenkins
 sudo launchctl load /Library/LaunchDaemons/org.jenkins-ci.plist
@@ -215,7 +216,7 @@ exec /usr/bin/java $javaArgs -jar &quot;$war&quot; $args
 <li>httpPort、httpsport :  http、https 端口</li>
 <li>httpListenAddress、httpsListenAddress : 接收请求 IP ，默认为 0.0.0.0 ，即其他主机也可以访问到，接收任意 IP 发来的请求。若设置为 127.0.0.1 ，则只能本机访问。</li>
 </ul>
-<p>对于配置项，有兴趣的同学可以参考<a href="https://wiki.jenkins.io/display/JENKINS/Starting+and+Accessing+Jenkins" target="_blank" rel="external">这里</a>，十分详细且有一些配置示例。</p>
+<p>对于配置项，有兴趣的同学可以参考<a href="https://wiki.jenkins.io/display/JENKINS/Starting+and+Accessing+Jenkins">这里</a>，十分详细且有一些配置示例。</p>
 <p>修改配置，可以使用以下命令：</p>
 <pre><code class="shell">sudo defaults write /Library/Preferences/org.jenkins-ci SETTING VALUE
 </code></pre>
@@ -234,7 +235,7 @@ exec /usr/bin/java $javaArgs -jar &quot;$war&quot; $args
 <h2 id="插件安装"><a href="#插件安装" class="headerlink" title="插件安装"></a>插件安装</h2><p>在密林探索开始以前，我们要带上一些工具，给 Jenkins 安装一些插件。</p>
 <p>插件安装在『 系统管理 — 管理插件 』，图标是一块绿色的小拼图。点击进去可以看到可更新、可选插件、已安装、高级。都是望名知意，不多做解释了。</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/gru5l.png" alt=""></p>
-<p>选择 <em>可选插件</em> ，在过滤处输入想要安装的插件。对我们来说，版本管理工具 Git 或 SVN 用得最多，但是如果一开始安装 Jenkins 的时候已选择社区推荐插件的话，其实已经安装好了 GitHub 的相关插件 <a href="http://wiki.jenkins-ci.org/display/JENKINS/Github+Plugin" target="_blank" rel="external">GitHub plugin</a> 。 SVN 的话，我所使用的 Jenkins 2.113 版本在 war 包内部嵌入了 SVN 的插件 <a href="https://wiki.jenkins.io/display/JENKINS/Subversion+Plugin" target="_blank" rel="external">Subversion Plug-in</a> 。如果公司内部有 Git 服务器，通常是部署的开源 GitLab ，则需要安装<code>GitLab Plugin</code>用于管理源码和<code>Gitlab Hook Plugin</code>用于构建 GitLab 的触发器。</p>
+<p>选择 <em>可选插件</em> ，在过滤处输入想要安装的插件。对我们来说，版本管理工具 Git 或 SVN 用得最多，但是如果一开始安装 Jenkins 的时候已选择社区推荐插件的话，其实已经安装好了 GitHub 的相关插件 <a href="http://wiki.jenkins-ci.org/display/JENKINS/Github+Plugin">GitHub plugin</a> 。 SVN 的话，我所使用的 Jenkins 2.113 版本在 war 包内部嵌入了 SVN 的插件 <a href="https://wiki.jenkins.io/display/JENKINS/Subversion+Plugin">Subversion Plug-in</a> 。如果公司内部有 Git 服务器，通常是部署的开源 GitLab ，则需要安装<code>GitLab Plugin</code>用于管理源码和<code>Gitlab Hook Plugin</code>用于构建 GitLab 的触发器。</p>
 <p>我的主要目的是 iOS 项目构建，因此还需要选择<code>Xcode integration</code>安装 Xcode 插件，和管理签名证书私钥和 PP 文件的<code>Keychains and Provisioning Profiles Management</code>。</p>
 <p>安装完了这些，我们就可以配置一个构建项目了。</p>
 <h2 id="构建项目"><a href="#构建项目" class="headerlink" title="构建项目"></a>构建项目</h2><h3 id="基本项目配置"><a href="#基本项目配置" class="headerlink" title="基本项目配置"></a>基本项目配置</h3><p>回到主界面上，点击左上角 <em>新建任务</em> ，进入新建任务界面。</p>
@@ -274,7 +275,7 @@ exec /usr/bin/java $javaArgs -jar &quot;$war&quot; $args
 <h4 id="配置项目使用的-Keychain"><a href="#配置项目使用的-Keychain" class="headerlink" title="配置项目使用的 Keychain"></a>配置项目使用的 Keychain</h4><p>回到项目配置中，此时就可以选择 Keychain and Code Signing Identity 了。</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/4wmwm.png" alt=""></p>
 <p>这里的 Provisioning Profiles 是需要 development 和 ad-hoc 的。</p>
-<h3 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h3><p>项目构建最简单的方式就是使用脚本了，可以看我前面写过的<a href="https://objchris.com/2018/04/02/iOS脚本打包/" target="_blank" rel="external">文章——iOS脚本打包 - xcodebuild</a>。</p>
+<h3 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h3><p>项目构建最简单的方式就是使用脚本了，可以看我前面写过的<a href="https://objchris.com/2018/04/02/iOS脚本打包/">文章——iOS脚本打包 - xcodebuild</a>。</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/l2gp4.png" alt=""></p>
 <p>增加构建步骤，选择<code>Execute shell</code>，填入脚本：</p>
 <pre><code class="shell">#!/bin/sh -l
@@ -324,13 +325,11 @@ sh KeyXBuild.sh
 <p>为了解决这个问题，才有了上面构建脚本中对 Keychain 的一系列操作。</p>
 <h2 id="说在最后"><a href="#说在最后" class="headerlink" title="说在最后"></a>说在最后</h2><p>可能在未来使用过程中会遇到问题，会回来补充。</p>
 <p>つつく</p>
-
  
                 <!-- Meta -->
                 <div class="post-meta">
                     <hr>
                     <br>
-                    
                     <div class="post-tags">
                         
                             
@@ -390,7 +389,8 @@ sh KeyXBuild.sh
 <script src="/js/backtop.js"></script>
 
 <script type="text/javascript">
-	console.log('Chris Cheung ❤ 2016 - ' + (new Date()).getFullYear());
+	console.log('Chris Cheung ❤ CHILDHOOD 2016 - ' + (new Date()).getFullYear());
+	console.log('嘿嘿，没想到吧，埋了个没什么价值的彩蛋: Go Go Go, you guy, 祝愿你在接下来的路上越跑越远，冲鸭');
 </script>
 
 
