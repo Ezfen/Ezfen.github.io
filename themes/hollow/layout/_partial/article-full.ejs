@@ -21,18 +21,15 @@
         <div class="row">
             <!-- Post Main Content -->
             <div class="post-content col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <%- item.content %>
+                <div class="post-excerpt">
+                    <%- item.excerpt %>
+                </div>
+                <%- item.more %>
  
                 <!-- Meta -->
                 <div class="post-meta">
                     <hr>
                     <br>
-                    <% if (item.mddl) { %>
-                        <div class="mddl">
-                            <img src="<%- item.thumbnail %>"/>
-                            <a>本篇文章.md</a>
-                        </div>
-                    <% }%>
                     <div class="post-tags">
                         <% if (item.tags && item.tags.length){ %>
                             <%- partial('article-tags', {item: item}) %>

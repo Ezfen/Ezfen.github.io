@@ -10,9 +10,9 @@ typora-copy-images-to: ipic
 
 <!--more-->
 
-Xcode 在每年的 [WWDC](https://developer.apple.com/videos/wwdc2018/) 都会有所改进，今年也不例外，如约而至降临于六月五号。同样是先发布 [beta](https://developer.apple.com/download/) 版，正式版将在秋季发布于新的 App Store 上（新版的 App Store 还挺好看的，欢心荡漾中 :] ）
-
 ## 关于 Xcode 10
+
+Xcode 在每年的 [WWDC](https://developer.apple.com/videos/wwdc2018/) 都会有所改进，今年也不例外，如约而至降临于六月五号。同样是先发布 [beta](https://developer.apple.com/download/) 版，正式版将在秋季发布于新的 App Store 上（新版的 App Store 还挺好看的，欢心荡漾中 :] ）
 
 ### 平台限制
 
