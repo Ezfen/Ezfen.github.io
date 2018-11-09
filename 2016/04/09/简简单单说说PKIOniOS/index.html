@@ -288,12 +288,11 @@ enum {
     }
 }
 </code></pre>
-<p>上述两个函数主要是为了规范密钥的长度和获取明文密文块的长度，很好理解就不详细介绍了。这样还是不能傻瓜式地调用，因此阿澤君创建了DESCipherActor继承于SymCipherActor，进一步进行封装：<br>　　DESCipherActor.h<br>　　``` objc</p>
-<pre><code>- (NSString *)encryptInCBC:(NSString *)plainText key:(NSString *)key iv:(NSData *)iv;
-- (NSString *)decryptInCBC:(NSString *)cipherText key:(NSString *)key iv:(NSData *)iv;
-- (NSString *)encryptInEBC:(NSString *)plainText key:(NSString *)key;
-- (NSString *)decryptInEBC:(NSString *)cipherText key:(NSString *)key;
-</code></pre><p>　　```<br>　　还有AES、RC4的实现大致相同，具体可参考Demo，已经上传<a href="https://github.com/objchris/PKIDemo">Github</a></p>
+<p>上述两个函数主要是为了规范密钥的长度和获取明文密文块的长度，很好理解就不详细介绍了。这样还是不能傻瓜式地调用，因此阿澤君创建了DESCipherActor继承于SymCipherActor，进一步进行封装：<br>　　DESCipherActor.h<br>　　<code>objc
+​    - (NSString *)encryptInCBC:(NSString *)plainText key:(NSString *)key iv:(NSData *)iv;
+​    - (NSString *)decryptInCBC:(NSString *)cipherText key:(NSString *)key iv:(NSData *)iv;
+​    - (NSString *)encryptInEBC:(NSString *)plainText key:(NSString *)key;
+​    - (NSString *)decryptInEBC:(NSString *)cipherText key:(NSString *)key;</code><br>　　还有AES、RC4的实现大致相同，具体可参考Demo，已经上传<a href="https://github.com/objchris/PKIDemo">Github</a></p>
 <p>　　果然，采用加密算法加密后的论文顺利发到老师那里，问题是解密用密钥还在阿澤君手上，老师还是无法看到论文内容，密钥不能通过网络传输给老师，因为Hacker君还在监听着阿澤君和老师的通讯。难道要阿澤君不惧千里（其实不是很远，哈哈哈。我就夸张那么一点点~）去到老师那边，那为何不直接将论文交给老师呢？！！！<br>　　What the <em>**</em>！！！💔💔阿澤君此时心里千万只草泥马在奔腾。        </p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/9hwet.jpg" alt="desk">    </p>
 <p>　　但是阿澤君不会这样轻易地狗带，因为还可以通过非对称加密来解决…</p>
@@ -443,7 +442,7 @@ enum {
     return decryptedString;
 }
 </code></pre>
-<p>解密和加密的方式基本一样，此处不多加赘述。<br><a href="https://github.com/objchris/PKIDemo">Demo</a></p>
+<p>解密和加密的方式基本一样，此处不多加赘述。<br><a href="https://github.com/objchris/ChrisDerDemos/tree/master/PKIDemo">Demo</a></p>
 <p><strong>Hacker君，问你惊未，哈哈哈哈哈。</strong><br>非对称加密对阿澤君来说完全解决了问题(づ￣ 3￣)づ，使用老师的公钥加密论文后发送回给他。Hacker君就算截取到也无济于事，因为Hacker君没有老师的私钥，无法获取到其中的内容。老师获取到阿澤君发送的论文后自然可以解密查看。    </p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/pivxc.jpg" alt="hahahahaha"><br>从中阿澤君也学到了很多，所以分享给大家❤️。故事有(fei)点(chang)弱智，希望大家不要在意，关注加解密算法就好了~
 　　</p>

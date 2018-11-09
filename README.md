@@ -13,3 +13,17 @@ CHILDHOOD
 看能不能在码字的时候找到，所以呢，博客诞生了，有空时记录学习状态和分享一些自己的小想法。
 
 嗯，就这样吧~
+
+| 类别                                              | 文章                                                         |
+| ------------------------------------------------- | ------------------------------------------------------------ |
+| [WWDC 2018](https://objchris.com/tags/WWDC2018/)  | [What's new in Xcode 10](https://objchris.com/2018/06/15/Xcode%2010%20%E6%96%B0%E7%89%B9%E6%80%A7/) |
+| [CI](https://objchris.com/tags/CI/)               | [Jenkins密林探索](https://objchris.com/2018/04/27/Jenkins/)  |
+| [Animation](https://objchris.com/tags/Animation/) | [穿越的桃心~](https://objchris.com/2016/05/21/EZHeartForLike/) |
+| [Thread](https://objchris.com/tags/Thread/)       | [iOS下重要的多线程GCD](https://objchris.com/2017/03/23/iOS%E4%B8%8B%E9%87%8D%E8%A6%81%E7%9A%84%E5%A4%9A%E7%BA%BF%E7%A8%8BGCD/)</br>[对线程的简单理解](https://objchris.com/2017/03/14/%E5%AF%B9%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%AE%80%E5%8D%95%E7%90%86%E8%A7%A3/) |
+| [UI](https://objchris.com/tags/UIView/)           | [iOS Touch Event传递和响应链](https://objchris.com/2017/02/27/iOS-Event%E4%BC%A0%E9%80%92%E5%92%8C%E5%93%8D%E5%BA%94%E9%93%BE/)</br>[Autoresizing Mask](https://objchris.com/2016/03/19/autoresizingMask/) |
+| [Library](https://objchris.com/tags/Library/)     | [使用makefile创建静态库](https://objchris.com/2017/08/08/%E4%BD%BF%E7%94%A8MakeFile%E5%88%9B%E5%BB%BA%E9%9D%99%E6%80%81%E5%BA%93/) |
+| [Security](https://objchris.com/tags/Security/)   | [我想...修复一个已发布软件的BUG](https://objchris.com/2018/11/07/%E9%80%86%E5%90%91%E4%BF%AE%E5%A4%8D%E8%BD%AF%E4%BB%B6%E7%9A%84BUG/)</br>[简简单单说说PKI On iOS](https://objchris.com/2016/04/09/%E7%AE%80%E7%AE%80%E5%8D%95%E5%8D%95%E8%AF%B4%E8%AF%B4PKIOniOS/) |
+| [Mood](https://objchris.com/tags/Mood/)           | [我有烦恼，你有答案](https://objchris.com/2017/02/19/%E6%88%91%E6%9C%89%E7%83%A6%E6%81%BC%EF%BC%8C%E4%BD%A0%E6%9C%89%E7%AD%94%E6%A1%88/)</br>[阿澤君的独白](https://objchris.com/2016/04/02/%E9%98%BF%E6%BE%A4%E5%90%9B%E7%9A%84%E7%8B%AC%E7%99%BD/) |
+| Blog                                              | [Hello World Again](https://objchris.com/2017/02/17/hello-world/) |
+| [Summary](https://objchris.com/tags/Summary/)     | [《Beauty》项目小总结](https://objchris.com/2017/07/17/%E9%A1%B9%E7%9B%AEBeauty%E6%80%BB%E7%BB%93/) |
+
