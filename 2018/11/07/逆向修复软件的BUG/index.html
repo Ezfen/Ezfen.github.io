@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="Chris Cheung’s blog | iOS | Design | Mood">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="阿澤">
+    
+
+    <!-- Title -->
+    
+    <title>我想...修复一个已发布软件的BUG | CHILDHOOD</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Highlight Code-->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/atom-one-light.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/content.css">
+    <link rel="stylesheet" href="/css/component.css">
+    <link rel="stylesheet" href="/css/search.css">
+
+    <!-- Custom Fonts -->
+    <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+    <!-- Content -->
+    <section class="article-container">
+<!-- Back Home -->
+<a class="nav-back" href="/">
+    <i class="fa fa-home"></i>
+</a>
+
+<!-- Page Header -->
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>我想...修复一个已发布软件的BUG</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Main Content -->
+            <div class="post-content col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-excerpt">
+                    <p>事实上，我也没想过会是以这种形式接触逆向工程，我甚至不知道这样是不是就叫逆向工程，事情的起因就只是想省下一笔买蓝牙键盘的钱，惭愧。</p>
+                </div>
+                <h2 id="背景与目的"><a href="#背景与目的" class="headerlink" title="背景与目的"></a>背景与目的</h2><p>对全面屏 iPad Pro 的青睐已久，在今年 10 月 30 号 发布之后就剁手买了一个。不想买配套键盘，一是觉得与 iPad 的设计初衷向违背，移动办公不想多个累赘的键盘；二是一千三百多大洋着实让我望而却步，感觉不是很值得吧。而且平时用 iPad 也没用键盘，小部分时候确实不方便。今天看着电脑键盘突然想到，能不能通过 Mac 来连接 iPad ，充当 iPad 的键盘呢？</p>
+<p>起初想学学自己写个 Mac 端的 App ，发现成本略高，遂转去寻找市面上是否有满足的 App。发现了一款：1Keyboard 。不过很久没更新，上一次已是 2016 年。看了 App Store，68 大洋。</p>
+<p>使用的过程中，我发现了一个可能是 BUG 的无脑设定，十分影响使用，所以寻思着看看能否自己解决，于是我要对 1Keyboard 开刀了。</p>
+<h2 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h2><ul>
+<li><p>class-dump —— 导出一个二进制文件的头文件等信息。</p>
+</li>
+<li><p>Hopper Disassembler —— 反汇编分析工具。</p>
+</li>
+<li><p>lldb —— Xcode 自带的调试器。</p>
+</li>
+<li><p>Hex fiend —— 二进制文件编辑器。</p>
+</li>
+</ul>
+<h2 id="开刀"><a href="#开刀" class="headerlink" title="开刀"></a>开刀</h2><h3 id="为什么要开刀"><a href="#为什么要开刀" class="headerlink" title="为什么要开刀"></a>为什么要开刀</h3><p>正如医生对症下刀一样，病人接受临床手术必定是身体机能有问题。 1Keyboard 的问题在于：一个可能是 BUG 的无脑设定。</p>
+<p>实话，第一次的尝试『 macOS 10.14 连接 iOS 12.1 ( iPhone ) 』给我留下的印象还是很好的，输入的东西很快地在我的手机上显示出来，时延低。但是我在 Mac 上码字习惯用 Caps Lock 来切换输入法，事实上，1Keyboard 应该也是支持 Caps Lock 来更换移动设备的输入法的（我看到 iPhone 上输入法已经切换），但在 Mac 上弹出的类似 HUD 的窗口竟然出现了一个 Sheet ？！</p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/8f3t1.png" alt="Screen Shot 2018-11-07 at 4.07.39 PM"></p>
+<p>What ？！！ 这种感觉就好像代码的某个位置接收到键盘 Caps Lock 事件时命名奇妙地执行了这样一段代码：</p>
+<pre><code class="objective-c">NSAlert *alert = [[NSAlert alloc] init];
+alert.alertStyle = NSAlertStyleInformational;
+alert.messageText = @&quot;Use the fn Key + media keys to control playback and volumn&quot;;
+[alert beginSheetModalForWindow:window completionHandler:nil];
+</code></pre>
+<p>这个提示是好的，让我知道我还能通过 Fn + 的组合去调节移动设备的音量、亮度等。但不应该是以这种情况出现的。</p>
+<p>所以，很明显——这次的临床手术就是<strong>找到这个 BUG 并解决它</strong>。</p>
+<h3 id="初探-1Keyboard"><a href="#初探-1Keyboard" class="headerlink" title="初探 1Keyboard"></a>初探 1Keyboard</h3><p>我们知道 App 的执行代码最后都编译链接成一个二进制文件，而 1Keyboard 的二进制文件就是 1Keyboard.app/Contents/MacOS/1Keyboard 。绝大多数的操作都是对这个二进制文件进行的。</p>
+<p>了解一个软件，我们都需要从头文件开始做起。先看看软件中存在哪些类，类中都有些什么函数。这时候，我们第一个工具 class-dump 就起作用了。</p>
+<p>将 class-dump 放在与 App 放在同一个文件夹下，然后在终端执行命令，看看里面有哪些头文件：</p>
+<pre><code class="shell">class-dump -H 1Keyboard.app/Contents/MacOS/1Keyboard -o ./Headers
+</code></pre>
+<p>运行结束后在当前目录中会有一个叫 Headers 的文件夹，里面就包含了 1Keyboard 的头文件。此时会看到，几十个头文件，密密麻麻不知道从何看起。</p>
+<h3 id="第一次寻找突破点"><a href="#第一次寻找突破点" class="headerlink" title="第一次寻找突破点"></a>第一次寻找突破点</h3><p>还记得前面的截图吗？！在出现问题的时候，我们使用的窗口是仅仅是类 HUD 的一个 Windows。那突破口应该就是一个 Controller 或者一个 Window 。在头文件里找，很快地找到一个疑似的 BoxViewController.h 。</p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/qcyfk.png" alt="Screen Shot 2018-11-08 at 11.44.52 AM"></p>
+<p>一个疑似的函数也出现了：<code>- (void)handleKeyboardEvent:(id)arg1</code>。感觉像是用来处理键盘事件的。</p>
+<p>找到点苗头，接下来就是看看函数实现能否印证我们的猜测。</p>
+<p>打开 Hopper Disassembler ，将 Macos 文件夹下的二进制文件拖入其中，会得到很多汇编代码，如下图：</p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/w7f2s.png" alt="Screen Shot 2018-11-08 at 11.56.02 AM"></p>
+<p>汇编是低层的编程语言，写 C 时有可能会在函数中间插入一小段，还有使用 Xcode 调试的时候也经常能看到，但是没有深入的学习，是没法了解其中指令的含义，在本次逆向，我们就先忽略它们。</p>
+<p>左边栏的 Tag Scope 可以选择类，或者通过上方的搜索框，我们可以轻松地找到我们想要的 BoxViewController 。随即下方出现 BoxViewController 类中被实现的函数。同样，找到 <code>[BoxViewController handleKeyboardEvent:]</code> </p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/qeb6a.png" alt="Screen Shot 2018-11-08 at 12.03.21 PM"></p>
+<p>:[ 还是汇编代码。不过，我们可以通过</p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/8futb.png" alt="Screen Shot 2018-11-08 at 12.04.41 PM"></p>
+<p>第三个选项 if(b) f(x); 转换成伪代码，看起来就简单多了。</p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/jk2jy.png" alt="Screen Shot 2018-11-08 at 12.06.00 PM"></p>
+<p>一切都是这么顺利。但是到这里，我们发现：伪代码中只有一个 <code>if-else</code> ，判断条件是 event 的 keyCode 是否等于 0x35 。通过参考资料 1. NSEvent Code 可以得出，0x35 是 esc ，不是我们想要的 Caps Lock （0x39）。</p>
+<h3 id="第二次寻找突破点"><a href="#第二次寻找突破点" class="headerlink" title="第二次寻找突破点"></a>第二次寻找突破点</h3><p>回想起来，忽略了一点，既然 App 弹出提示，那为何不从提示文本入手呢？</p>
+<pre><code>Use the fn key + media keys to control playback and volumn.
+</code></pre><p>对于没有做国际化的 App ，提示文本肯定是在实现文件内的，同样地，我们在 Hopper Disassembler 中看能否搜索到。这次不能搜索 Labels 了，要选择 str 选项。</p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/xo66d.png" alt="Screen Shot 2018-11-08 at 2.48.00 PM"></p>
+<p>找到了我们要的结果，看右边，在地址处右键选择 References to 0x10001f3ed 。可以得到是哪个方法引用了这个字符串。我们得到的是</p>
+<pre><code>DATA XREF=-[BoxViewController mediaKeysPressed:]+102
+</code></pre><p>继续深入，我们如法炮制，来看看 <code>mediaKeysPressed</code> 这个函数里面是什么。</p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/c3z3h.png" alt="Screen Shot 2018-11-08 at 2.55.46 PM"></p>
+<p>1Keyboard 就是在这个方法中弹出框的，这也验证了一开始的猜想，在不知道什么情况下，执行了最上面说的那段类似的代码。</p>
+<p>然而，这个函数也只是做到弹框显示，没有什么对解决问题有用的信息。那我们就要来看看是哪里调用了这个函数。</p>
+<p>回到汇编代码这边来，在函数名称右键选择 References to selector mediaKeysPressed :</p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/rnxwk.png" alt="Screen Shot 2018-11-08 at 3.01.38 PM"></p>
+<p>会发现，我们去到 BoxViewController 的 <code>awakeFromNib</code>中。</p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/o9rhm.png" alt="Screen Shot 2018-11-08 at 3.06.48 PM"></p>
+<p><code>mediaKeysPressed</code> 原来是通知事件的 selector 。我们可以发现到后面的字符串  media_keys_pressed 。</p>
+<p>再重复上面的操作，最后可以找到 MyNSApplication 的 <code>sendEvent:</code>方法。</p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/irvtr.png" alt="Screen Shot 2018-11-08 at 3.14.29 PM"></p>
+<p>乍一看觉得很熟悉，查阅了文档知道是 NSApplication 用于分发事件的， 1Keyboard 重写了这个方法，那现在问题很明确，我们按下 Caps Lock 的时候，进入到这个方法中了。</p>
+<p>本着科学的无限探索精神，我想弄清楚：为什么要重写？怎么解决我们要解决的问题？</p>
+<h3 id="问题思考"><a href="#问题思考" class="headerlink" title="问题思考"></a>问题思考</h3><p>首先，对几个问题的思考：</p>
+<p>Q：什么是 Media Key？</p>
+<p>A：就是这几个键。<img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/3fclz.png" alt="Screen Shot 2018-11-08 at 3.28.42 PM"></p>
+<p>Q：为什么要重写<code>sendEvent:</code>？</p>
+<p>A：这个问题个人觉得与 1Keyboard 的设计初衷有关系，从方法名、Notification Name 我们可以得知，1Keyboard 是想在 macOS 上实现对移动设备播放、暂停、调节亮度、音量等多媒体操作的控制。对于有 Media Key 的键盘，自然就需要增加对 Media Key 的支持。监测 Media Key 的<code>KeyDown</code> 和<code>KeyUp</code>最常见的方式就是重写 <code>sendEvent:</code>。</p>
+<p>如上面代码中所示：</p>
+<pre><code class="objective-c">if (([rbx type] == 0xe) &amp;&amp; (([rbx subtype] &amp; 0xffff) == 0x8))
+</code></pre>
+<p><code>rbx</code>是 <code>[arg2 retain]</code> ，理所当然是一个 <code>NSEvent</code> Object 。当 <code>[rbx type]</code> 是 <code>NSEventTypeSystemDefined</code>（14）且  <code>[rbx subtype]</code> 是 8 的时候，就当做是一个  Media Key 的事件，可以借鉴参考资料给出的 2.获取MediaKey的开源Lib——SPMediaKeyTap 。</p>
+<p>然后，第二个判断条件：</p>
+<pre><code class="objective-c">if ([rbx data1] &amp; 0xff00) != 0xa00)
+</code></pre>
+<p>成立是指按键被按下，即 KeyDown 。</p>
+<p> 1Keyboard 设计的初衷和出发点是好的，但是在<code>sendEvent:</code>中没有对 Event 的 keyCode进行判断，导致问题的出现。</p>
+<h3 id="寻找解决方法"><a href="#寻找解决方法" class="headerlink" title="寻找解决方法"></a>寻找解决方法</h3><p>稍微停一下，我们在这里重整一下思路，一开始通过查找字符串，得到 selector ，然后通过引用关系，找到 NSApplication 中的 <code>sendEvent</code> 中通知的发起点，并知道了 BUG 发生的原因，没有判断 event 的 keyCode。</p>
+<p>那好了，现在有两种解决方式：</p>
+<ol>
+<li>在发送 media_keys_pressed 通知之前判断 event 的 keyCode 是否为 0x39 ，若是，则不发送通知。</li>
+<li>去掉<code>[postNotificationName:object:]</code>，不再发送通知。</li>
+</ol>
+<p>第一种会影响整个二进制文件，添加的代码后面所有属性和函数的地址都需要修改；第二种直接覆盖原有地址的汇编，对原来二进制文件影响小，但是不会再弹出提示框。</p>
+<p>对于我这个新手来说，第二种方法虽然没有第一种高级，但至少省下时间，且提示框也不影响平时的使用。</p>
+<p>所以，剩下最后一步：将<code>[postNotificationName:object:]</code>的汇编码变成无作为。</p>
+<p>这时候就需要用到 lldb 了，实际上，用 Hopper Disassembler 是可以直接修改的，只是需要购买 license 。我使用的是试用版，没有修改二进制文件的功能。其实用 gdb 也可以，现在搜到的大多数文章也是用 gdb 来调试程序，但既然在 macOS 上，安装了 Xcode 就有了lldb ，且可以免去 gdb codesign 的烦恼。</p>
+<p>好啦，接下来，我们用 lldb 来完成剩下的工作：</p>
+<ol>
+<li>找到调用语句。</li>
+<li>使用 NOP 替换掉它。</li>
+</ol>
+<p>先使 lldb 进入调试模式：</p>
+<pre><code class="shell">lldb 1Keyboard.app/Contents/MacOS/1Keyboard
+</code></pre>
+<p>lldb 有个 disassemble 指令，可以通过它来看到一个区间内的地址指令情况：</p>
+<pre><code class="shell">(lldb) di -s 000000010000a541 -e 000000010000a582
+1Keyboard`___lldb_unnamed_symbol224$$1Keyboard:
+1Keyboard[0x10000a541] &lt;+103&gt;: movq   0x2ba00(%rip), %rdi       ; (void *)0x0000000000000000
+1Keyboard[0x10000a548] &lt;+110&gt;: movq   0x2a919(%rip), %rsi       ; &quot;defaultCenter&quot;
+1Keyboard[0x10000a54f] &lt;+117&gt;: movq   0x20bfa(%rip), %r15       ; (void *)0x0000000000000000
+1Keyboard[0x10000a556] &lt;+124&gt;: callq  *%r15
+1Keyboard[0x10000a559] &lt;+127&gt;: movq   %rax, %rdi
+1Keyboard[0x10000a55c] &lt;+130&gt;: callq  0x100019b10               ; symbol stub for: objc_retainAutoreleasedReturnValue
+1Keyboard[0x10000a561] &lt;+135&gt;: movq   %rax, %r14
+1Keyboard[0x10000a564] &lt;+138&gt;: movq   0x2af95(%rip), %rsi       ; &quot;postNotificationName:object:&quot;
+1Keyboard[0x10000a56b] &lt;+145&gt;: leaq   0x2184e(%rip), %rdx       ; @&quot;media_keys_pressed&quot;
+1Keyboard[0x10000a572] &lt;+152&gt;: xorl   %ecx, %ecx
+1Keyboard[0x10000a574] &lt;+154&gt;: movq   %r14, %rdi
+1Keyboard[0x10000a577] &lt;+157&gt;: callq  *%r15
+1Keyboard[0x10000a57a] &lt;+160&gt;: movq   %r14, %rdi
+1Keyboard[0x10000a57d] &lt;+163&gt;: callq  0x100019af8               ; symbol stub for: objc_release
+</code></pre>
+<p>lldb 的指令如无歧义，可以进行缩写，如 <strong>p</strong>rint <strong>o</strong>bject 可以缩写成 po 。disassemble 也可以缩写成 di 。-s 是起始地址，-e 是结束地址。</p>
+<p>肯定有人要问：000000010000a541 和 000000010000a582 是怎么得来的？</p>
+<p>那就要回到 Hopper Disassembler 了。</p>
+<p>记得前面我们看过 <code>[sendEvent:]</code>的伪代码，我们还可以看到它的汇编代码的不是吗？只需要点击 mov add 按钮就可以了。可以看到起始地址和结束地址了吧。</p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/j7fmb.png" alt="Screen Shot 2018-11-09 at 11.03.14 AM"></p>
+<p>我们都知道 OC 使用消息传递，用 objc_msgSend 来充当函数调用。需要有消息发送者和参数。</p>
+<p>分析一下这段输出，首先我们很快找到 <code>postNotificationName:object:</code> ：</p>
+<pre><code class="shell">movq   0x2af95(%rip), %rsi         ; &quot;postNotificationName:object:&quot;
+</code></pre>
+<p>在汇编代码中 % 前缀的是指寄存器。<code>movq (%ebx), %edx</code> 是指64位间接寻址，因此，这个指令应该是去找 selector 的地址。</p>
+<pre><code class="shell">leaq   0x2184e(%rip), %rdx       ; @&quot;media_keys_pressed&quot;
+</code></pre>
+<p>这个很明显：找到 @”media_keys_pressed” 这个字符串。</p>
+<pre><code class="shell">movq   %r14, %rdi
+</code></pre>
+<p>这个是找调用 <code>postNotificationName:object:</code> 的对象，也就是 NotificationCenter 。</p>
+<p>最后，通过 <code>callq</code> 来进行调用：</p>
+<pre><code>callq  *%r15
+</code></pre><p>至此，调用语句已经找到了，接下来就是使用 NOP 来替换它。</p>
+<blockquote>
+<p>NOP 是什么？</p>
+<p>计算机科学中，NOP 或 NOOP 是汇编语言的一个指令，一系列编程语句，或网络传输协议中的表示不做任何有效操作的命令。</p>
+<p>NOP 的值是 0x90 ，占用一个字节。</p>
+</blockquote>
+<p>首先，要设置断点，让程序在某个位置停下来，方便我们修改指令调试：</p>
+<pre><code class="shell">(lldb) breakpoint set -n &quot;[MyNSApplication sendEvent:]&quot;
+(lldb) r
+</code></pre>
+<p>r 是让程序开始运行，按照之前，我们连接手机，按下任意键，会触发断点。此时 lldb 会停下来等待我们进一步的输入。</p>
+<p>从上面可以知道，我们要修改的指令是：</p>
+<pre><code class="shell">1Keyboard[0x10000a577] &lt;+157&gt;: callq  *%r15
+1Keyboard[0x10000a57a] &lt;+160&gt;: movq   %r14, %rdi
+</code></pre>
+<p>指令在内存中的起始地址是 <code>0x10000a577</code>，需要注意的是：下一条指令起始地址是 <code>0x10000a57a</code>。也就是说，我们要修改的指令占据了三个 Byte 。而一个 NOP 只是一个 Byte 。所以我们要将 <code>callq  *%r15</code> 替换成三个 NOP ：</p>
+<pre><code class="shell">(lldb) memory write -f x 0x10000a577 0x90
+(lldb) memory write -f x 0x10000a578 0x90
+(lldb) memory write -f x 0x10000a579 0x90
+</code></pre>
+<p>使用 <code>memory write</code> 可以达到 gdb 中 <code>set</code> 的效果。然后我们再 disassemble 一次：</p>
+<pre><code class="shell">(lldb) di -s 000000010000a541 -e 000000010000a582
+1Keyboard`___lldb_unnamed_symbol224$$1Keyboard:
+    0x10000a541 &lt;+103&gt;: movq   0x2ba00(%rip), %rdi       ; (void *)0x00007fffa62b49d8: NSNotificationCenter
+    0x10000a548 &lt;+110&gt;: movq   0x2a919(%rip), %rsi       ; &quot;defaultCenter&quot;
+    0x10000a54f &lt;+117&gt;: movq   0x20bfa(%rip), %r15       ; (void *)0x00007fff7a0d1a00: objc_msgSend
+    0x10000a556 &lt;+124&gt;: callq  *%r15
+    0x10000a559 &lt;+127&gt;: movq   %rax, %rdi
+    0x10000a55c &lt;+130&gt;: callq  0x100019b10               ; symbol stub for: objc_retainAutoreleasedReturnValue
+    0x10000a561 &lt;+135&gt;: movq   %rax, %r14
+    0x10000a564 &lt;+138&gt;: movq   0x2af95(%rip), %rsi       ; &quot;postNotificationName:object:&quot;
+    0x10000a56b &lt;+145&gt;: leaq   0x2184e(%rip), %rdx       ; @&quot;media_keys_pressed&quot;
+    0x10000a572 &lt;+152&gt;: xorl   %ecx, %ecx
+    0x10000a574 &lt;+154&gt;: movq   %r14, %rdi
+    0x10000a577 &lt;+157&gt;: nop
+    0x10000a578 &lt;+158&gt;: nop
+    0x10000a579 &lt;+159&gt;: nop
+    0x10000a57a &lt;+160&gt;: movq   %r14, %rdi
+    0x10000a57d &lt;+163&gt;: callq  0x100019af8               ; symbol stub for: objc_release
+</code></pre>
+<p>如我们所愿，已经改好了。在终端输入 <code>c</code> ，让程序继续运行，这时会发现，按下 Caps Lock已经不会再弹出那个厌烦的 Sheet 了。</p>
+<p>到这里，已经完成大部分了，lldb 只是一个调试工具，并不能做到修改二进制文件的功能，所以要将修改长效地保存下来，就需要对原二进制文件进行修改。我们就必须先找到 <code>0x10000a577</code> 起始的三个 Byte 的二进制代码是什么。</p>
+<p>因为我们已经修改过内存中的程序，所以需要先将 lldb 退出，重新加载原来的程序，再使用 <code>x/x</code> 指令：</p>
+<pre><code class="shell">(lldb) x/x 0x10000a577
+0x10000a577: 0x4cd7ff41
+(lldb) x/x 0x10000a578
+0x10000a578: 0x894cd7ff
+(lldb) x/x 0x10000a579
+0x10000a579: 0xf7894cd7
+</code></pre>
+<p>我们发现，这三个地址都有部分是重合的，不是巧合，不同的指令拥有不同的二进制编码，<code>x/x</code> 指令总是读取相同长度的内存中的数据。因此我们要将相同的合在一起。</p>
+<p>还需要注意的是：</p>
+<blockquote>
+<p><strong>字节序问题（ Byte Order ）</strong>，Intel 处理器一般是以<strong>小端（ Little endian ）</strong>进行存储，而在硬盘上的二进制码，则是以<strong>大端（ Big endian ）</strong>存储。所谓的<strong>大端</strong>，就是把数字的最高位放在最前面，<strong>小端</strong>则是把最高位放在最后面。</p>
+<p>——摘自参考资料 5.一个数字的魔法——破解Mac上198元的Paw</p>
+</blockquote>
+<p>所以，三者的二进制代码组合起来就是：<code>41 FF D7 4C 89 F7</code> 。</p>
+<p>打开 Hex Fiend 。将二进制文件拖入其中，搜索 <code>41 FF D7 4C 89 F7</code> ，仔细发现，可以搜索出来三个，在不确定是哪个的情况下，我们可以继续对后面的指令再 <code>x/x</code> 。组合更多的 Byte 提高搜索精确度。</p>
+<p>再选两个指令：</p>
+<pre><code>(lldb) x/x 0x10000a57a
+0x10000a57a: 0xe8f7894c
+(lldb) x/x 0x10000a57b
+0x10000a57b: 0x76e8f789
+</code></pre><p>好了，我们的搜索组合现在变成：<code>41 FF D7 4C 89 F7 E8 76</code>。这样就有且仅有一个结果了：</p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/pkugc.png" alt="Screen Shot 2018-11-09 at 1.24.40 PM"></p>
+<p>还记得我们要替换为三位 NOP 吗？将 <code>90 90 90 4C 89 F7 E8 76</code> 填入到 Replace 中。再选择 Replace &amp; Find 就可以了。</p>
+<p>至此，就完成了整个问题的修复。可以 lldb 打开调试看看有没有问题。直接通过双击 1Keyboard.app 是无法打开的，是因为我们修改了 app 中的文件，App 签名已经无法验证通过了。需要进行代码重签：具体可以看我之前的这篇文章。</p>
+<p>然后就可以愉快地玩耍了~ </p>
+<h2 id="最后说两句"><a href="#最后说两句" class="headerlink" title="最后说两句"></a>最后说两句</h2><p>我是在看别人的优秀文章的时候学习了一点点逆向工程的皮毛。第一次接触逆向工程，很多地方写的不好，肯定有错误的地方，对上述操作手动表示滑稽，还请不吝指正。</p>
+<p>另外，推荐两篇延伸阅读，请见参考资料 5.6. 。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="https://forums.macrumors.com/threads/nsevent-keycode-list.780577/">1. NSEvent KeyCode</a></p>
+<p><a href="https://github.com/nevyn/SPMediaKeyTap">2.获取MediaKey的开源Lib——SPMediaKeyTap</a></p>
+<p><a href="http://overooped.com/post/2593597587/mediakeys">3.SPMediaKeyTap作者对Media Key处理方式的解释</a></p>
+<p><a href="http://lldb.llvm.org/lldb-gdb.html">4.GDB - To - LLDB</a></p>
+<p><a href="https://bestswifter.com/app-crack/">5.一个数字的魔法——破解Mac上198元的Paw</a></p>
+<p><a href="https://juejin.im/entry/598d53155188257c666c5943">6.饿了么安全：Mac 下的破解软件真的安全吗？</a></p>
+ 
+                <!-- Meta -->
+                <div class="post-meta">
+                    <hr>
+                    <br>
+                    <div class="post-tags">
+                        
+                            
+
+<a href="/tags/Security/">#Security</a>
+
+
+                        
+                    </div>
+                    <div class="post-date">
+                        2018 年 11 月 07 日
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comments -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <!--<div id="container"></div>
+
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+//var gitment = new Gitment({
+//   id: '',
+//   owner: 'objchris',
+//   repo: 'testGitment',
+//   oauth: {
+//     client_id: 'f0f51ce99c6a9e1537f5',
+//     client_secret: 'a8e1135e9756220826b2290f670bb269f43566d3',
+//   },
+// })
+// gitment.render('container')
+</script>
+-->
+            </div>
+        </div>
+    </div>
+</article>
+</section>
+<!-- Back to top -->
+<a id="returnTop">
+  <i class="fa fa-rocket"></i>
+</a>
+
+
+
+    <!-- Scripts -->
+    <!-- jQuery -->
+<script src="//cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script>
+<!-- Bootstrap -->
+<script src="//cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+<script type="text/javascript">hljs.initHighlightingOnLoad();</script>
+
+<script src="/js/backtop.js"></script>
+
+<script type="text/javascript">
+	console.log('Chris Cheung ❤ CHILDHOOD 2016 - ' + (new Date()).getFullYear());
+	console.log('嘿嘿，没想到吧，埋了个没什么价值的彩蛋: Go Go Go, you guy, 祝愿你在接下来的路上越跑越远，冲鸭');
+</script>
+
+
+    <!-- Google Analytics -->
+    
+
+</body>
+
+</html>
