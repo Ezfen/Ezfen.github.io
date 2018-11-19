@@ -3,6 +3,111 @@
   
     
     <entry>
+      <title><![CDATA[VSCode 和 SourceKit-LSP]]></title>
+      <url>/2018/11/19/VSCode+SLSP/</url>
+      <content type="html"><![CDATA[<p>三年前 VSCode 诞生，它设计理念在我看来还是不错的，如今下载得到的 zip 也才 70M 不到。看了文档知道其中只是内嵌了些 JavaScript 、 TypeScript 等少数语言的支持。用户可以根据需要，通过安装 extension 来实现自定义功能的 IDE 。</p>
+<p>但用 VSCode 来写 Swift 一直以来都不是很友好，知道最近 SourceKit-LSP 开源，就打算来试试这个被 MS 捧在掌心的 IDE 。</p>
+<a id="more"></a>
+<h2 id="本文大纲"><a href="#本文大纲" class="headerlink" title="本文大纲"></a>本文大纲</h2><p>写这篇文章的时候 VSCode 的版本是 Version 1.29.1 (1.29.1) ，更新日志在<a href="https://code.visualstudio.com/updates/v1_29" target="_blank" rel="external">这里</a> 。VSCode 三年来的发展我没有过多去了解，但是看更新日志，基本上是每月一更新，很是给力。</p>
+<p>我也是第一次使用 VSCode ，在写本文的时候所做的定位是尝尝鲜，是抱着试试的心态，很多地方也没有去深入的了解，所以本篇文章就仅仅从以下两个方面出发，简单讲一下 VSCode 和 SourceKit-LSP 的集合：</p>
+<ol>
+<li>VSCode 的配置和 extensions 的安装</li>
+<li>SourceKit-LSP 的安装和 Swift 的编译运行</li>
+</ol>
+<h2 id="VSCode-的配置与扩展"><a href="#VSCode-的配置与扩展" class="headerlink" title="VSCode 的配置与扩展"></a>VSCode 的配置与扩展</h2><p>先对 VSCode 做一个大致的了解，官方文档中有几个<a href="https://code.visualstudio.com/docs/getstarted/introvideos" target="_blank" rel="external">介绍视频</a>可以看看，只是挂在 YouTube 上的，需要科学上网。</p>
+<h3 id="Settings"><a href="#Settings" class="headerlink" title="Settings"></a>Settings</h3><p>VSCode 在实现用户自定义上真的是做了很多的功夫，基本能想到的东西都有一个配置项可供用户自定义设置。</p>
+<p>安装完 VSCode 后，通过 <code>⌘+,</code> 调出 Settings 界面，如下图所示：</p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/vr8t4.png" alt="Screen Shot 2018-11-16 at 11.35.28 AM"></p>
+<p>但是我建议，还是通过直接修改配置文件 <code>Settings.json</code> 的方式来更改配置。配置涉及方方面面，且对应的，还有全局配置和工作区( Workspace )的配置。</p>
+<ul>
+<li><strong>User Setting</strong> - 存放在：<code>~/Library/Application Support/Code/User/</code> ，是全局配置，影响所有打开的 VSCode 的窗口。</li>
+<li><strong>Workspace Settings</strong> - 存放在工作区的 <code>.vscode</code> 文件夹中。仅影响当前工作区，会覆盖 User Setting 中存在的项，用于不同机器间的共享，可以配置项目使用的编译器版本，如 Python2 、Python3 等。</li>
+</ul>
+<p>通过上图右上角 <code>···</code> 按钮即可查看修改 <code>Settings.json</code> 文件：<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/5xxac.png" alt="Screen Shot 2018-11-16 at 11.47.17 AM"></p>
+<p>左侧是默认配置，右侧是用户自定义配置。通过修改键值对的方式实时更改 VSCode 。上图是我自己的一些配置：sidebar 的位置在左侧，activityBar 显示。我用习惯了 Xcode ，用不习惯类似于 IDEA 的 Tabs ，所以关闭 Tabs 和 Preview 功能。主题用 Horizon，并自己做了一些修改，还改了字体字号和文件icon。配置了 Python3 的解释器的地址。还有很多的配置可以自定义，具体可以阅读 <a href="https://code.visualstudio.com/docs/getstarted/settings" target="_blank" rel="external">配置</a> ，就不多赘述了。</p>
+<h3 id="extension"><a href="#extension" class="headerlink" title="extension"></a>extension</h3><p>安装扩展十分简单，通过快捷键 <code>⌘+⇧+x</code> 可以唤出搜索安装界面。搜索想要的 extension 就可以安装了，<strong>Install</strong> 等待安装完成后 <strong>Reload</strong> 重新加载 extension 就可以了。</p>
+<p>搜索可以使用特定的 filter ，有 <code>@buildin</code> 、<code>@installed</code> 、<code>@outdated</code> 、<code>@recommended</code> ，各自表示 VSCode 自带，已安装，过期的，建议安装的。还可以通过 <code>@category</code> 来搜索指定类别的 extension 。</p>
+<p>安装的 extension 默认是自动更新的，如果不想要自动更新，可以在配置文件中修改配置： <code>extensions.autoUpdatesetting</code> 的值为 <code>false</code> 。设置 <code>extensions.autoCheckUpdates</code>的值可以关闭 extension 的自动检查更新。</p>
+<p>更多关于 extension 的说明，请看 <a href="https://code.visualstudio.com/docs/editor/extension-gallery" target="_blank" rel="external">这里</a>。</p>
+<p>为了接下来的工作，我们要安装的扩展如下：</p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/prq7v.png" alt="Screen Shot 2018-11-19 at 2.44.33 PM"></p>
+<ul>
+<li>SourceKit-LSP : 对 Swift 的支持</li>
+<li>file-icon、Horizon Theme : VSCode 的一些主题配置</li>
+<li>C/C++ 、Python : 本文不会提及，有需要进行 C/C++ 或 Python 可以安装，Python 在官方文档中还有专门的<a href="https://code.visualstudio.com/docs/python/python-tutorial" target="_blank" rel="external">介绍</a>。</li>
+</ul>
+<h2 id="SourceKit-LSP-和-Swift"><a href="#SourceKit-LSP-和-Swift" class="headerlink" title="SourceKit-LSP 和 Swift"></a>SourceKit-LSP 和 Swift</h2><p><a href="https://microsoft.github.io/language-server-protocol/" target="_blank" rel="external">LSP</a> 是 Language Server Protocol 的简称，是微软开源的一套用于代码自动完成、跳转到定义、hover 显示文档等功能的协议，被广泛应用于各种 IDE 中，实现了这套协议，可以在 VSCode 等 IDE 中使用上述的特性，给编码过程带来极大的便利。</p>
+<h3 id="SourceKit-LSP"><a href="#SourceKit-LSP" class="headerlink" title="SourceKit-LSP"></a>SourceKit-LSP</h3><p><a href="https://github.com/apple/sourcekit-lsp" target="_blank" rel="external">SourceKit-LSP(以下简称SLSP)</a> 就是 LSP 的一套实现，提供对 Swift 的支持。在安装 VSCode Extension 的时候，我们可以发现，其实已经有很多 Swift 的扩展可供使用，但是使用时却不能像 Xcode 一般便利，没有跳转到定义、显示文档之类的功能。所以，SLSP 应运而生。</p>
+<h4 id="安装和配置"><a href="#安装和配置" class="headerlink" title="安装和配置"></a>安装和配置</h4><blockquote>
+<p>SourceKit-LSP is under heavy development! The best way to try it out is to build it from source. You will also need a Swift development toolchain and an editor that supports LSP.</p>
+</blockquote>
+<p>让我们跟着文档来，安装 SLSP 最好的方式是通过源码安装，这就需要我们的电脑有 Swift 的环境。像我们用 beta 版的 Xcode 要用新版本的 Swift 时要装 snapshot 一样，SLSP 依赖的 <code>sourcekitd</code> 和 <code>clangd</code> 是在 Swift 的 toolchain 运行时启动的。我在写这篇文章的时候用的 snapshot 是 <a href="https://swift.org/download/#snapshots" target="_blank" rel="external">swift-DEVELOPMENT-SNAPSHOT-2018-11-01-a</a> 。</p>
+<p>下载下来的 pkg 安装后，Swift 的 snapshot 存放在 <code>/Library/Developer/Toolchains</code> 。</p>
+<p>进入 sourcekit-lsp 文件夹：</p>
+<pre><code class="shell">cd &lt;path_to_sourcekit_lsp&gt;
+swift build
+</code></pre>
+<p>这里 <code>build</code> 的时候有可能会有这样的问题出现：</p>
+<pre><code class="shell">sourcekit-lsp&#39; requires a minimum Swift tools version of 4.2.0 (currently 4.0.0)
+</code></pre>
+<p>看出错信息，是 Swift 的版本太低，我试过将 Swift 的版本更改为 snapshot 的版本（打开终端，更改 <code>TOOLCHAINS</code> 的值）：</p>
+<pre><code class="shell"># 使用 xcrun --find swift ，可以看到当前是使用 Xcode 中的 swift
+~ xcrun --find swift
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift
+# 设置 TOOLCHAINS 环境变量
+~ export TOOLCHAINS=swift
+# 使用 xcrun --find swift ，已经变成最后安装的 snapshot 版本
+~ xcrun --find swift
+/Library/Developer/Toolchains/swift-DEVELOPMENT-SNAPSHOT-2018-11-01-a.xctoolchain/usr/bin/swift
+</code></pre>
+<p>会出现下面这个问题：</p>
+<pre><code class="shell">&lt;unknown&gt;:0: error: Swift does not support the SDK &#39;MacOSX10.13.sdk&#39;
+</code></pre>
+<p>Google 了一下，参考<a href="https://forums.swift.org/t/error-building-swift-swift-does-not-support-the-sdk-macosx10-13-sdk/13701" target="_blank" rel="external">这里</a>。可能是 Command Line Tools 的版本不对应所致，于是我安装了 <code>Command_Line_Tools_macOS_10.14_for_Xcode_10.1.dmg</code> 。<code>xcode-select -s</code> 选择安装的 command line tools 之后以为就可以了，没想到还是有问题：</p>
+<pre><code class="shell">~ sudo xcode-select -s /Library/Developer/CommandLineTools
+~ swift build
+error: terminated(72): xcrun --sdk macosx --find xctest output:
+</code></pre>
+<p>找不到 macOS 的 SDK …</p>
+<p>没有找到最好的解决方式，无奈之下，只能安装 Xcode 10 ，让 Xcode 10 帮助我们设置一系列的环境变量、SDK等。编译 SourceKit-LSP 只兼容 Xcode 10 这种一刀斩的做法，还真是苹果一贯任性的作风。（这肯定不是唯一的解决方法，以后有好的解决方法会回来补充）</p>
+<h4 id="VSCode-Extension"><a href="#VSCode-Extension" class="headerlink" title="VSCode Extension"></a>VSCode Extension</h4><p>好了，编译完 sourcekit-lsp 后，就要安装 VSCode extension 了，SourceKit-LSP 已经做好了对 VSCode 和 Sublime Text 的支持，直接执行命令就可以了（需要 npm ）：</p>
+<pre><code class="shell"># in sourcekit-lsp
+cd Editors/vscode
+npm run createDevPackage
+</code></pre>
+<p>打包完成了，就可以使用 VSCode 的 <code>code</code> 命令进行安装了。</p>
+<pre><code class="shell"># in sourcekit-lsp/Editors/vscode
+code --install-extension out/sourcekit-lsp-vscode-dev.vsix
+</code></pre>
+<p>打开 VSCode ，配置也很简单，SLSP 就两个配置项，分别为：</p>
+<ol>
+<li><p><code>sourcekit-lsp.serverPath</code> - 指定 soursekit-lsp 位置的完整路径。</p>
+</li>
+<li><p><code>sourcekit-lsp.toolchainPath</code> - 指定 Swift snapshot 的位置。</p>
+<p>Swift snapshot 的路径我们可以用一个变量来存储：</p>
+<pre><code class="shell">export SOURCEKIT_TOOLCHAIN_PATH=/Library/Developer/Toolchains/swift-DEVELOPMENT-SNAPSHOT-2018-11-01-a.xctoolchain
+</code></pre>
+</li>
+</ol>
+<p>添加在全局配置 <code>settings.json</code> 或工作区配置 <code>.vscode/settings.json</code> 即可，如下：</p>
+<h3 id="Code-some-swift"><a href="#Code-some-swift" class="headerlink" title="Code some swift"></a>Code some swift</h3><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>SourceKit-LSP 的出世可以让我们在其他支持 LSP 的 IDE 上更友好地进行 Swift 代码的编写，用于跨平台编码库文件是挺不错，但用来写应用感觉还是有点力不从心。</p>
+<p>总的来说，不同的场景运用不同的编译器，来实现不同的需求，比如在 Linux 上写 Swift 等等，VSCode + SLSP 还是值得被关注的。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="https://code.visualstudio.com/docs" target="_blank" rel="external">1.VSCode docs</a></p>
+<p><a href="https://microsoft.github.io/language-server-protocol/" target="_blank" rel="external">2.LSP</a></p>
+<p><a href="https://github.com/apple/sourcekit-lsp" target="_blank" rel="external">3.Sourcekit-LSP</a></p>
+<p><a href="https://swift.org/getting-started/#using-the-package-manager" target="_blank" rel="external">4.Using the Package Manager</a></p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> Swift </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[我想...修复一个已发布软件的BUG]]></title>
       <url>/2018/11/07/%E9%80%86%E5%90%91%E4%BF%AE%E5%A4%8D%E8%BD%AF%E4%BB%B6%E7%9A%84BUG/</url>
       <content type="html"><![CDATA[<p>事实上，我也没想过会是以这种形式接触逆向工程，我甚至不知道这样是不是就叫逆向工程，事情的起因就只是想省下一笔买蓝牙键盘的钱，惭愧。</p>
