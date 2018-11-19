@@ -56,7 +56,7 @@ Block在很多时候会引起循环引用，已经是老生常谈了。很多文
 
 　　结果很明显，若是使用self，EZScanNetGrid这个View一直存在于内存中没有被释放，因为UIView Animation对其的强引用使其一直存在于内存中，直至Block里面的代码执行完毕。但是这段代码里可以看到，completion中又继续调用了`[self startAnimation];`因此，系统会继续保留对EZScanNetGrid的引用，从而即使EZScanNetGrid的SuperView被销毁了，EZScanNetGrid还是没有被销毁，无限地循环调用着动画，占据内存的同时也耗费着CPU。:(
 
-　　此文有点晦涩，附上[DEMO地址](https://github.com/objchris/ChrisDerDemos/tree/master/ClassBlockDemo)
+　　此文有点晦涩，附上[DEMO地址](<https://github.com/objchris/ChrisDerDemos/tree/master/ClassBlockDemo>)
 
 
 ## 总结

@@ -280,10 +280,10 @@ CCCryptorStatus CCCrypt(
 上述两个函数主要是为了规范密钥的长度和获取明文密文块的长度，很好理解就不详细介绍了。这样还是不能傻瓜式地调用，因此阿澤君创建了DESCipherActor继承于SymCipherActor，进一步进行封装：
 　　DESCipherActor.h
 　　``` objc
-    - (NSString *)encryptInCBC:(NSString *)plainText key:(NSString *)key iv:(NSData *)iv;
-    - (NSString *)decryptInCBC:(NSString *)cipherText key:(NSString *)key iv:(NSData *)iv;
-    - (NSString *)encryptInEBC:(NSString *)plainText key:(NSString *)key;
-    - (NSString *)decryptInEBC:(NSString *)cipherText key:(NSString *)key;
+​    - (NSString *)encryptInCBC:(NSString *)plainText key:(NSString *)key iv:(NSData *)iv;
+​    - (NSString *)decryptInCBC:(NSString *)cipherText key:(NSString *)key iv:(NSData *)iv;
+​    - (NSString *)encryptInEBC:(NSString *)plainText key:(NSString *)key;
+​    - (NSString *)decryptInEBC:(NSString *)cipherText key:(NSString *)key;
 　　```
 　　还有AES、RC4的实现大致相同，具体可参考Demo，已经上传[Github](https://github.com/objchris/PKIDemo)
 
@@ -476,7 +476,7 @@ OSStatus SecKeyEncrypt(
 ```
 
 解密和加密的方式基本一样，此处不多加赘述。
-[Demo](https://github.com/objchris/PKIDemo)
+[Demo](<https://github.com/objchris/ChrisDerDemos/tree/master/PKIDemo>)
 
 
 **Hacker君，问你惊未，哈哈哈哈哈。**    

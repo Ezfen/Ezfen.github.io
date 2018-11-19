@@ -103,4 +103,4 @@ typora-copy-images-to: ipic
 ```
 
 既然得到两个桃心的坐标了，实现动画就自然变得简单啦，就不赘述了:)    
-有兴趣的同学可以查看我的 [Github](https://github.com/objchris/EZHeartForLike) ，可以下载在项目中，顺便给我个 Like 吧![hahaha](https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/pivxc.jpg)
+有兴趣的同学可以查看我的 [这个 Demo](https://github.com/objchris/ChrisDerDemos) ，可以下载在项目中，顺便给我个 Like 吧。
