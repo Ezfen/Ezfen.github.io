@@ -906,6 +906,42 @@ mv &quot;${APP_NAME}.ipa&quot; &quot;${IPA_NAME}&quot;
     </entry>
     
     <entry>
+      <title><![CDATA[BST and AVL]]></title>
+      <url>/2017/12/04/BST%20and%20AVL/</url>
+      <content type="html"><![CDATA[<p>看到题目就知道，这篇文章要讲的就是算法中经常会出现的两种树。</p>
+<p>计算机科学中，树是一种抽象数据类型，或是实现了类似抽象数据类型的数据结构。我们都知道，树是由有限个节点组成的具有层次关系的集合，每个节点都可能有零个或多个节点，但今天的主角 BST 和 AVL 却只有最多两个节点，却是算法中非常受欢迎的数据结构类型。</p>
+<a id="more"></a>
+<h2 id="树"><a href="#树" class="headerlink" title="树"></a>树</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><h3 id="术语"><a href="#术语" class="headerlink" title="术语"></a>术语</h3><h3 id="二叉树"><a href="#二叉树" class="headerlink" title="二叉树"></a>二叉树</h3><p>二叉树是最常见的树了，</p>
+<p>比如我们在 LeetCode 的时候经常可以看到二叉树的题目，比如<a href="">这道题目 - 701. Insert into a Binary Search Tree</a>， LeetCode 对二叉树的代码定义十分的简单，但简单的背后可以延伸的算法思维却是十分复杂的：</p>
+<pre><code class="c++">/* 
+ * Swift
+ * Definition for a binary tree node. 
+ */
+public class TreeNode {
+    public var val: Int
+    public var left: TreeNode?
+    public var right: TreeNode?
+    public init(_ val: Int) {
+        self.val = val
+        self.left = nil
+        self.right = nil
+    }
+}
+</code></pre>
+<p>把 BST 和 AVL 放在一起写，可以很清晰地逐步地让大家了解到一个算法，一种思维是如何一步一步地优化的。我会用尽可能简单易懂的描述，但才疏学浅，总会有写得不好的地方，共勉吧 ;]</p>
+<h2 id="BST"><a href="#BST" class="headerlink" title="BST"></a>BST</h2><h2 id="AVL"><a href="#AVL" class="headerlink" title="AVL"></a>AVL</h2><p>下面提供的代码都是 Swift 的，代码我放在了 <a href="">Playground</a> 里面，可以看每一轮旋转后整棵树是怎样的。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2>]]></content>
+      
+        
+        <tags>
+            
+            <tag> Algorithm </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[使用makefile创建静态库]]></title>
       <url>/2017/08/08/%E4%BD%BF%E7%94%A8MakeFile%E5%88%9B%E5%BB%BA%E9%9D%99%E6%80%81%E5%BA%93/</url>
       <content type="html"><![CDATA[<p>最近工作上需要将 Win 上的一个 C 库移植到 iOS 上以支持业务的开展，修改代码后需要编译成静态库供 iOS 使用，不想每次别人修改完在 Mac 上编译时还要打开 Xcode ，学习了一下makefile ，直接执行 make 命令就可以了。    </p>
@@ -2228,6 +2264,8 @@ enum {
       
         
         <tags>
+            
+            <tag> Algorithm </tag>
             
             <tag> Security </tag>
             
