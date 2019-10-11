@@ -2,7 +2,7 @@
 <html lang="zh-Hans">
 
 <!-- Head tag -->
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -19,7 +19,7 @@
 
     <!-- Title -->
     
-    <title>使用makefile创建静态库 | CHILDHOOD</title>
+    <title>使用 makefile 创建静态库 | CHILDHOOD</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
@@ -35,9 +35,9 @@
 
     <!-- Custom Fonts -->
     <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href='//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
-    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
 
     <link rel="shortcut icon" href="/favicon.png">
 
@@ -64,7 +64,7 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 <div class="post-heading">
-                    <h1>使用makefile创建静态库</h1>
+                    <h1>使用 makefile 创建静态库</h1>
                 </div>
             </div>
         </div>
@@ -103,8 +103,7 @@
 </blockquote>
 <p>Google 可以搜索到很多 makefile 的好文章，这里简略介绍一下：</p>
 <h3 id="基本语句"><a href="#基本语句" class="headerlink" title="基本语句"></a>基本语句</h3><pre><code>target : prerequisites
-    command
-</code></pre><ul>
+    command</code></pre><ul>
 <li>target : 编译或链接最终得到的目标文件，例如 .o 结尾的中间文件、由 .o 文件链接而成的 Win 下的可执行文件， .o 文件打包而成的静态库文件</li>
 <li>prerequisites : 依赖，也就是编译成 .o 的 .c 、.cpp、.m 和 .h ，链接成动态库、静态库、可执行文件的 .o</li>
 <li>command : 命令，即如何将上述的依赖编译或链接成我们要的 target ，需要注意的是， command 前必须要有一个制表符 ( tab ) ，不能是一连串的空格，也不能缺失。</li>
@@ -114,8 +113,7 @@
 <p>一个 makefile 只能有一个总的 Target (编译链接得到我们最终需要的文件)，如果需要多个 Target ，可以使用 Phony Target 来实现。当然，上述说到的除编译链接之外的操作用 Phony Target 也是很好的选择。</p>
 <h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><p>像写程序一样直接定义变量，变量在左侧，值在右侧，等号分开，然后通过<code>${变量}</code>使用，例如：</p>
 <pre><code>DEVICE=OS
-DEV_PATH=/Applications/Xcode.app/Contents/Developer/Platforms/iPhone${DEVICE}.platform/Developer
-</code></pre><h3 id="文件名及使用"><a href="#文件名及使用" class="headerlink" title="文件名及使用"></a>文件名及使用</h3><p>当然，既然叫 makefile ，文件名最好就叫 makefile 啦， Makefile 也是可以的，但是是在 makefile 不存在的时候， make 命令才会去使用。</p>
+DEV_PATH=/Applications/Xcode.app/Contents/Developer/Platforms/iPhone${DEVICE}.platform/Developer</code></pre><h3 id="文件名及使用"><a href="#文件名及使用" class="headerlink" title="文件名及使用"></a>文件名及使用</h3><p>当然，既然叫 makefile ，文件名最好就叫 makefile 啦， Makefile 也是可以的，但是是在 makefile 不存在的时候， make 命令才会去使用。</p>
 <p>如果再不喜欢，文件名写成 chris 也可以，只是 make 的时候加上<code>-f</code>和文件名就好了~</p>
 <p><code>make -f chris</code></p>
 <h2 id="栗子🌰"><a href="#栗子🌰" class="headerlink" title="栗子🌰"></a>栗子🌰</h2><p>好啦，说起来简单，但是实际操作却需要些许耐心~</p>
@@ -170,8 +168,7 @@ realclean: clean
     ${RM} -rf ${OUT_D}
 
 clean:
-    ${RM} -rf ${OBJ_D}
-</code></pre>
+    ${RM} -rf ${OBJ_D}</code></pre>
 <h3 id="Shell"><a href="#Shell" class="headerlink" title="Shell"></a>Shell</h3><pre><code class="shell">LIB_NAME=libutil.a
 LIB_OS_NAME=libutil_os.a
 LIB_SIMULATOR_NAME=libutil_simulator.a
@@ -217,6 +214,7 @@ cp *.h ${HEADER_D}/
 cd ${OUT_D}
 lipo -create ${LIB_OS_PATHS[@]} -output ${LIB_OS_NAME}
 lipo -create ${LIB_SIM_PATHS[@]} -output ${LIB_SIMULATOR_NAME}
+
 </code></pre>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
 <li>感觉 makefile 还是有必要学会，因为编译和链接可以由自己掌握。</li>

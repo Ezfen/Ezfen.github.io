@@ -2,7 +2,7 @@
 <html lang="zh-Hans">
 
 <!-- Head tag -->
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -19,7 +19,7 @@
 
     <!-- Title -->
     
-    <title>iOS Touch Event传递和响应链 | CHILDHOOD</title>
+    <title>iOS Touch Event 传递和响应链 | CHILDHOOD</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
@@ -35,9 +35,9 @@
 
     <!-- Custom Fonts -->
     <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href='//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
-    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
 
     <link rel="shortcut icon" href="/favicon.png">
 
@@ -64,7 +64,7 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 <div class="post-heading">
-                    <h1>iOS Touch Event传递和响应链</h1>
+                    <h1>iOS Touch Event 传递和响应链</h1>
                 </div>
             </div>
         </div>
@@ -82,7 +82,7 @@
                 </div>
                 <p>毋庸置疑地，在论及事件传递的时候我们都会很顺口地使用用上下方向来表达事件传递( Event Delivery )，从 UIApplication 到响应事件的 UIView 是「从下往上」，反过来自然就是「从上往下」了。</p>
 <h2 id="从下往上——寻找-HitTest-View"><a href="#从下往上——寻找-HitTest-View" class="headerlink" title="从下往上——寻找 HitTest View"></a>从下往上——寻找 HitTest View</h2><p>当一个用户产生的事件发生并被系统捕获到后，UIKit会创建一个事件对象( Event Object )，携带着一些处理信息，eg: 点击位置、事件类型等，然后将这个对象存放在 UIApplication 的事件队列中，等待处理。</p>
-<p>我们开发中使用的最多的是触碰事件( Touch Event )，也只有触碰事件才需要 iOS 为我们寻找 <strong>HitTest View</strong> ，即<strong>寻找响应该事件的 View </strong>，这一过程，官方文档里称为 <strong><em>Hit-Testing</em></strong> 。</p>
+<p>我们开发中使用的最多的是触碰事件( Touch Event )，也只有触碰事件才需要 iOS 为我们寻找 <strong>HitTest View</strong> ，即<strong>寻找响应该事件的 View **，这一过程，官方文档里称为 *</strong>Hit-Testing*** 。</p>
 <p>了解这一过程，先了解 UIView 的两个可重载的方法：</p>
 <ol>
 <li><p><code>- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event</code></p>
@@ -100,8 +100,7 @@
       //以下是伪代码  
       if (point inside blueArea) return true;
       else return false;
-}
-</code></pre>
+}</code></pre>
 <p>如果没有重载<code>pointInside:withEvent:</code>，那么用户点击上图触碰点，SubView 将不响应事件。</p>
 </li>
 </ul>
@@ -114,8 +113,7 @@
 <pre><code class="objective-c">-(UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
     //return nil; 本View和SubView都不成为HitTest View，都不响应事件
       return self;    // 自己成为HitTest View
-}
-</code></pre>
+}</code></pre>
 <h2 id="从上往下——寻找响应对象"><a href="#从上往下——寻找响应对象" class="headerlink" title="从上往下——寻找响应对象"></a>从上往下——寻找响应对象</h2><p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/2fznc.png" alt="1387344-cd500e5bd93d9606"></p>
 <p>这张图相信在其他地方已经看了一千遍了，但是有图还是容易理解，从上往下的意思是：</p>
 <p>当上一步找到的 HitTest View 没能响应事件时( eg: userInteractionEnabled 为 NO 或者没有定义响应事件的方法)，那么事件就会被传递到 SuperView 或着 Controller 。直至 Applicaion 都不能处理该事件则忽略。</p>
@@ -135,7 +133,7 @@
 <p>你不如先反问一句，两个 View 是否为 SuperView 和 SubView 的关系？！</p>
 <p>再分门别类地回答～</p>
 <p>以上</p>
-<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a href="https://developer.apple.com/library/content/documentation/EventHandling/Conceptual/EventHandlingiPhoneOS/event_delivery_responder_chain/event_delivery_responder_chain.html#//apple_ref/doc/uid/TP40009541-CH4-SW1">Event Handling Guide for iOS</a></p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a href="https://developer.apple.com/library/content/documentation/EventHandling/Conceptual/EventHandlingiPhoneOS/event_delivery_responder_chain/event_delivery_responder_chain.html#//apple_ref/doc/uid/TP40009541-CH4-SW1" target="_blank" rel="noopener">Event Handling Guide for iOS</a></p>
  
                 <!-- Meta -->
                 <div class="post-meta">

@@ -2,7 +2,7 @@
 <html lang="zh-Hans">
 
 <!-- Head tag -->
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -19,7 +19,7 @@
 
     <!-- Title -->
     
-    <title>类方法的Block不会内存泄漏....吗？！ | CHILDHOOD</title>
+    <title>类方法的 Block 就不会内存泄漏...吗？！ | CHILDHOOD</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
@@ -35,9 +35,9 @@
 
     <!-- Custom Fonts -->
     <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href='//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
-    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
 
     <link rel="shortcut icon" href="/favicon.png">
 
@@ -64,7 +64,7 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 <div class="post-heading">
-                    <h1>类方法的Block不会内存泄漏....吗？！</h1>
+                    <h1>类方法的 Block 就不会内存泄漏...吗？！</h1>
                 </div>
             </div>
         </div>
@@ -91,24 +91,23 @@
         self.frame = self.initFrame;
         [self startAnimation];        // 递归调用，再次执行此函数
     }];
-}
-</code></pre>
+}</code></pre>
 <p>　　别告诉我你没这样用过，科科。    </p>
 <p>　　如果你也像我这么写，可能已经埋下了潜在的内存泄漏的危险。    </p>
 <p>　　我们通过Instruments来看看是否真的有内存泄漏(例子中EZScanNetGrid是我自定义的View,View中有执行动画的代码，见上方代码块，QRCodeScanner是对应的Controller)：    </p>
 <ol>
 <li>多次创建QRCodeScanner并销毁：<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/g3gqy.jpg" alt="block_self"><br>QRCodeScanner被销毁后：<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/97ewo.jpg" alt="block_self2">     </li>
 </ol>
-<ol>
+<ol start="2">
 <li>将上述代码的self改成weakSelf，再来看看Instruments：<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/jnbwl.jpg" alt="block_weakSelf"><br>QRCodeScanner被销毁后：<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/p1pae.jpg" alt="block_weakSelf2">     </li>
 </ol>
 <p>　　结果很明显，若是使用self，EZScanNetGrid这个View一直存在于内存中没有被释放，因为UIView Animation对其的强引用使其一直存在于内存中，直至Block里面的代码执行完毕。但是这段代码里可以看到，completion中又继续调用了<code>[self startAnimation];</code>因此，系统会继续保留对EZScanNetGrid的引用，从而即使EZScanNetGrid的SuperView被销毁了，EZScanNetGrid还是没有被销毁，无限地循环调用着动画，占据内存的同时也耗费着CPU。:(</p>
-<p>　　此文有点晦涩，附上<a href="https://github.com/objchris/ChrisDerDemos/tree/master/ClassBlockDemo">DEMO地址</a></p>
+<p>　　此文有点晦涩，附上<a href="https://github.com/objchris/ChrisDerDemos/tree/master/ClassBlockDemo" target="_blank" rel="noopener">DEMO地址</a></p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
 <li>关于Block的内存泄漏不只是循环引用会引起。</li>
 <li>不仅仅是UIView，其他将Block作为参数的类方法，如果在一个Block中递归调用到本Block，记得将引用的对象加上__weak。你说，在Block被调用的时候self被释放了怎么办？！去看看__strong的资料吧。</li>
 <li><del>很多iOS的类方法传入的Block是_NSConcreteStackBlock，可见_NSConcreteStackBlock也会对Block中的对象保持强引用。(待考究)</del>确实，没有强指针引用的block都是StackBlock，表面看起来系统API传入的Block都是StackBlock，但是以下四种情况：<br>1.手动调用copy<br>2.Block是函数的返回值<br>3.Block被强引用，Block被赋值给__strong或者id类型<br>4.调用系统API入参中含有usingBlcok的方法<br>系统都会默认调用copy方法把Block复制到堆中，变成MallocBlock，会对对象进行持有。</li>
-<li>关于ARC和MRC下的三种Block是否能执行，请做做这几道测试题<a href="http://blog.parse.com/learn/engineering/objective-c-blocks-quiz/">Objective-C Blocks Quiz</a></li>
+<li>关于ARC和MRC下的三种Block是否能执行，请做做这几道测试题<a href="http://blog.parse.com/learn/engineering/objective-c-blocks-quiz/" target="_blank" rel="noopener">Objective-C Blocks Quiz</a></li>
 </ol>
  
                 <!-- Meta -->

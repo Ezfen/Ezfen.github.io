@@ -2,7 +2,7 @@
 <html lang="zh-Hans">
 
 <!-- Head tag -->
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -19,7 +19,7 @@
 
     <!-- Title -->
     
-    <title>Jenkins密林探索 | CHILDHOOD</title>
+    <title>Jenkins&lt;br&gt;密林探索 | CHILDHOOD</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
@@ -35,9 +35,9 @@
 
     <!-- Custom Fonts -->
     <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href='//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
-    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
 
     <link rel="shortcut icon" href="/favicon.png">
 
@@ -64,7 +64,7 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 <div class="post-heading">
-                    <h1>Jenkins密林探索</h1>
+                    <h1>Jenkins<br>密林探索</h1>
                 </div>
             </div>
         </div>
@@ -85,25 +85,21 @@
 <h2 id="Jenkins安装"><a href="#Jenkins安装" class="headerlink" title="Jenkins安装"></a>Jenkins安装</h2><p>本文以 <em>Jenkins</em> 当前时间 <strong>2018.03.27</strong> 的最近 weekly 版本 <em>2.113</em> 来说明， Jenkins 是 Java web 项目，在使用上有 Java 环境的限制：<strong>jdk1.8 以上</strong>。</p>
 <p>对于 macOS10.9 和 10.10 来说，系统中自带有 jdk1.6 ，但这并不符合要求。而其他版本（ macOS10.11 以上）中貌似没有 jdk ，可以在命令行工具键入<code>java -version</code>来判断。</p>
 <p>若出现以下提示，则表示没有配置 Java 环境或系统中没有安装 jdk ：</p>
-<pre><code class="Shell">No Java runtime present, requesting install.
-</code></pre>
+<pre><code class="Shell">No Java runtime present, requesting install.</code></pre>
 <p>若弹出安装对话框，点击 <strong>『好』</strong> 退出对话框。</p>
 <p>不然，定位到<code>/Library/Java/JavaVirtualMachines</code>中可查看是否存在 jdk 。</p>
-<p>如果都没有，或 jdk 版本不符，则需要重新安装。 macOS 的安装方式比较简单，在<a href="http://www.oracle.com/technetwork/java/javase/downloads/index-jsp-138363.html">Oracle的jdk下载地址</a>上下载 dmg 安装包，直接安装 jdk1.8 到系统中。然后修改<code>~/.bashrc</code>文件配置一系列的系统变量，如果使用<code>zsh</code>，则修改<code>~/.zshrc</code>。在文件末尾添加：</p>
+<p>如果都没有，或 jdk 版本不符，则需要重新安装。 macOS 的安装方式比较简单，在<a href="http://www.oracle.com/technetwork/java/javase/downloads/index-jsp-138363.html" target="_blank" rel="noopener">Oracle的jdk下载地址</a>上下载 dmg 安装包，直接安装 jdk1.8 到系统中。然后修改<code>~/.bashrc</code>文件配置一系列的系统变量，如果使用<code>zsh</code>，则修改<code>~/.zshrc</code>。在文件末尾添加：</p>
 <pre><code class="shell"># 通常通过dmg安装的jdk都是在/Library/Java/JavaVirtualMachines/下，需根据实际情况对JAVA_HOME进行配置
 export JAVA_HOME=&quot;/Library/Java/JavaVirtualMachines/jdk1.8.0_161.jdk/Content/Home&quot;
 export CLASS_HOME=&quot;$JAVA_HOME/lib&quot;
-export PATH=&quot;.;$PATH:$JAVA_HOME/bin&quot;
-</code></pre>
+export PATH=&quot;.;$PATH:$JAVA_HOME/bin&quot;</code></pre>
 <p>然后重置一下配置：</p>
-<pre><code class="shell">source ~/.bashrc
-</code></pre>
+<pre><code class="shell">source ~/.bashrc</code></pre>
 <p>或者（使用<code>zsh</code>）</p>
-<pre><code class="Shell">source ~/.zshrc
-</code></pre>
+<pre><code class="Shell">source ~/.zshrc</code></pre>
 <p>再次使用<code>java - version</code>验证是否安装成功（全文部分截图是我使用公司电脑安装 Jenkins 时截下来的）：</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/ve0qh.png" alt="55B9E6EFD1C3099B8203D17D0089360C"></p>
-<p>好了，然后安装 <strong>Jenkins </strong> 。同样的，在<a href="https://jenkins.io/download/">官网下载页面</a>上选择 <strong>Weekly — Mac OS X</strong> 下载 <em>pkg</em> 安装包。</p>
+<p>好了，然后安装 <strong>Jenkins ** 。同样的，在<a href="https://jenkins.io/download/" target="_blank" rel="noopener">官网下载页面</a>上选择 **Weekly — Mac OS X</strong> 下载 <em>pkg</em> 安装包。</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/gz4yg.png" alt="Jenkins Website"></p>
 <p>以 <strong>2.113</strong> 为例，一步步安装。</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/9ez6l.png" alt="Jenkins Install Begin"></p>
@@ -115,11 +111,10 @@ export PATH=&quot;.;$PATH:$JAVA_HOME/bin&quot;
 <blockquote>
 <p>注：如果此时重启系统，会发现多了一个名为『 jenkins 』的普通成员。</p>
 </blockquote>
-<p>在 jenkins 初始化工作完成后，会跳转到另一个<strong>解锁  jenkins </strong> 的界面，提示密码存放在<code>/Users/Shared/Jenkins/Home/secrets/initialAdminPassword</code>中，到其中查看，会发现<code>secret</code>文件夹被设置了权限，使用我们当前的用户无读写的权限。</p>
+<p>在 jenkins 初始化工作完成后，会跳转到另一个*<em>解锁  jenkins *</em> 的界面，提示密码存放在<code>/Users/Shared/Jenkins/Home/secrets/initialAdminPassword</code>中，到其中查看，会发现<code>secret</code>文件夹被设置了权限，使用我们当前的用户无读写的权限。</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/jc4l1.png" alt="解锁jenkins"></p>
 <p>此时使用命令行工具，键入如下命令，并输入电脑的管理员 root 密码（通常是我们自己的登录密码）后：</p>
-<pre><code class="shell">sudo cat /Users/Shared/Jenkins/Home/secrets/initialAdminPassword
-</code></pre>
+<pre><code class="shell">sudo cat /Users/Shared/Jenkins/Home/secrets/initialAdminPassword</code></pre>
 <p>可以看到 jenkins 的初始化密码：</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/s09vt.png" alt="屏幕快照 2018-03-26 下午12.44.11"></p>
 <p>将该密码填入到网页中，完成解锁工作。<strong>此密码同时是登录 jenkins 的 admin 账户的密码，见下文。</strong></p>
@@ -138,13 +133,12 @@ export PATH=&quot;.;$PATH:$JAVA_HOME/bin&quot;
 </ol>
 <h3 id="启动与关闭"><a href="#启动与关闭" class="headerlink" title="启动与关闭"></a>启动与关闭</h3><p>首先，针对使用 <strong>pkg</strong> 安装的方式（使用直接下载 war ，用<code>java -jar</code>运行不在本文的讨论范围内。），Jenkins 作为一个后台驻留程序（ <em>Daemon</em> ），在 Wins 下我们习惯叫服务，自然有开关。</p>
 <p>一个后台驻留程序是运行在系统后台的，没有任何GUI的程序。在 macOS 下，一个后台驻留程序的配置保存在一个<code>plist</code>文件中，非系统驻留程序的<code>plist</code>文件都统一存放在<code>/Library/LaunchDaemons</code>之中。</p>
-<p>我们知道，<code>plist</code>本质是 xml 文件，其中存放的都是键值对，里面的键都是 <a href="x-man-page://5/launchd.plist">launch.plist</a> 中定义的，这个<code>plist</code>用于告知<code>launch</code>去哪里运行脚本，以及运行过程中一些路径和用户、组的配置。</p>
+<p>我们知道，<code>plist</code>本质是 xml 文件，其中存放的都是键值对，里面的键都是 <a href="x-man-page://5/launchd.plist" target="_blank" rel="noopener">launch.plist</a> 中定义的，这个<code>plist</code>用于告知<code>launch</code>去哪里运行脚本，以及运行过程中一些路径和用户、组的配置。</p>
 <p>所以，启动和关闭的命令看起来比较少见：</p>
 <pre><code class="shell"># 开启Jenkins
 sudo launchctl load /Library/LaunchDaemons/org.jenkins-ci.plist
 # 关闭Jenkins
-sudo launchctl unload /Library/LaunchDaemons/org.jenkins-ci.plist
-</code></pre>
+sudo launchctl unload /Library/LaunchDaemons/org.jenkins-ci.plist</code></pre>
 <p>打开<code>org.jenkins-ci.plist</code>，看到<code>ProgramArguments</code>，写着运行脚本的位置：</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/ntvgu.png" alt="019DE0A84C235007987FE3CF18813083"></p>
 <h3 id="JVM的配置"><a href="#JVM的配置" class="headerlink" title="JVM的配置"></a>JVM的配置</h3><p>接下来，我们来看看 <code>jenkins-runner.sh</code> 这个脚本中的内容。</p>
@@ -192,11 +186,9 @@ add_to_args httpsKeyStorePassword
 echo &quot;JENKINS_HOME=$JENKINS_HOME&quot;
 echo &quot;Jenkins command line for execution:&quot;
 echo /usr/bin/java $javaArgs -jar &quot;$war&quot; $args
-exec /usr/bin/java $javaArgs -jar &quot;$war&quot; $args
-</code></pre>
+exec /usr/bin/java $javaArgs -jar &quot;$war&quot; $args</code></pre>
 <p>第一行我们看到，给<code>defaults</code>赋了值：</p>
-<pre><code class="shell">defaults read /Library/Preferences/org.jenkins-ci SETTING
-</code></pre>
+<pre><code class="shell">defaults read /Library/Preferences/org.jenkins-ci SETTING</code></pre>
 <blockquote>
 <p>注：<code>defaults</code> 命令可以用来读取其中的配置项<code>SETTING</code>的值。不写<code>SETTING</code>可以读取所有的配置。</p>
 </blockquote>
@@ -216,16 +208,13 @@ exec /usr/bin/java $javaArgs -jar &quot;$war&quot; $args
 <li>httpPort、httpsport :  http、https 端口</li>
 <li>httpListenAddress、httpsListenAddress : 接收请求 IP ，默认为 0.0.0.0 ，即其他主机也可以访问到，接收任意 IP 发来的请求。若设置为 127.0.0.1 ，则只能本机访问。</li>
 </ul>
-<p>对于配置项，有兴趣的同学可以参考<a href="https://wiki.jenkins.io/display/JENKINS/Starting+and+Accessing+Jenkins">这里</a>，十分详细且有一些配置示例。</p>
+<p>对于配置项，有兴趣的同学可以参考<a href="https://wiki.jenkins.io/display/JENKINS/Starting+and+Accessing+Jenkins" target="_blank" rel="noopener">这里</a>，十分详细且有一些配置示例。</p>
 <p>修改配置，可以使用以下命令：</p>
-<pre><code class="shell">sudo defaults write /Library/Preferences/org.jenkins-ci SETTING VALUE
-</code></pre>
+<pre><code class="shell">sudo defaults write /Library/Preferences/org.jenkins-ci SETTING VALUE</code></pre>
 <p>做错了也没关系，重新 write 一遍或<code>defaults</code>也支持删除：</p>
-<pre><code class="shell">sudo defaults delete /Library/Preferences/org.jenkins-ci SETTING
-</code></pre>
+<pre><code class="shell">sudo defaults delete /Library/Preferences/org.jenkins-ci SETTING</code></pre>
 <h2 id="卸载-Jenkins"><a href="#卸载-Jenkins" class="headerlink" title="卸载 Jenkins"></a>卸载 Jenkins</h2><p>要残忍舍弃 Jenkins 投奔其他 CI 工具的话：</p>
-<pre><code class="Shell">&#39;/Library/Application Support/Jenkins/Uninstall.command&#39;
-</code></pre>
+<pre><code class="Shell">&#39;/Library/Application Support/Jenkins/Uninstall.command&#39;</code></pre>
 <p>同样针对使用 <strong>pkg</strong> 安装的方式。</p>
 <p>下载 war 包，直接停止服务删除 war 包就好了。</p>
 <p>使用 homebrew ，有 homebrew 自己的管理方式，不在此说明了。</p>
@@ -234,16 +223,16 @@ exec /usr/bin/java $javaArgs -jar &quot;$war&quot; $args
 </blockquote>
 <h2 id="插件安装"><a href="#插件安装" class="headerlink" title="插件安装"></a>插件安装</h2><p>在密林探索开始以前，我们要带上一些工具，给 Jenkins 安装一些插件。</p>
 <p>插件安装在『 系统管理 — 管理插件 』，图标是一块绿色的小拼图。点击进去可以看到可更新、可选插件、已安装、高级。都是望名知意，不多做解释了。</p>
-<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/gru5l.png" alt=""></p>
-<p>选择 <em>可选插件</em> ，在过滤处输入想要安装的插件。对我们来说，版本管理工具 Git 或 SVN 用得最多，但是如果一开始安装 Jenkins 的时候已选择社区推荐插件的话，其实已经安装好了 GitHub 的相关插件 <a href="http://wiki.jenkins-ci.org/display/JENKINS/Github+Plugin">GitHub plugin</a> 。 SVN 的话，我所使用的 Jenkins 2.113 版本在 war 包内部嵌入了 SVN 的插件 <a href="https://wiki.jenkins.io/display/JENKINS/Subversion+Plugin">Subversion Plug-in</a> 。如果公司内部有 Git 服务器，通常是部署的开源 GitLab ，则需要安装<code>GitLab Plugin</code>用于管理源码和<code>Gitlab Hook Plugin</code>用于构建 GitLab 的触发器。</p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/gru5l.png" alt></p>
+<p>选择 <em>可选插件</em> ，在过滤处输入想要安装的插件。对我们来说，版本管理工具 Git 或 SVN 用得最多，但是如果一开始安装 Jenkins 的时候已选择社区推荐插件的话，其实已经安装好了 GitHub 的相关插件 <a href="http://wiki.jenkins-ci.org/display/JENKINS/Github+Plugin" target="_blank" rel="noopener">GitHub plugin</a> 。 SVN 的话，我所使用的 Jenkins 2.113 版本在 war 包内部嵌入了 SVN 的插件 <a href="https://wiki.jenkins.io/display/JENKINS/Subversion+Plugin" target="_blank" rel="noopener">Subversion Plug-in</a> 。如果公司内部有 Git 服务器，通常是部署的开源 GitLab ，则需要安装<code>GitLab Plugin</code>用于管理源码和<code>Gitlab Hook Plugin</code>用于构建 GitLab 的触发器。</p>
 <p>我的主要目的是 iOS 项目构建，因此还需要选择<code>Xcode integration</code>安装 Xcode 插件，和管理签名证书私钥和 PP 文件的<code>Keychains and Provisioning Profiles Management</code>。</p>
 <p>安装完了这些，我们就可以配置一个构建项目了。</p>
 <h2 id="构建项目"><a href="#构建项目" class="headerlink" title="构建项目"></a>构建项目</h2><h3 id="基本项目配置"><a href="#基本项目配置" class="headerlink" title="基本项目配置"></a>基本项目配置</h3><p>回到主界面上，点击左上角 <em>新建任务</em> ，进入新建任务界面。</p>
-<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/j5l33.png" alt=""></p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/j5l33.png" alt></p>
 <p>确定后，开始项目的通用配置：</p>
-<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/tpk2j.png" alt=""></p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/tpk2j.png" alt></p>
 <p>我的项目是托管在公司内部 SVN 上的，所以<code>Github Project</code>不打勾，勾上<code>丢弃旧的构建</code>会将构建记录保留一定时间（根据自己需求设置天数）和最大保留个数。<code>参数化构建过程</code>可以为构建过程添加相应的参数。<code>关闭构建</code>主要针对定时任务（下面会说到），顾名思义就是关闭当前任务，自然不会启动定时任务。</p>
-<h3 id="源码管理——-SVN"><a href="#源码管理——-SVN" class="headerlink" title="源码管理—— SVN"></a>源码管理—— SVN</h3><p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/7r6yz.png" alt=""></p>
+<h3 id="源码管理——-SVN"><a href="#源码管理——-SVN" class="headerlink" title="源码管理—— SVN"></a>源码管理—— SVN</h3><p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/7r6yz.png" alt></p>
 <p>我所在的公司源码管理使用 SVN ，在 Module 中填上 SVN 的一些信息：</p>
 <ul>
 <li>Repository URL ：仓库地址</li>
@@ -263,20 +252,20 @@ exec /usr/bin/java $javaArgs -jar &quot;$war&quot; $args
 <p><code>Check-out Strategy</code>是检出策略。可选择 ：尽可能多地使用<code>svn update</code>，每次都 checkout 一个新的，或使用脚本 checkout ，不需要 Jenkins 帮我们 checkout 等等。</p>
 <h3 id="构建环境"><a href="#构建环境" class="headerlink" title="构建环境"></a>构建环境</h3><p>我们知道，打包 iOS 需要代码签名( <em>codesign</em> )，也就需要私钥，因此第一步，是先将 keychain 添加到 Jenkins 。</p>
 <h4 id="添加-Keychain-和-Provisioning-Profiles"><a href="#添加-Keychain-和-Provisioning-Profiles" class="headerlink" title="添加 Keychain 和 Provisioning Profiles"></a>添加 Keychain 和 Provisioning Profiles</h4><p>还记得上面安装插件的时候安装了<code>Keychains and Provisioning Profiles Management</code>吗？在构建环境这里，可以看到<code>Keychains and Code Signing Identities</code>选项：</p>
-<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/7r1ie.png" alt=""></p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/7r1ie.png" alt></p>
 <p>但此时还没有配置，所以要先去 <strong>系统管理 —— Keychains and Provisioning Profiles Management</strong>添加 Keychain 和 Provisioning Profiles 。</p>
-<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/3n7n0.png" alt=""></p>
-<p>提示我们 Upload Keychain ，选择<code>/Users/管理员用户名/Library/keychains/login.keychain</code>上传。然后输入 Keychain 的密码和签名使用的证书的 Code Signing Identity （ 如：iPhone Distribution: <em>*</em> CO.,LTD (ABCD678EFG) ）</p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/3n7n0.png" alt></p>
+<p>提示我们 Upload Keychain ，选择<code>/Users/管理员用户名/Library/keychains/login.keychain</code>上传。然后输入 Keychain 的密码和签名使用的证书的 Code Signing Identity （ 如：iPhone Distribution: *** CO.,LTD (ABCD678EFG) ）</p>
 <p>再上传 Provisioning Profiles ，上传的文件最终位置在<code>/Users/Shared/Jenkins/Home/kpp_upload/</code>。然后将<code>/Users/Shared/Jenkins/Library/MobileDevice/Provisioning Profiles</code>填写到页面的<code>Provisioning Profiles Directory Path</code>，然后保存就可以了。</p>
 <p>这样的操作是让 Jenkins 在进行构建的时候将<code>kpp_upload</code>中的 Provisioning Profiles 拷贝到<code>MobileDevice/Provisioning Profiles</code>文件夹中，就跟我们平时安装 Provisioning Profiles 一样。</p>
 <p>完成后大致是这样子：</p>
-<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/ac2j7.png" alt=""></p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/ac2j7.png" alt></p>
 <p>这里添加了 Developer 和 Distribution 的开发者证书和 Development 和 Ad-hoc 的 Provisioning Profiles 。</p>
 <h4 id="配置项目使用的-Keychain"><a href="#配置项目使用的-Keychain" class="headerlink" title="配置项目使用的 Keychain"></a>配置项目使用的 Keychain</h4><p>回到项目配置中，此时就可以选择 Keychain and Code Signing Identity 了。</p>
-<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/4wmwm.png" alt=""></p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/4wmwm.png" alt></p>
 <p>这里的 Provisioning Profiles 是需要 development 和 ad-hoc 的。</p>
-<h3 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h3><p>项目构建最简单的方式就是使用脚本了，可以看我前面写过的<a href="https://objchris.com/2018/04/02/iOS脚本打包/">文章——iOS脚本打包 - xcodebuild</a>。</p>
-<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/l2gp4.png" alt=""></p>
+<h3 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h3><p>项目构建最简单的方式就是使用脚本了，可以看我前面写过的<a href="https://objchris.com/2018/04/02/iOS脚本打包/" target="_blank" rel="noopener">文章——iOS脚本打包 - xcodebuild</a>。</p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/l2gp4.png" alt></p>
 <p>增加构建步骤，选择<code>Execute shell</code>，填入脚本：</p>
 <pre><code class="shell">#!/bin/sh -l
 # 解决找不到pod和pod提示语言不对的问题
@@ -295,30 +284,27 @@ security unlock-keychain -p &quot;${KEYCHAIN_PASSWORD}&quot;
 security show-keychain-info &quot;${KEYCHAIN_PATH}&quot;
 security find-identity -p codesigning -v
 # 执行我们的打包脚本
-sh KeyXBuild.sh
-</code></pre>
+sh KeyXBuild.sh</code></pre>
 <p>到这里就已经完成打包，得到 ipa 文件了。</p>
 <p>一些构建后的操作就不多说了，或者通过 SVN 上传到某个目录，或者上传到蒲公英这种分发平台。</p>
 <h2 id="构建状态提示"><a href="#构建状态提示" class="headerlink" title="构建状态提示"></a>构建状态提示</h2><p>每一次构建成功失败都会有提示：</p>
-<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/zm08o.png" alt=""></p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/zm08o.png" alt></p>
 <p>构建结束后可以查看日志输出：</p>
-<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/crs2g.png" alt=""></p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/crs2g.png" alt></p>
 <p>项目构建的成功与否决定了一个项目的分数， Jenkins 使用类似天气预报的样式呈现：</p>
-<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/2en18.jpg" alt=""></p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/2en18.jpg" alt></p>
 <p>第一次使用 Jenkins ，尝试个四五十次应该就差不多了：</p>
-<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/m8t6x.png" alt=""></p>
+<p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/m8t6x.png" alt></p>
 <h2 id="Troubleshooting"><a href="#Troubleshooting" class="headerlink" title="Troubleshooting"></a>Troubleshooting</h2><h3 id="bash-pod-command-not-found"><a href="#bash-pod-command-not-found" class="headerlink" title="-bash: pod: command not found"></a>-bash: pod: command not found</h3><p>前面说过，Jenkins 在安装完成后会创建一个名为 jenkins 的普通用户，我们可以通过 <strong>系统偏好设置 -&gt; 用户与群组</strong> 来修改 jenkins 用户的密码，然后登入到其中。进行一些检查操作。</p>
 <p>我的项目使用到 Cocoapods 来管理第三方库，且<code>Pods</code>这个文件夹没有上传到 SVN 上，只上传了<code>Podfile</code>和<code>Podfile.lock</code>。因此需要在 Jenkins 上进行一次<code>Pod install</code>。这就需要 Jenkins 用户安装 Pod ，这时候就需要登录 jenkins 去完成安装操作了。</p>
 <h3 id="Code-Signing-Error-Provisioning-profile-“xxx”-doesn’t-include-signing-certificate-“iPhone-Developer-xxx”"><a href="#Code-Signing-Error-Provisioning-profile-“xxx”-doesn’t-include-signing-certificate-“iPhone-Developer-xxx”" class="headerlink" title="Code Signing Error: Provisioning profile “xxx” doesn’t include signing certificate “iPhone Developer: xxx”"></a>Code Signing Error: Provisioning profile “xxx” doesn’t include signing certificate “iPhone Developer: xxx”</h3><p>出现此问题是因为，使用 xcodebuild archive 时，指定的 Provisioning profile 和证书都必须是开发使用的。不能是 ad-hoc 或 app store 。</p>
 <p>在 archive 后进行 export 的时候才是使用 ad-hoc 或 app store 的证书和 Provisioning profile 。</p>
 <h3 id="codesign：unknown-error-1-ffffffffffffffff"><a href="#codesign：unknown-error-1-ffffffffffffffff" class="headerlink" title="codesign：unknown error -1=ffffffffffffffff"></a>codesign：unknown error -1=ffffffffffffffff</h3><p>这个问题是没有访问 Keychain 的权限，因为我们的 Keychain 是从 Jenkins 上传的，每次构建时 Jenkins 都会将 Keychain 文件拷贝到工作项目路径中。</p>
 <p>因此我们需要自己手动解锁：</p>
-<pre><code class="shell">security unlock-keychain -p &quot;${KEYCHAIN_PASSWORD}&quot;
-</code></pre>
+<pre><code class="shell">security unlock-keychain -p &quot;${KEYCHAIN_PASSWORD}&quot;</code></pre>
 <p>在 macOS 10.12 前，这样就可以了。但是新版本中，解锁操作过后还是会弹出UI来解锁 Keychain 。而 Jenkins 是没有用户交互的，所以签名时才会有这个错误出现。</p>
 <p>解决方法是：</p>
-<pre><code class="shell">security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k &quot;${KEYCHAIN_PASSWORD}&quot; &quot;${KEYCHAIN_PATH}&quot;
-</code></pre>
+<pre><code class="shell">security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k &quot;${KEYCHAIN_PASSWORD}&quot; &quot;${KEYCHAIN_PATH}&quot;</code></pre>
 <p>别忘了其中的<code>codesign:</code>，很多添加了类似命令还是不成功的原因可能是忽略了<code>codesign:</code></p>
 <h3 id="Something-of-Keychain"><a href="#Something-of-Keychain" class="headerlink" title="Something of Keychain"></a>Something of Keychain</h3><p>脚本打包时，会使用<code>~/Library/Keychain</code>中的 login.keychain 。因此，网上很多教程都是将打包使用的证书和私钥（ login.keychain ）直接拷贝到 Jenkins 中，但是这样不利于项目配置。因为不同的项目可能需要不同的证书签名，要添加新证书就需要再次复制 keychain 文件到 jenkins 的<code>~/Library/Keychains</code>下，覆盖原来的<code>login.keychain</code>。这样容易造成老项目无法成功打包（因为旧 keychain 被覆盖）。</p>
 <p>因此，我一直在找如何直接使用 Jenkins 提供的配置去动态添加 keychain ，<strong>Keychains and Provisioning Profiles Management</strong> 插件帮我们完成 keychain 文件和 Provisioning Profiles 的位置问题，但是需要配合<code>Xcode</code>插件去使用。这样让脚本打包变得不方便。</p>

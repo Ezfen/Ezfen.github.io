@@ -2,7 +2,7 @@
 <html lang="zh-Hans">
 
 <!-- Head tag -->
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -35,9 +35,9 @@
 
     <!-- Custom Fonts -->
     <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href='//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
-    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
 
     <link rel="shortcut icon" href="/favicon.png">
 
@@ -89,13 +89,11 @@
    UIViewAutoresizingFlexibleTopMargin    = 1 &lt;&lt; 3,
    UIViewAutoresizingFlexibleHeight       = 1 &lt;&lt; 4,
    UIViewAutoresizingFlexibleBottomMargin = 1 &lt;&lt; 5
-};
-</code></pre><h2 id="简单介绍"><a href="#简单介绍" class="headerlink" title="简单介绍"></a>简单介绍</h2><h3 id="UIViewAutoresizingNone"><a href="#UIViewAutoresizingNone" class="headerlink" title="UIViewAutoresizingNone"></a>UIViewAutoresizingNone</h3><p>不设置自动调整，默认值</p>
+};</code></pre><h2 id="简单介绍"><a href="#简单介绍" class="headerlink" title="简单介绍"></a>简单介绍</h2><h3 id="UIViewAutoresizingNone"><a href="#UIViewAutoresizingNone" class="headerlink" title="UIViewAutoresizingNone"></a>UIViewAutoresizingNone</h3><p>不设置自动调整，默认值</p>
 <h3 id="UIViewAutoresizingFlexibleRightMargin"><a href="#UIViewAutoresizingFlexibleRightMargin" class="headerlink" title="UIViewAutoresizingFlexibleRightMargin"></a>UIViewAutoresizingFlexibleRightMargin</h3><p>这里就只讲 UIViewAutoresizingFlexibleRightMargin ，因为上下左右四个方位是一致的原理<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/skwhi.jpg" alt="autoresizingMask_FlexibleRightMargin"></p>
 <h3 id="UIViewAutoresizingFlexibleWidth"><a href="#UIViewAutoresizingFlexibleWidth" class="headerlink" title="UIViewAutoresizingFlexibleWidth"></a>UIViewAutoresizingFlexibleWidth</h3><p>UIViewAutoresizingFlexibleWidth 和 UIViewAutoresizingFlexibleHeight 也是同样的原理<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/wrxva.jpg" alt="autoresizingMask_FlexibleWidthCompare"></p>
 <h3 id="组合起来"><a href="#组合起来" class="headerlink" title="组合起来"></a>组合起来</h3><p>枚举中的值是允许使用|组合起来的，同时拥有多个值的功能，like this：</p>
-<pre><code class="objc">UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRIGHTMargin
-</code></pre>
+<pre><code class="objc">UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRIGHTMargin</code></pre>
 <p>表示左右间隔都可以修改，效果就像上面那张图一样~</p>
 <h2 id="有点代码对比会好些"><a href="#有点代码对比会好些" class="headerlink" title="有点代码对比会好些"></a>有点代码对比会好些</h2><pre><code class="objc">#define kTopSpace 64
 #define kMargin 20
@@ -122,8 +120,7 @@ UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(textLabelTop, tex
 [self.view addSubview:topView];
 //注意：重新设置topView位置的代码，必须要写在添加视图的后面，不然autoresizing的位置计算会出错！
 CGFloat topViewWidth = kUIScreen.size.width - kMargin * 2;
-[topView setFrame:CGRectMake(kMargin, kTopSpace, topViewWidth, kTopViewHeight)];
-</code></pre>
+[topView setFrame:CGRectMake(kMargin, kTopSpace, topViewWidth, kTopViewHeight)];</code></pre>
 <p>上面的代码中尺寸宽度被限定为 iPhone4s 的 320 。没有设置子 View（蓝色的 View ）的 autoresizingMask 属性的话运行结果如下：<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/pmjrs.jpg" alt="autoresizingMask_4s"></p>
 <p>设置了子 View（蓝色的 View ）autoresizingMask 后，再修改父 View 的宽度，可以看到随着赋值的不同，有不同的效果：<br>设置了 UIViewAutoresizingFlexibleLeftMargin<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/m2hgw.jpg" alt="autoresizingMask_FlexibleLeftMargin"></p>
 <p>还有的其他值对应的效果图在上文已经摆出来了，请参阅哈~~</p>

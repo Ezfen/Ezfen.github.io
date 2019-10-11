@@ -110,9 +110,10 @@ nav,
 body,
 html {
   width: 100%;
-  font-size: 18px;
+  font-size: 16px;
+  line-height: 1.8;
   font-weight: 300;
-  color: #606060;
+  color: #292929;
 }
 p {
   letter-spacing: 0.1px;
@@ -136,6 +137,12 @@ p a:before {
   transform: scaleX(0);
   -webkit-transition: all 0.3s ease-in-out 0s;
   transition: all 0.3s ease-in-out 0s;
+}
+code {
+  color: #606060;
+}
+blockquote {
+  border-left: 5px solid #fffafa;
 }
 h1,
 h2,
@@ -172,9 +179,6 @@ h4:before {
   color: #ccc;
   font-size: 11px;
   margin-right: 10px;
-}
-ul {
-  margin-left: -25px;
 }
 li {
   margin: 10px 0;

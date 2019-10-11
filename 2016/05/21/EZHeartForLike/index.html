@@ -2,7 +2,7 @@
 <html lang="zh-Hans">
 
 <!-- Head tag -->
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -35,9 +35,9 @@
 
     <!-- Custom Fonts -->
     <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href='//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
-    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
 
     <link rel="shortcut icon" href="/favicon.png">
 
@@ -80,7 +80,7 @@
                 <div class="post-excerpt">
                     <p>最近没事看看 Instagram 的时候，对于双击点赞的功能感觉蛮 Like 。所以就想自己仿照做一个。但是嘞，直接仿造感觉不是很好玩，所以就自己想添加点新东西，因此就有了EZHeartForLike。:)</p>
                 </div>
-                <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/pwmtz.png" alt="EZHeartForLike_logo"><br>效果图(第一张是双击图片触发，第二张是单击按钮)：<br><img src="https://raw.githubusercontent.com/Ezfen/EZHeartForLike/master/double.gif" alt="">       <img src="https://raw.githubusercontent.com/Ezfen/EZHeartForLike/master/single.gif" alt=""><br>先说说这是个什么东西。<br>一开始我是在 Instagram 的基础上开始做的。双击点击图片可以弹出一个桃心，随即下面的小桃心点亮。完成点赞的操作。就像这样：<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/37lsw.jpg" alt="EZHeartForLike_gem"><br>好吧，尺寸是是用我又爱又恨的 4S 的 320 x 480<br>紧接着就想，能不能实现大桃心一边移动一边缩小，最后到大小桃心的位置并替换它？！就像上面最终效果一样<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/4p80z.jpg" alt="aixin"><br>很快我遇到问题：如果两个桃心都在同一个 View 中，话甘易啦！！！但是现在的情况是两个桃心并不在同一个 View 中（现实中很多情况都不会），<strong>位置不明确</strong>是一个巨大的问题。因此跨View的动画是 EZHeartForLike 是这次的主要话题。当然动画是使用 UIView 来实现的~~<br>那么，讲讲我的思路历程吧：<br>首先，我想了下能不能在一个 EZHeartForLikeView 中分别放入下列三个 View ，已实现我的想法：    </p>
+                <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/pwmtz.png" alt="EZHeartForLike_logo"><br>效果图(第一张是双击图片触发，第二张是单击按钮)：<br><img src="https://raw.githubusercontent.com/Ezfen/EZHeartForLike/master/double.gif" alt>       <img src="https://raw.githubusercontent.com/Ezfen/EZHeartForLike/master/single.gif" alt><br>先说说这是个什么东西。<br>一开始我是在 Instagram 的基础上开始做的。双击点击图片可以弹出一个桃心，随即下面的小桃心点亮。完成点赞的操作。就像这样：<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/37lsw.jpg" alt="EZHeartForLike_gem"><br>好吧，尺寸是是用我又爱又恨的 4S 的 320 x 480<br>紧接着就想，能不能实现大桃心一边移动一边缩小，最后到大小桃心的位置并替换它？！就像上面最终效果一样<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/4p80z.jpg" alt="aixin"><br>很快我遇到问题：如果两个桃心都在同一个 View 中，话甘易啦！！！但是现在的情况是两个桃心并不在同一个 View 中（现实中很多情况都不会），<strong>位置不明确</strong>是一个巨大的问题。因此跨View的动画是 EZHeartForLike 是这次的主要话题。当然动画是使用 UIView 来实现的~~<br>那么，讲讲我的思路历程吧：<br>首先，我想了下能不能在一个 EZHeartForLikeView 中分别放入下列三个 View ，已实现我的想法：    </p>
 <ul>
 <li>ContentView ：用于让用户将自己的 View 放入其中。类似 iOS8 里面的UIVisualEffectView 的 contentView 一样。    </li>
 <li>SmallHeart ：被当做按钮的小桃心，是 Public 的，提供给用户改造它的样式、大小、位置等。 </li>
@@ -125,8 +125,7 @@
         view2 = view2.superview;
     }
     return view1;
-}
-</code></pre>
+}</code></pre>
 <p>有了上面的思想，映射坐标同样变得简单：</p>
 <pre><code class="objc">    //映射两个Heart的坐标。
     // 首先是小桃心(self)
@@ -144,9 +143,8 @@
         bigHeartPoint.x += view2.frame.origin.x;
         bigHeartPoint.y += view2.frame.origin.y;
         view2 = view2.superview;
-    }
-</code></pre>
-<p>既然得到两个桃心的坐标了，实现动画就自然变得简单啦，就不赘述了:)<br>有兴趣的同学可以查看我的 <a href="https://github.com/objchris/ChrisDerDemos">这个 Demo</a> ，可以下载在项目中，顺便给我个 Like 吧。</p>
+    }</code></pre>
+<p>既然得到两个桃心的坐标了，实现动画就自然变得简单啦，就不赘述了:)<br>有兴趣的同学可以查看我的 <a href="https://github.com/objchris/ChrisDerDemos" target="_blank" rel="noopener">这个 Demo</a> ，可以下载在项目中，顺便给我个 Like 吧。</p>
  
                 <!-- Meta -->
                 <div class="post-meta">

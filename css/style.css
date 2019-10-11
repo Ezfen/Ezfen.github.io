@@ -809,7 +809,7 @@ figure.highlight table .gutter {
 figure.highlight table .code {
   padding-left: 15px;
   border-left: 1px solid #fff;
-  color: #666;
+  color: #fffafa;
 }
 figure.highlight table .line {
   height: 20px;

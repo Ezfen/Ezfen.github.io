@@ -2,7 +2,7 @@
 <html lang="zh-Hans">
 
 <!-- Head tag -->
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -19,7 +19,7 @@
 
     <!-- Title -->
     
-    <title>对线程的简单理解 | CHILDHOOD</title>
+    <title>简单理解线程 | CHILDHOOD</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
@@ -35,9 +35,9 @@
 
     <!-- Custom Fonts -->
     <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href='//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
-    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
 
     <link rel="shortcut icon" href="/favicon.png">
 
@@ -64,7 +64,7 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 <div class="post-heading">
-                    <h1>对线程的简单理解</h1>
+                    <h1>简单理解线程</h1>
                 </div>
             </div>
         </div>
@@ -93,17 +93,15 @@
 <table>
 <thead>
 <tr>
-<th style="text-align:center">线程私有</th>
-<th style="text-align:center">线程间共享</th>
+<th align="center">线程私有</th>
+<th align="center">线程间共享</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td style="text-align:center">局部变量<br>函数参数</td>
-<td style="text-align:center">全局变量<br>堆上的数据<br>函数内的静态变量<br>代码</td>
+<tbody><tr>
+<td align="center">局部变量<br>函数参数</td>
+<td align="center">全局变量<br>堆上的数据<br>函数内的静态变量<br>代码</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <h2 id="线程调度"><a href="#线程调度" class="headerlink" title="线程调度"></a>线程调度</h2><p>如果线程数量小于等于处理器数量时，线程是真正意义的并发，不同的线程运行在不同的处理器上。这很理想。</p>
 <p>但更经常地，我们可以看到类似这样的图：</p>
 <p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/cjuwz.png" alt="Concurrency_vs_Parallelism"></p>
@@ -114,14 +112,13 @@
 <li>就绪：在等待队列中，随时可以被执行</li>
 <li>等待：等待 IO 或者因为其他原因被阻塞，等待结束后进入就绪状态</li>
 </ul>
-<p>三者的状态切换如下图所示：<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/eltyq.jpg" alt=""><br>线程有状态了，需要等待调度的发生，自然就涉及到轮换调度和优先级。</p>
+<p>三者的状态切换如下图所示：<br><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/eltyq.jpg" alt><br>线程有状态了，需要等待调度的发生，自然就涉及到轮换调度和优先级。</p>
 <p>轮换调度让各个线程轮流执行一小段时间后进入就绪状态或等待状态，而优先级则决定了 CPU 让处于就绪状态的哪个线程先执行。优先级改变有以下三种方式：</p>
 <ul>
 <li>在我们的编程中，我们可以手动设置优先级，最常见的，如 iOS 中 GCD 的<code>global queue</code>:</li>
 </ul>
 <pre><code class="Objc">// 创建一个优先级为HIGH的全局队列
-dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
-</code></pre>
+dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);</code></pre>
 <ul>
 <li>操作系统也是会根据场景来适当提高线程的优先级，让更多的线程可以执行。通常情况下，频繁等待的线程（ <strong>IO 密集型线程</strong>）通常只占用很少的时间，这种线程比用完时间片的线程（ <strong>CPU 密集型线程</strong>）更受欢迎，在操作系统的调度中优先级更容易被提高。</li>
 <li>在调度过程中，还存在<em>线程饿死( Starvation )</em> 的现象，就是优先级很低的线程一直得不到时间片。为了解决这一问题，操作系统会逐步提高这些线程的优先级。</li>
@@ -140,30 +137,26 @@ dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
 if ([theLock lock]) {
    // 需要同步的代码
    [theLock unlock];
-}
-</code></pre>
+}</code></pre>
 <h3 id="信号量"><a href="#信号量" class="headerlink" title="信号量"></a>信号量</h3><p>信号量也可以用在同步方面，但是这里所说的是二元信号量，即只表示占用与非占用。例如 GCD 中：</p>
 <pre><code class="objc">// 创建一个二元信号量，dispatch_semaphore_create的入参为0
 dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
 // 使用wait让semaphore减1
 dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
 // 使用signal让semaphore加1
-dispatch_semaphore_signal(semaphore);
-</code></pre>
+dispatch_semaphore_signal(semaphore);</code></pre>
 <p>当信号量<code>semaphore</code>小于 0 时，线程会暂停执行，直到<code>semaphore</code>重新变成 0 。</p>
 <h3 id="临界区"><a href="#临界区" class="headerlink" title="临界区"></a>临界区</h3><p>临界区更多的是指一个访问共用资源的代码块，而这些共用资源又无法同时被多个线程访问的特性。</p>
 <p>信号量，我们知道，在本线程创建，可以在其他线程被获取到并调用<code>signal</code>或<code>wait</code>来操作信号量。相对来说，临界区显得更加严格。本线程进入临界区，只有当退出临界区了，其他线程才能访问临界区的代码块。如下代码，相信大家肯定不陌生：</p>
 <pre><code class="objc">@synchronized(self) {
     // 临界区代码
-}
-</code></pre>
+}</code></pre>
 <h3 id="可重入-Reentrant"><a href="#可重入-Reentrant" class="headerlink" title="可重入( Reentrant )"></a>可重入( Reentrant )</h3><p>可重入的概念，适用于函数。</p>
 <p>首先了解一下什么是 <em>函数被重入</em> ：一个函数被重入，表示这个函数没有执行完成，由于外部因素（多线程同时调用）或内部调用（递归函数），又一次进入了该函数。</p>
 <p>可重入函数也保证线程安全，因为该种函数被重入之后不会产生任何不良的后果，比如：</p>
 <pre><code class="objc">- (int)sqr:(int) x {
     return x * x;
-}
-</code></pre>
+}</code></pre>
 <p>保证可重入，需要保证以下几个方面：</p>
 <ul>
 <li>不使用静态或全局非 const 的变量</li>
@@ -185,8 +178,7 @@ dispatch_semaphore_signal(semaphore);
 <pre><code class="objc">// 主线程中调用
 dispatch_sync(dispatch_get_main_queue(), ^{
     // do something
-})
-</code></pre>
+})</code></pre>
 <p>上述代码必将造成死锁，但是此例只涉及一个线程，那就是 iOS App 的主线程（亦称 UI 线程）。我们知道，在 iOS 中，<code>main queue</code>是串行队列，其任务只能由主线程去完成。而<code>dispatch_sync</code>会阻塞当前线程，因此，当上述代码用在主线程中调用时，主线程被会阻塞，然后将<code>block</code>放在<code>main queue</code>中，等主线程执行完<code>block</code>中的代码后才释放主线程，然而主线程已被阻塞，无法执行<code>main queue</code>中的<code>block</code>，所以造成死锁。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文对线程做了一个简单的描述，在每个 App 都涉及多线程开发的现在，需要注意线程安全的问题，通过原子操作、同步等方式可以保证。还讲述了串行队列和并行队列，最后浅浅地点了一下死锁的概念，算是一篇写给线程小白看的入门级 iOS 文章，如有写得不好的地方，请各位斧正。</p>
  

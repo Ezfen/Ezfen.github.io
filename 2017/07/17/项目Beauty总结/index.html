@@ -2,7 +2,7 @@
 <html lang="zh-Hans">
 
 <!-- Head tag -->
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -19,7 +19,7 @@
 
     <!-- Title -->
     
-    <title>《Beauty》项目小总结 | CHILDHOOD</title>
+    <title>Beauty 总结 | CHILDHOOD</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
@@ -35,9 +35,9 @@
 
     <!-- Custom Fonts -->
     <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href='//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
-    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
 
     <link rel="shortcut icon" href="/favicon.png">
 
@@ -64,7 +64,7 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 <div class="post-heading">
-                    <h1>《Beauty》项目小总结</h1>
+                    <h1>Beauty 总结</h1>
                 </div>
             </div>
         </div>
@@ -131,7 +131,7 @@
 <h3 id="左侧滑动菜单"><a href="#左侧滑动菜单" class="headerlink" title="左侧滑动菜单"></a>左侧滑动菜单</h3><p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/1h42p.jpg" alt="Beauty_左边栏"></p>
 <p>　　图片好像压缩得有点过分了….</p>
 <p>　　一开始左侧滑动菜单是主界面Controller的一个View，所以滑动的时候会被上方的Navigation Controller（Navigation Bar）遮挡住，可以想象是多么吃藕。后来在滑动的时候动态隐藏和显示Navigation Bar，就出现了诡异的上面一整条高度为64px的空白区域，发现更吃藕了…</p>
-<p>　　所以在AlertController的启发下，决定用UIWindow来解决这个问题，正如巧神<a href="https://book.douban.com/subject/26287173/">《iOS开发进阶》</a>一书的第十二章提及，使用UIWindow在所有View（当然包括当前Window的Navigation Bar）前展示自己想要的内容，所以有了下面的代码：</p>
+<p>　　所以在AlertController的启发下，决定用UIWindow来解决这个问题，正如巧神<a href="https://book.douban.com/subject/26287173/" target="_blank" rel="noopener">《iOS开发进阶》</a>一书的第十二章提及，使用UIWindow在所有View（当然包括当前Window的Navigation Bar）前展示自己想要的内容，所以有了下面的代码：</p>
 <pre><code class="objective-c">- (void)viewDidLoad {
     _window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     _window.windowLevel = UIWindowLevelNormal;
@@ -210,17 +210,16 @@
     animation.delegate = self;
     [_leftView.layer addAnimation:animation forKey:nil];
 
-}
-</code></pre>
+}</code></pre>
 <h3 id="CHARMER-PROFILE"><a href="#CHARMER-PROFILE" class="headerlink" title="CHARMER PROFILE"></a>CHARMER PROFILE</h3><p><img src="https://oaoa-1256157051.cos.ap-guangzhou.myqcloud.com/blog/f7cwa.jpg" alt="Beauty_CollectionView"></p>
 <p>　　技师Profile页面，为什么会拿出来写？！是因为Conllection Viewz在日常开发中非常非常非常常见。基本每个App都会用到（TableView是特殊的Conllection View）。这个Collection View分为三部分：</p>
 <ol>
-<li>最上方的HeaderView是一个跑马灯，使用了之前写过的一个小组件<a href="https://github.com/objchris/EZRecycleImageView">EZRecycleImageView</a>，在开发中边使用边改进是最好不过的事情了。</li>
+<li>最上方的HeaderView是一个跑马灯，使用了之前写过的一个小组件<a href="https://github.com/objchris/EZRecycleImageView" target="_blank" rel="noopener">EZRecycleImageView</a>，在开发中边使用边改进是最好不过的事情了。</li>
 <li>第二个Header是技师信息和三个按钮</li>
 <li>最后是最下面的View，三个按钮分别对应不同的内容，第一二个使用的是CollectionView，即在CollectionView中再嵌入CollectionView；最后一个是TableView，即在CollectionView中再嵌入CollectionView。</li>
 </ol>
 <p>　　View里面嵌入View的复杂结构也是很值得掌握的手法~</p>
-<p>　　还有很多开发过程中的代码和解决方案，因为是别人的项目，非开源，就不一一列出啦~但是我还是信仰Open Sourcede der~~     </p>
+<p>　　还有很多开发过程中的代码和解决方案，因为是别人的项目，非开源，就不一一列出啦<del>但是我还是信仰Open Sourcede der</del>     </p>
 <p>　　最后附上使用的第三方库：</p>
 <pre><code>platform :ios, &quot;8.0&quot;
 target :Beauty do
@@ -236,8 +235,7 @@ pod &quot;MWPhotoBrowser&quot;
 pod &#39;JPush&#39;
 pod &#39;PayPal-iOS-SDK&#39;
 
-end
-</code></pre><h2 id="总结与反思"><a href="#总结与反思" class="headerlink" title="总结与反思"></a>总结与反思</h2><ul>
+end</code></pre><h2 id="总结与反思"><a href="#总结与反思" class="headerlink" title="总结与反思"></a>总结与反思</h2><ul>
 <li><p>好的方面：</p>
 <ol>
 <li><p>一位好Partner，一位一起奋斗的好朋友。</p>
